@@ -4,7 +4,7 @@
 
 直接用 Visual Studio 打开 **cp-algorithm.sln**，日常只编辑根目录的 **main.cpp**。
 新题通过工具载入 templates/main.cpp，历史题解保存到 solutions/。
-已接入 **CP-STL 的 35 个算法模板**，支持 Visual Studio / MSVC；[使用说明](docs/CP_STL.md) · [模板索引](cp-stl/docs/usage/README.md)。
+已接入 **CP-STL 的 36 个算法模板**，支持 Visual Studio / MSVC；[使用说明](docs/CP_STL.md) · [模板索引](cp-stl/docs/usage/README.md)。
 
 第一次使用：保存 VS 中尚未保存的编辑；若 VS 提示项目在外部被修改，选择重新加载。
 如果目录视图没刷新，关闭并重新打开解决方案。平时在解决方案资源管理器中关闭“显示所有文件”，按已配置的分类浏览。

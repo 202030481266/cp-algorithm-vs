@@ -1,9 +1,9 @@
 # CP-STL：Visual Studio workspace 适配版
 
-由本机 D:/CP-Templates-and-Solutions/cp-stl 导入。包含全部 35 个头文件、使用手册、38 个可运行示例及原算法对拍；MSVC 与 GCC 均可使用。完整接入说明见 [Visual Studio 使用说明](../docs/CP_STL.md)。
+由本机 D:/CP-Templates-and-Solutions/cp-stl 导入。现有 36 个头文件、使用手册、39 个可运行示例及原算法对拍；MSVC 与 GCC 均可使用。完整接入说明见 [Visual Studio 使用说明](../docs/CP_STL.md)。
 
 - **开始写题**：执行 `python tools/cp.py new`，使用 workspace 的 [templates/main.cpp](../templates/main.cpp)。
-- **找算法**：[35 个模板的完整使用手册](docs/usage/README.md)。
+- **找算法**：[36 个模板的完整使用手册](docs/usage/README.md)。
 - **运行例子**：`python tools/cp.py example data_structures/fenwick`；[全部示例](examples/README.md)。
 - **组合写法**：[常用写法与进阶入口](docs/recipes.md)。
 - **轻量起手式**：[template.cpp](template.cpp) · [说明](docs/usage/template.md)。
@@ -57,6 +57,7 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | --- | --- | --- | --- |
 | [search.hpp](basic/search.hpp) | 二分第一个真值；有符号向上/下取整 | [说明](docs/usage/basic/search.md) | [示例](examples/basic/search.cpp) |
 | [compress.hpp](basic/compress.hpp) | 离散化，预处理 O(n log n)，查询 O(log n) | [说明](docs/usage/basic/compress.md) | [示例](examples/basic/compress.cpp) |
+| [sort.hpp](basic/sort.hpp) | 整数计数排序 O(n + K)、基数排序 O(ceil(w / 8) · (n + 256))；均支持返回原下标 | [说明](docs/usage/basic/sort.md) | [示例](examples/basic/sort.cpp) |
 | [dsu.hpp](data_structures/dsu.hpp) | 并查集，均摊 O(α(n)) | [说明](docs/usage/data_structures/dsu.md) | [示例](examples/data_structures/dsu.cpp) |
 | [fenwick.hpp](data_structures/fenwick.hpp) | 树状数组，O(log n)；第 k 小要求所有频次非负 | [说明](docs/usage/data_structures/fenwick.md) | [示例](examples/data_structures/fenwick.cpp) |
 | [segment_tree.hpp](data_structures/segment_tree.hpp) | 泛型线段树，O(log n)；结合律与单位元 | [说明](docs/usage/data_structures/segment_tree.md) | [示例](examples/data_structures/segment_tree.cpp) |

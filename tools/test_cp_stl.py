@@ -59,7 +59,7 @@ class CPSTLTests(unittest.TestCase):
         return result
 
     def test_all_headers_are_self_contained(self):
-        self.assertEqual(len(self.headers), 35)
+        self.assertEqual(len(self.headers), 36)
         def check(header):
             relative = header.relative_to(LIB)
             source = self.build / ("header_" + "_".join(relative.parts) + ".cpp")
@@ -70,7 +70,7 @@ class CPSTLTests(unittest.TestCase):
 
     def test_all_examples_and_debug_switch(self):
         sources = sorted((LIB / "examples").rglob("*.cpp"))
-        self.assertEqual(len(sources), 38)
+        self.assertEqual(len(sources), 39)
         def check(source):
             relative = source.relative_to(LIB / "examples")
             exe = self.compile(source, "examples/" + relative.as_posix())
@@ -174,14 +174,17 @@ int main() {
                     for header in self.headers if header.name != "debug.hpp") +
             '#define main starter_main\n#include "templates/main.cpp"\n#undef main\n'
             '#include "util/debug.hpp"\n'
-            'int main() { cp::Fenwick<long long> f(std::vector<long long>{1, 2, 3}); '
+            'int main() { const std::vector<long long> keys{3, 1, 2}; '
+            'print(cp::radix_sort_ids(keys)); print(cp::counting_sort_ids(keys)); '
+            'std::vector<long long> a = keys; '
+            'cp::radix_sort(a); cp::counting_sort(a); cp::Fenwick<long long> f(a); '
             'f.add(1, 5); print(std::vector<long long>{f.sum(0, 3)}); }\n', encoding="utf-8")
         exe = self.compile(source, "workspace", std="c++20")
-        self.assertEqual(self.run_program(exe).stdout.split(), [b"11"])
+        self.assertEqual(self.run_program(exe).stdout.split(), [b"1", b"2", b"0", b"1", b"2", b"0", b"11"])
         output = self.build / "submission.cpp"
         expand_submission(source, output, [LIB, ROOT / "include", ROOT], ROOT)
         exe = self.compile(output, "submission", std="c++20", includes=False)
-        self.assertEqual(self.run_program(exe).stdout.split(), [b"11"])
+        self.assertEqual(self.run_program(exe).stdout.split(), [b"1", b"2", b"0", b"1", b"2", b"0", b"11"])
 
     def test_usage_examples_and_links(self):
         fence = chr(96) * 3

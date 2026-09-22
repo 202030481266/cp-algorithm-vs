@@ -2,7 +2,7 @@
 
 每个模板都有一个按相同路径命名的 `.cpp`。例如 `data_structures/fenwick.hpp` 对应本目录的 `data_structures/fenwick.cpp`，详细解释见 [使用手册](../docs/usage/README.md)。
 
-下面 35 个模板示例都内置数据：在 workspace 根目录执行 `python tools/cp.py example 类别/名称`，自动编译运行并核对答案，不需要手工输入。对应 `.ans` 文件记录标准输出；`util/debug.cpp` 还会向标准错误输出内容，对照 [debug.err](util/debug.err)。
+下面 36 个模板示例都内置数据：在 workspace 根目录执行 `python tools/cp.py example 类别/名称`，自动编译运行并核对答案，不需要手工输入。对应 `.ans` 文件记录标准输出；`util/debug.cpp` 还会向标准错误输出内容，对照 [debug.err](util/debug.err)。
 
 ## 需要输入的入门示例
 
@@ -26,6 +26,7 @@ python tools/cp.py example "template"
 | --- | --- | --- |
 | [二分答案与有符号整除](../docs/usage/basic/search.md) | [basic/search.cpp](basic/search.cpp) | [.ans](basic/search.ans) |
 | [离散化 Compressor](../docs/usage/basic/compress.md) | [basic/compress.cpp](basic/compress.cpp) | [.ans](basic/compress.ans) |
+| [计数排序与基数排序](../docs/usage/basic/sort.md) | [basic/sort.cpp](basic/sort.cpp) | [.ans](basic/sort.ans) |
 
 ### 数据结构
 
@@ -101,4 +102,4 @@ python tools/cp.py example "template"
 python tools/test_cp_stl.py
 ```
 
-在仓库根目录执行，将编译运行全部 38 个示例、核对输出，并检查所有模板都有使用文档且文档里的代码与示例一致。依赖 Python 3.10+，默认编译器为 PATH 中的 g++；在 VS Developer PowerShell 设置 `$env:CP_STL_CXX = "cl"` 可使用 MSVC。
+在仓库根目录执行，将编译运行全部 39 个示例、核对输出，并检查所有模板都有使用文档且文档里的代码与示例一致。依赖 Python 3.10+，默认编译器为 PATH 中的 g++；在 VS Developer PowerShell 设置 `$env:CP_STL_CXX = "cl"` 可使用 MSVC。

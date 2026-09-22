@@ -2,6 +2,8 @@
 
 已从 D:/CP-Templates-and-Solutions/cp-stl 导入全部 35 个头文件、使用手册、38 个示例和算法回归程序，保存于 workspace 的 `cp-stl/`。这是项目内的副本，克隆本 workspace 后可直接使用；原始目录未改动。导入源文件的 SHA-256 见 [cp-stl-import.json](cp-stl-import.json)。
 
+本地新增了 [计数排序与基数排序](../cp-stl/docs/usage/basic/sort.md)；当前共 36 个头文件、39 个示例。
+
 ## 第一次打开
 
 保存 VS 中尚未保存的编辑，接受项目文件的外部修改并重新加载 `cp-algorithm.sln`。
@@ -91,7 +93,7 @@ python tools/cp.py export --source solutions/cf/1500/C/main.cpp --output build/c
 ## 检查与后续维护
 
 ```powershell
-# GCC：全部头文件、38 个例子、原随机对拍、数学边界和导出检查
+# GCC：全部头文件、39 个例子、原随机对拍、数学边界和导出检查
 python tools/test_cp_stl.py
 
 # MSVC：在 VS Developer PowerShell 中执行同一套检查

@@ -94,6 +94,7 @@
     <None Include="solutions\cf\1500\C\README.md" />
     <ClInclude Include="cp-stl\basic\compress.hpp" />
     <ClInclude Include="cp-stl\basic\search.hpp" />
+    <ClInclude Include="cp-stl\basic\sort.hpp" />
     <ClInclude Include="cp-stl\data_structures\binary_trie.hpp" />
     <ClInclude Include="cp-stl\data_structures\dsu.hpp" />
     <ClInclude Include="cp-stl\data_structures\fenwick.hpp" />
@@ -104,6 +105,7 @@
     <None Include="cp-stl\docs\recipes.md" />
     <None Include="cp-stl\docs\usage\basic\compress.md" />
     <None Include="cp-stl\docs\usage\basic\search.md" />
+    <None Include="cp-stl\docs\usage\basic\sort.md" />
     <None Include="cp-stl\docs\usage\data_structures\binary_trie.md" />
     <None Include="cp-stl\docs\usage\data_structures\dsu.md" />
     <None Include="cp-stl\docs\usage\data_structures\fenwick.md" />
@@ -145,6 +147,8 @@
     <None Include="cp-stl\examples\basic\compress.cpp" />
     <None Include="cp-stl\examples\basic\search.ans" />
     <None Include="cp-stl\examples\basic\search.cpp" />
+    <None Include="cp-stl\examples\basic\sort.ans" />
+    <None Include="cp-stl\examples\basic\sort.cpp" />
     <None Include="cp-stl\examples\data_structures\binary_trie.ans" />
     <None Include="cp-stl\examples\data_structures\binary_trie.cpp" />
     <None Include="cp-stl\examples\data_structures\dsu.ans" />

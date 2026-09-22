@@ -11,15 +11,19 @@
 #include <cstdint>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <numeric>
 #include <random>
 #include <set>
 #include <sstream>
+#include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 #include <vector>
 #include "basic/search.hpp"
 #include "basic/compress.hpp"
+#include "basic/sort.hpp"
 #include "data_structures/dsu.hpp"
 #include "data_structures/fenwick.hpp"
 #include "data_structures/segment_tree.hpp"
@@ -62,6 +66,145 @@ string random_string(int n) {
     string s(n, 'a');
     for (char& c : s) c += random_int(0, 2);
     return s;
+}
+
+template<class T>
+void check_integer_sorting(mt19937_64& sort_rng) {
+    constexpr T low = numeric_limits<T>::min(), high = numeric_limits<T>::max();
+    auto check = [](const vector<T>& input, bool counting = true) {
+        const auto original = input;
+        vector<size_t> expected_ids(input.size());
+        iota(expected_ids.begin(), expected_ids.end(), size_t{0});
+        stable_sort(expected_ids.begin(), expected_ids.end(),
+                    [&](size_t l, size_t r) { return input[l] < input[r]; });
+        assert(radix_sort_ids(input) == expected_ids);
+        if (counting) assert(counting_sort_ids(input) == expected_ids);
+        assert(input == original);
+        auto expected = input;
+        sort(expected.begin(), expected.end());
+        auto actual = input;
+        radix_sort(actual);
+        assert(actual == expected);
+        if (counting) {
+            actual = input;
+            counting_sort(actual);
+            assert(actual == expected);
+        }
+    };
+    check({});
+    check({low});
+    check({high});
+    check(vector<T>(40, high));
+    check({low, T(low + 3), T(low + 1), low, T(low + 2)});
+    check({high, T(high - 3), T(high - 1), high, T(high - 2)});
+    vector<T> edges{high, low, 0, 1, high, low, T(high - 1), T(low + 1)};
+    if constexpr (is_signed_v<T>) edges.push_back(-1);
+    check(edges, sizeof(T) <= 2);
+    sort(edges.begin(), edges.end());
+    check(edges, false);
+    reverse(edges.begin(), edges.end());
+    check(edges, false);
+    if constexpr (numeric_limits<make_unsigned_t<T>>::digits == 8) {
+        vector<T> all_values;
+        for (int value = int(low); value <= int(high); ++value)
+            all_values.push_back(static_cast<T>(value));
+        shuffle(all_values.begin(), all_values.end(), sort_rng);
+        check(all_values);
+    }
+    for (int trial = 0; trial < 100; ++trial) {
+        vector<T> values(trial);
+        for (T& x : values) {
+            if constexpr (is_signed_v<T>)
+                x = static_cast<T>(uniform_int_distribution<long long>(low, high)(sort_rng));
+            else
+                x = static_cast<T>(uniform_int_distribution<unsigned long long>(low, high)(sort_rng));
+        }
+        check(values, false);
+        T middle = 0;
+        if constexpr (is_signed_v<T>) middle = -31;
+        for (T base : {low, T(high - 63), middle}) {
+            for (T& x : values) x = static_cast<T>(base + uniform_int_distribution<int>(0, 63)(sort_rng));
+            check(values);
+        }
+    }
+}
+
+void integer_sorting() {
+    mt19937_64 sort_rng(20260922);
+    check_integer_sorting<signed char>(sort_rng);
+    check_integer_sorting<unsigned char>(sort_rng);
+    check_integer_sorting<char>(sort_rng);
+    check_integer_sorting<short>(sort_rng);
+    check_integer_sorting<unsigned short>(sort_rng);
+    check_integer_sorting<int>(sort_rng);
+    check_integer_sorting<unsigned int>(sort_rng);
+    check_integer_sorting<long>(sort_rng);
+    check_integer_sorting<unsigned long>(sort_rng);
+    check_integer_sorting<long long>(sort_rng);
+    check_integer_sorting<unsigned long long>(sort_rng);
+    check_integer_sorting<wchar_t>(sort_rng);
+    check_integer_sorting<char16_t>(sort_rng);
+    check_integer_sorting<char32_t>(sort_rng);
+
+    auto reject_range = [](auto values, size_t limit) {
+        auto original = values;
+        bool caught = false;
+        try { counting_sort(values, limit); }
+        catch (const length_error&) { caught = true; }
+        assert(caught && values == original);
+        caught = false;
+        try { counting_sort_ids(values, limit); }
+        catch (const length_error&) { caught = true; }
+        assert(caught && values == original);
+    };
+    reject_range(vector<int>{5, -2, 0}, 7);
+    vector<int> exact{5, -2, 0};
+    assert(counting_sort_ids(exact, 8) == vector<size_t>({1, 2, 0}));
+    assert(exact == vector<int>({5, -2, 0}));
+    counting_sort(exact, 8);
+    assert(exact == vector<int>({-2, 0, 5}));
+    reject_range(vector<int>{4, 4}, 0);
+    vector<int> equal{4, 4};
+    assert(counting_sort_ids(equal, 1) == vector<size_t>({0, 1}));
+    counting_sort(equal, 1);
+    assert(equal == vector<int>({4, 4}));
+    vector<int> trivial;
+    counting_sort(trivial, 0);
+    assert(trivial.empty());
+    assert(counting_sort_ids(trivial, 0).empty());
+    trivial.push_back(7);
+    counting_sort(trivial, 0);
+    assert(trivial == vector<int>({7}));
+    assert(counting_sort_ids(trivial, 0) == vector<size_t>({0}));
+    vector<int> larger_range{1'000'000, 0};
+    bool caught = false;
+    try { counting_sort(larger_range); }
+    catch (const length_error&) { caught = true; }
+    assert(caught && larger_range == vector<int>({1'000'000, 0}));
+    caught = false;
+    try { counting_sort_ids(larger_range); }
+    catch (const length_error&) { caught = true; }
+    assert(caught && larger_range == vector<int>({1'000'000, 0}));
+    assert(counting_sort_ids(larger_range, 1'000'001) == vector<size_t>({1, 0}));
+    counting_sort(larger_range, 1'000'001);
+    assert(larger_range == vector<int>({0, 1'000'000}));
+    reject_range(vector<long long>{LLONG_MAX, LLONG_MIN}, numeric_limits<size_t>::max());
+    reject_range(vector<unsigned long long>{ULLONG_MAX, 0}, numeric_limits<size_t>::max());
+    reject_range(vector<unsigned long long>{ULLONG_MAX - 1, 0}, numeric_limits<size_t>::max());
+
+    vector<unsigned long long> large(200000);
+    for (auto& x : large) x = sort_rng();
+    const auto original = large;
+    vector<size_t> expected_ids(large.size());
+    iota(expected_ids.begin(), expected_ids.end(), size_t{0});
+    stable_sort(expected_ids.begin(), expected_ids.end(),
+                [&](size_t l, size_t r) { return large[l] < large[r]; });
+    assert(radix_sort_ids(large) == expected_ids);
+    assert(large == original);
+    auto expected = large;
+    sort(expected.begin(), expected.end());
+    radix_sort(large);
+    assert(large == expected);
 }
 
 void data_structures() {
@@ -548,6 +691,6 @@ void utilities_and_geometry() {
 }
 
 int main() {
-    data_structures(); graphs(); trees(); strings(); math_and_dp(); utilities_and_geometry();
+    integer_sorting(); data_structures(); graphs(); trees(); strings(); math_and_dp(); utilities_and_geometry();
     cout << "All template tests passed (seed 20260919; random brute-force checks + 200000-node chain).\n";
 }

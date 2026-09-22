@@ -1,11 +1,11 @@
 # 逐个模板的使用手册
 
-这里覆盖全部 **35 个算法/工具头文件**，另有 [起手式 template.cpp](template.md)。每篇说明包含适用场景、接口、完整程序、预期输出和使用限制；文档里的程序与对应 `.cpp` 保持一致。
+这里覆盖全部 **36 个算法/工具头文件**，另有 [起手式 template.cpp](template.md)。每篇说明包含适用场景、接口、完整程序、预期输出和使用限制；文档里的程序与对应 `.cpp` 保持一致。
 
 ## 如何使用
 
 1. 从下面按类别找模板，先读“使用方法”。
-2. 打开同一行的“完整示例”，在 workspace 终端执行文末的 example 命令。这 35 个示例都内置数据，不需要输入；`debug.cpp` 还会向标准错误输出调试信息。
+2. 打开同一行的“完整示例”，在 workspace 终端执行文末的 example 命令。这 36 个示例都内置数据，不需要输入；`debug.cpp` 还会向标准错误输出调试信息。
 3. 按题目修改示例数据或在自己的解答中引用头文件。数组与字符串区间通常为 `[l,r)`，图的点从 `0` 开始；具体约束以对应说明为准。
 4. 提交到 OJ 前执行 `python tools/cp.py export`，展开引用的本地头文件。
 
@@ -23,6 +23,7 @@ python tools/cp.py example "data_structures/fenwick"
 | --- | --- | --- |
 | [basic/search.hpp](../../basic/search.hpp) | [二分答案与有符号整除](basic/search.md) | [运行示例](../../examples/basic/search.cpp) |
 | [basic/compress.hpp](../../basic/compress.hpp) | [离散化 Compressor](basic/compress.md) | [运行示例](../../examples/basic/compress.cpp) |
+| [basic/sort.hpp](../../basic/sort.hpp) | [计数排序与基数排序](basic/sort.md) | [运行示例](../../examples/basic/sort.cpp) |
 
 ## 数据结构
 
@@ -100,4 +101,4 @@ python tools/cp.py example "data_structures/fenwick"
 python tools/test_cp_stl.py
 ```
 
-脚本逐个检查头文件对应的使用说明、示例源码、文档内代码、输出和相对链接，再以 GNU C++17 编译运行全部 38 个示例；额外验证不定义 `LOCAL` 时调试输出关闭。默认使用 PATH 中的 g++；在 VS Developer PowerShell 中设置 `$env:CP_STL_CXX = "cl"` 可改用 MSVC。
+脚本逐个检查头文件对应的使用说明、示例源码、文档内代码、输出和相对链接，再以 GNU C++17 编译运行全部 39 个示例；额外验证不定义 `LOCAL` 时调试输出关闭。默认使用 PATH 中的 g++；在 VS Developer PowerShell 中设置 `$env:CP_STL_CXX = "cl"` 可改用 MSVC。

@@ -73,6 +73,9 @@
     <ClInclude Include="cp-stl\basic\search.hpp">
       <Filter>04 算法库 cp-stl\basic</Filter>
     </ClInclude>
+    <ClInclude Include="cp-stl\basic\sort.hpp">
+      <Filter>04 算法库 cp-stl\basic</Filter>
+    </ClInclude>
     <ClInclude Include="cp-stl\data_structures\binary_trie.hpp">
       <Filter>04 算法库 cp-stl\data_structures</Filter>
     </ClInclude>
@@ -101,6 +104,9 @@
       <Filter>04 算法库 cp-stl\docs\usage\basic</Filter>
     </None>
     <None Include="cp-stl\docs\usage\basic\search.md">
+      <Filter>04 算法库 cp-stl\docs\usage\basic</Filter>
+    </None>
+    <None Include="cp-stl\docs\usage\basic\sort.md">
       <Filter>04 算法库 cp-stl\docs\usage\basic</Filter>
     </None>
     <None Include="cp-stl\docs\usage\data_structures\binary_trie.md">
@@ -224,6 +230,12 @@
       <Filter>04 算法库 cp-stl\examples\basic</Filter>
     </None>
     <None Include="cp-stl\examples\basic\search.cpp">
+      <Filter>04 算法库 cp-stl\examples\basic</Filter>
+    </None>
+    <None Include="cp-stl\examples\basic\sort.ans">
+      <Filter>04 算法库 cp-stl\examples\basic</Filter>
+    </None>
+    <None Include="cp-stl\examples\basic\sort.cpp">
       <Filter>04 算法库 cp-stl\examples\basic</Filter>
     </None>
     <None Include="cp-stl\examples\data_structures\binary_trie.ans">
