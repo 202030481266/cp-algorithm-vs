@@ -119,15 +119,27 @@ def problem_path(name: str) -> Path:
 def save_problem(name: str) -> int:
     destination = problem_path(name)
     if destination.exists():
-        raise ValueError(f"Archive already exists; choose another name: {destination}")
-    destination.mkdir(parents=True)
+        if not destination.is_dir():
+            raise ValueError(f"Archive path is not a directory: {destination}")
+        try:
+            answer = input(
+                f"Archive already exists: {destination.relative_to(ROOT)}. "
+                "Overwrite code and sample data? [y/N] ")
+        except EOFError:
+            answer = ""
+        if answer.strip().lower() not in {"y", "yes"}:
+            print("Save cancelled.")
+            return 0
+    destination.mkdir(parents=True, exist_ok=True)
     for relative in WORK_FILES[:3]:
         source = ROOT / relative
         if source.is_file():
             shutil.copy2(source, destination / source.name)
-    (destination / "README.md").write_text(
-        f"# {name}\n\n- 题目链接：\n- 算法标签：\n- 状态：待填写（归档不代表已 AC）\n"
-        "- 时间复杂度：\n- 易错点：\n", encoding="utf-8")
+    notes = destination / "README.md"
+    if not notes.exists():
+        notes.write_text(
+            f"# {name}\n\n- 题目链接：\n- 算法标签：\n- 状态：待填写（归档不代表已 AC）\n"
+            "- 时间复杂度：\n- 易错点：\n", encoding="utf-8")
     sync_project()
     print(f"Saved: {destination.relative_to(ROOT)}")
     return 0
@@ -379,7 +391,7 @@ def main() -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("sync", help="Refresh Visual Studio file groups")
     commands.add_parser("new", help="Back up current work and load templates/main.cpp")
-    for name, description in (("save", "Archive current code and data; refuse overwrites"),
+    for name, description in (("save", "Archive current code and data; confirm before overwriting"),
                               ("load", "Back up current work and load an archived problem")):
         child = commands.add_parser(name, help=description)
         child.add_argument("problem", help="e.g. codeforces/2100/A")

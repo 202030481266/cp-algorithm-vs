@@ -81,12 +81,14 @@ solutions/
 
 | 命令 | 行为 |
 | --- | --- |
-| python tools/cp.py save codeforces/2100/A | 复制 main.cpp、输入、期望输出到新目录，生成笔记骨架，刷新 VS 分类 |
+| python tools/cp.py save codeforces/2100/A | 保存 main.cpp、输入、期望输出；已有目录先确认覆盖，笔记不存在时生成骨架，刷新 VS 分类 |
 | python tools/cp.py new | 将当前工作备份到 backups/work-时间-随机后缀/，载入模板，清空当前样例与输出 |
 | python tools/cp.py load codeforces/2100/A | 先备份当前工作，再载入已归档源码和样例 |
 | python tools/cp.py sync | 刷新 VS 中的文件列表与筛选器 |
 
-save 不覆盖已有目录，也不会清空当前题目。
+save 遇到已有目录会询问是否覆盖（`[y/N]`）；输入 `y` 或 `yes`（不区分大小写）确认，回车或其他输入取消。
+确认后更新归档的 main.cpp、input.txt、expected.txt，保留已有 README.md 笔记及其他辅助文件，当前题目保持不变。
+标准输入结束、无法读取确认时也会取消保存。
 new/load 的备份包括 main.cpp、input.txt、expected.txt 和 output.txt。
 data/brute.cpp、data/gen.cpp 等自建辅助文件保持原位，不会随 save/load 一起归档；
 要保留每题的生成器与暴力，请把它们复制到该题目录，再 sync。
@@ -287,7 +289,7 @@ backups/ 只存在于本机，不会随 Git 克隆下载；日常提交与同步
 python -m unittest discover -s tools -p "test_*.py"
 ```
 
-测试使用 build/ 下的隔离临时目录，验证归档/切题备份、拒绝覆盖、路径边界、
+测试使用 build/ 下的隔离临时目录，验证归档/切题备份、覆盖确认与取消、笔记保留、路径边界、
 VS 编译列表、输出比较与子进程超时；也会实际编译模板，检查容器打印、宏开关和文件 I/O。
 不会对当前 main.cpp 执行 new/load。
 单独检查模板可运行 python -m unittest discover -s tools -p test_template.py -v；

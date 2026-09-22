@@ -41,7 +41,8 @@ class WorkspaceTests(unittest.TestCase):
         (self.root / "templates/main.cpp").write_text("int main() {}\n", encoding="utf-8")
 
     def test_save_new_load_and_backups(self):
-        cp.save_problem("codeforces/2100/A")
+        with patch("builtins.input", side_effect=AssertionError("New archives need no confirmation")):
+            self.assertEqual(cp.save_problem("codeforces/2100/A"), 0)
         archived = self.root / "solutions/codeforces/2100/A/main.cpp"
         self.assertEqual(archived.read_bytes(), self.original)
         cp.switch_problem(None)
@@ -56,13 +57,64 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual((self.root / "data/expected.txt").read_bytes(), b"-2\n")
         self.assertEqual(len(list((self.root / "backups").iterdir())), 2)
 
-    def test_refuses_archive_overwrite(self):
+    def test_confirmed_overwrite_updates_code_and_samples_and_preserves_notes(self):
+        cp.save_problem("training/A")
+        archive = self.root / "solutions/training/A"
+        notes = "# 我的题解\n\n- 状态：AC\n- 算法标签：贪心\n".encode()
+        (archive / "README.md").write_bytes(notes)
+        (archive / "brute.cpp").write_bytes(b"// keep brute force\n")
+        for index, answer in enumerate(("y", "yes", " Y ", " YES ")):
+            with self.subTest(answer=answer):
+                updates = {
+                    "main.cpp": f"// revision {index}\nint main() {{}}\n".encode(),
+                    "data/input.txt": f"{index}\n".encode(),
+                    "data/expected.txt": f"{index + 1}\n".encode(),
+                }
+                for relative, content in updates.items():
+                    (self.root / relative).write_bytes(content)
+                with patch("builtins.input", return_value=answer) as prompt:
+                    self.assertEqual(cp.save_problem("training/A"), 0)
+                prompt.assert_called_once()
+                for relative, content in updates.items():
+                    self.assertEqual((archive / Path(relative).name).read_bytes(), content)
+                    self.assertEqual((self.root / relative).read_bytes(), content)
+                self.assertEqual((archive / "README.md").read_bytes(), notes)
+                self.assertEqual((archive / "brute.cpp").read_bytes(), b"// keep brute force\n")
+                self.assertFalse((archive / "output.txt").exists())
+
+    def test_cancelled_overwrite_leaves_workspace_unchanged(self):
         cp.save_problem("training/A")
         (self.root / "main.cpp").write_bytes(b"new work\n")
-        with self.assertRaises(ValueError):
-            cp.save_problem("training/A")
-        self.assertEqual((self.root / "solutions/training/A/main.cpp").read_bytes(), self.original)
-        self.assertEqual((self.root / "main.cpp").read_bytes(), b"new work\n")
+        (self.root / "data/input.txt").write_bytes(b"new input\n")
+        (self.root / "data/expected.txt").write_bytes(b"new answer\n")
+        before = {path.relative_to(self.root): path.read_bytes()
+                  for path in self.root.rglob("*") if path.is_file()}
+        for answer in ("", "n", "NO", "maybe", EOFError()):
+            with self.subTest(answer=answer):
+                with patch("builtins.input", side_effect=[answer]) as prompt:
+                    self.assertEqual(cp.save_problem("training/A"), 0)
+                prompt.assert_called_once()
+                after = {path.relative_to(self.root): path.read_bytes()
+                         for path in self.root.rglob("*") if path.is_file()}
+                self.assertEqual(after, before)
+                self.assertIn("Save cancelled.", self.stdout.getvalue())
+
+    def test_overwrite_creates_notes_when_missing(self):
+        cp.save_problem("training/A")
+        notes = self.root / "solutions/training/A/README.md"
+        notes.unlink()
+        with patch("builtins.input", return_value="y"):
+            self.assertEqual(cp.save_problem("training/A"), 0)
+        self.assertIn("# training/A", notes.read_text(encoding="utf-8"))
+
+    def test_save_rejects_file_as_archive_directory(self):
+        archive = self.root / "solutions/training/A"
+        archive.parent.mkdir(parents=True)
+        archive.write_bytes(b"existing file\n")
+        with patch("builtins.input", side_effect=AssertionError("Invalid paths need no confirmation")):
+            with self.assertRaisesRegex(ValueError, "not a directory"):
+                cp.save_problem("training/A")
+        self.assertEqual(archive.read_bytes(), b"existing file\n")
 
     def test_missing_load_does_not_modify_work(self):
         with self.assertRaises(ValueError):
