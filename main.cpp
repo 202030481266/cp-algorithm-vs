@@ -264,57 +264,103 @@ inline constexpr int MAXB = 30;
 // 面对这么多的升序列，直接选择第一个会保证后面无解吗？其实不会，因为 c' 是后手执行的。
 // 按照这种方法一定可以保证后面是有解的，如果c'不在最终的解里面，那么先执行后面的解再执行c'，结果不变。
 
+void stableSortRowsByColumns(vii& A, vi& columns) {
+    const std::size_t n = A.size();
+
+    // order[i]：当前第 i 行，对应原矩阵中的哪一行。
+    std::vector<std::size_t> order(n), buffer(n), count(n + 1);
+    std::iota(order.begin(), order.end(), std::size_t{ 0 });
+
+    for (size_t col : columns) {
+        std::fill(count.begin(), count.end(), 0);
+        for (std::size_t row : order) {
+            const int key = A[row][col];
+            ++count[key];
+        }
+        std::size_t start = 0;
+        for (std::size_t& slot : count) {
+            const std::size_t frequency = slot;
+            slot = start;
+            start += frequency;
+        }
+        for (std::size_t row : order) {
+            const int key = A[row][col];
+            buffer[count[key]++] = row;
+        }
+        order.swap(buffer);
+    }
+
+    vii sorted;
+    sorted.reserve(n);
+    for (std::size_t row : order)
+        sorted.push_back(std::move(A[row]));
+    A.swap(sorted);
+}
+
 void solve() {
     int n, m;
     cin >> n >> m;
     vii A(n, vi(m));
     vii B(n, vi(m));
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) cin >> A[i][j];
+    rep(i, 0, n) {
+        rep(j, 0, m) cin >> A[i][j];
     }
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) cin >> B[i][j];
+    rep(i, 0, n) {
+        rep(j, 0, m) cin >> B[i][j];
     }
-    bitset<1503> bs;
-    vp a;
-    a.emplace_back(0, n);
+    vec<bitset<1503>> col(m);
+    rep(c, 0, m) {
+        int p = 0;
+        while (p < n) {
+            int i = p + 1;
+            while (i < n && B[i][c] >= B[i - 1][c]) ++i;
+            col[c].set(i);
+            p = i;
+        }
+    }
     vi ans;
+    bitset<1503> use;
+    bitset<1503> cs;
+    cs.set(n);
     bool change = true;
     while (change) {
         change = false;
-        for (int i = 0; i < m; ++i) {
-            if (bs[i]) continue;
-            bool asc = true;
-            for (auto [l, r] : a) {
-                for (int j = l; j + 1 < r; ++j) {
-                    if (B[j][i] > B[j + 1][i]) {
-                        asc = false;
-                        break;
-                    }
+        rep(i, 0, m) {
+            if (use[i]) continue;
+            if ((cs & col[i]) == col[i]) {
+                ans.push_back(i);
+                use.set(i);
+                int p = 0;
+                bitset<1503> t;
+                while (p < n) {
+                    int j = p + 1;
+                    while (!cs[j] && B[j][i] == B[p][i]) ++j;
+                    t.set(j);
+                    p = j;
                 }
-                if (!asc) break;
-            }
-            if (asc) {
-                vp tmp;
-                for (auto [l, r] : a) {
-                    int p = l;
-                    while (p < r) {
-                        int j = p + 1;
-                        while (j < r && B[j][i] == B[p][i]) ++j;
-                        tmp.emplace_back(p, j);
-                        p = j;
-                    }
-                }
-                a = move(tmp);
-                bs.set(i);
+                cs = move(t);
                 change = true;
                 break;
             }
         }
     }
-
+    reverse(ans.begin(), ans.end());
+    stableSortRowsByColumns(A, ans);
+    rep(i, 0, n) {
+        rep(j, 0, m) {
+            if (A[i][j] != B[i][j]) {
+                print(vi{-1});
+                return;
+            }
+        }
+    }
+    cout << sz(ans) << '\n';
+    for (int v : ans) cout << v + 1 << ' ';
+    cout << '\n';
 }
 
+
+//#define MULTI_CASE_INPUT
 
 int main() {
 #ifdef LOCAL_FILE
