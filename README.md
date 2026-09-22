@@ -3,7 +3,7 @@
 用于 ICPC 训练的 Visual Studio C++ 写题工作区。
 
 直接用 Visual Studio 打开 **cp-algorithm.sln**，日常只编辑根目录的 **main.cpp**。
-当前 main.cpp 是整理前的原稿；不会因本次整理自动变成空模板，也没有改动题目算法。
+新题通过工具载入 templates/main.cpp，历史题解保存到 solutions/。
 
 第一次使用：保存 VS 中尚未保存的编辑；若 VS 提示项目在外部被修改，选择重新加载。
 如果目录视图没刷新，关闭并重新打开解决方案。平时在解决方案资源管理器中关闭“显示所有文件”，按已配置的分类浏览。
@@ -20,7 +20,6 @@
 | data/input.txt、expected.txt | 当前题目的输入、期望输出 |
 | tools/cp.py | 归档、切题、运行和对拍工具 |
 | build/ | 所有编译输出、对拍反例、历史编译产物 |
-| archive/recovered/ | 从异常文件名恢复的原始 C++ 草稿 |
 | backups/ | 整理前的 ZIP；每次 new/load 前自动备份当前工作 |
 | docs/ | 详细教程、整理记录与哈希清单 |
 | .vs/ | VS 自动维护的隐藏缓存 |
@@ -100,15 +99,16 @@ python tools/cp.py stress --brute data/brute.cpp --gen data/gen.cpp --iterations
 要改成当前题目的输入格式、约束与暴力解法。详见[完整教程](docs/WORKFLOW.md)。
 
 本机现有 VS 使用 MSVC v145；工具的自动编译使用 PATH 中的 g++，默认 C++23。
-可加 --std c++17 或 --std c++20 对齐比赛要求，--cxx 指定 GCC/Clang 路径，-I 添加第三方头文件目录。
-新模板使用标准头文件；旧 main.cpp 使用 format/concepts/ranges，需要支持相应特性的编译器。
+新模板至少需要 C++20，可加 --std c++20；工具也支持用 --std c++17 编译只使用 C++17 的其他源码。
+--cxx 指定 GCC/Clang 路径，-I 添加第三方头文件目录。
+新模板沿用 ll/vi/vii/vp 等别名、常量与多测开关，提供 all/rall/sz、rep/per、debug、debug_matrix 和 print。
+debug 支持嵌套容器、pair/tuple、optional/variant、栈和队列；print(a) 向标准输出打印一行答案。具体示例见[模板使用说明](docs/WORKFLOW.md#9-模板宏与数据结构输出)。
+部分旧题解使用 format/concepts/ranges，需要支持相应特性的编译器。
 
 整理前的备份位置及文件映射见[整理记录](docs/REORGANIZATION.md)。
 
 
 ## GitHub 仓库与日常同步
-
-仓库：[202030481266/cp-algorithm-vs](https://github.com/202030481266/cp-algorithm-vs)，默认分支 main。
 
 每次完成一批题目或修改工具后，先在 VS 中保存文件，再运行：
 

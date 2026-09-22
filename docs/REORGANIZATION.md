@@ -2,6 +2,8 @@
 
 日期：2026-09-22。
 
+以下记录首次整理时的文件位置与校验结果；历史路径不代表当前仍存在。后续清理见文末。
+
 ## 已保留的原稿
 
 原始根目录的 15 个文件已压缩备份到：
@@ -55,3 +57,15 @@ backups/before-organize-20260922-140907.zip
 - 10 项自动化测试通过，包含真实错误答案与超时检测、反例保留、归档/切题恢复、拒绝覆盖、路径边界、VS 编译列表和输出比较。
 - 示例样例的文件输出与期望值 6 比较一致。
 - GCC 在此中文项目路径下使用相对输出路径，避开本机 MinGW 链接器处理中文绝对输出路径的问题。
+
+## 用户确认后的清理
+
+用户确认 archive/ 内的文件均已无用，已删除：
+
+- archive/legacy/pch.cpp
+- archive/recovered/apostrophe.cpp
+- archive/recovered/right_bracket.cpp
+- archive/recovered/semicolon.cpp
+
+同时移除空的 archive/ 目录，并刷新 VS 文件列表和筛选器。
+首次整理的哈希清单仍作为历史记录保留；原始版本可从首次 Git 提交或本地整理前 ZIP 查阅。

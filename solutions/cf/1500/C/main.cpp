@@ -116,77 +116,60 @@ inline constexpr int  MAXB = 30;
 //#define DEBUG
 //#define MULTI_CASE_INPUT
 
-// 看着其实并不算很难：
-/*
-	aabcada -> a a a a
-				b c d
-	then we can add c at most 6 times, and every time we calculate the sequence we should recover.
-	1 times:  (recover 0)
-		a a a a
-		 b c d c
-	2/3 times: (recover 1)
-		a a a d a
-		 b c c c
-	4/5 times: (recover 2)
-		Here is a wrong case:
-		a a c a d a
-		 b c c c c 
-		Because the c will make conflict, we have to treat it as another new add c
-		a a b a d a
-		 c c c c c c
-	6 times:
-		When the total times of c comes to 7, the status is stable
-		a a b a d a
-	   c c c c c c c
-
-	通过上面的一个操作，本质上可以归结为两个操作：
-	1. 反向传播
-	比如添加4个c，aabcada + cccc，那么我们前面的匹配过程就是：
-	ada + ccc，但是又碰到了一个c，还需往前配两个不是c，所以是 ab，因此我们把 abada 放到上面，下面放 5 个 c
-		a a b a d a
-		 c c c c c
-	2. 前向传播
-	对于饱和状态，没有办法通过反向传播容纳，比如：
-		a a b a d a
-	   c c c c c c c
-	这个时候需要添加 更多的 c，只能是去贪心匹配后面的不等于c的过程。比如 aabcadacccc + ccceccefdd
-	那么后面的匹配就是 ccc + e -> cc, cc + cc -> cccc, cccc + efdd -> matched
-		a a b a d a e e f d d
-	   c c c c c c c c c c c c
-
-	这里涉及到操作是线性的，那么有没有可以预知操作之后所有的结果呢？因为可以看到这里的操作的本质上是相消，出现次数是很关键的。
-	所以这里只需要将其分块，每一个块保证其中最大的出现字符等于其他字符出现之和，然后讲这些块拼接即可。
-	由于拼接的时候我们总是可以二选一，所以总是可以找到方案将其拼起来。
-
-	但是一个最大的问题是如何分块才是对的？比如 b3 c3 a4，从左到右和从右到左都是不对的
-*/
+// 可以证明最后的答案就是一个不同列构成的顺序执行的排序方法
+// 反过来想，B肯定符合某一个关键列集合
+// 面对这么多的升序列，直接选择第一个会保证后面无解吗？其实不会，因为 c' 是后手执行的。
+// 按照这种方法一定可以保证后面是有解的，如果c'不在最终的解里面，那么先执行后面的解再执行c'，结果不变。
 
 void solve() {
-	int n;
-	cin >> n;
-	vi arr(n);
-	for (int& v : arr) cin >> v;
-	int cnt = 0, cur = -1;
-	vi pos;
-	vp ed;
+	int n, m;
+	cin >> n >> m;
+	vii A(n, vi(m));
+	vii B(n, vi(m));
 	for (int i = 0; i < n; ++i) {
-		if (cur == -1) {
-			cur = arr[i];
-			cnt = 1;
-		}
-		else if (arr[i] == cur) ++cnt;
-		else {
-			--cnt;
-			if (cnt == 0) {
-				pos.push_back(i);
-				cur = -1;
+		for (int j = 0; j < m; ++j) cin >> A[i][j];
+	}
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) cin >> B[i][j];
+	}
+	bitset<1503> bs;
+	vp a;
+	a.emplace_back(0, n);
+	vi ans;
+	bool change = true;
+	while (change) {
+		change = false;
+		for (int i = 0; i < m; ++i) {
+			if (bs[i]) continue;
+			bool asc = true;
+			for (auto [l, r] : a) {
+				for (int j = l; j + 1 < r; ++j) {
+					if (B[j][i] > B[j + 1][i]) {
+						asc = false;
+						break;
+					}
+				}
+				if (!asc) break;
+			}
+			if (asc) {
+				vp tmp;
+				for (auto [l, r] : a) {
+					int p = l;
+					while (p < r) {
+						int j = p + 1;
+						while (j < r && B[j][i] == B[p][i]) ++j;
+						tmp.emplace_back(p, j);
+						p = j;
+					}
+				}
+				a = move(tmp);
+				bs.set(i);
+				change = true;
+				break;
 			}
 		}
 	}
-	if (cnt > 1) {
-		cout << "NO" << '\n';
-		return;
-	}
+
 }
 
 

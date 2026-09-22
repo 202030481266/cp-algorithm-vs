@@ -88,11 +88,10 @@
     <ClCompile Include="main.cpp" />
     <ClInclude Include="include\dbg.h" />
     <ClInclude Include="include\pch.h" />
-    <None Include="solutions\unclassified\o.cpp" />
-    <None Include="archive\legacy\pch.cpp" />
-    <None Include="archive\recovered\apostrophe.cpp" />
-    <None Include="archive\recovered\right_bracket.cpp" />
-    <None Include="archive\recovered\semicolon.cpp" />
+    <None Include="solutions\cf\1500\C\expected.txt" />
+    <None Include="solutions\cf\1500\C\input.txt" />
+    <None Include="solutions\cf\1500\C\main.cpp" />
+    <None Include="solutions\cf\1500\C\README.md" />
     <None Include="templates\main.cpp" />
     <None Include="templates\modules\ops.cppm" />
     <None Include="templates\modules\random_utils.cppm" />
@@ -104,6 +103,7 @@
     <None Include="data\input.txt" />
     <None Include="tools\cp.py" />
     <None Include="tools\test_cp.py" />
+    <None Include="tools\test_template.py" />
     <None Include="docs\reorganization.json" />
     <None Include="docs\REORGANIZATION.md" />
     <None Include="docs\WORKFLOW.md" />

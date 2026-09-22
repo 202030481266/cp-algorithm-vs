@@ -4,10 +4,9 @@
     <Filter Include="01 当前题目" />
     <Filter Include="02 公共头文件" />
     <Filter Include="03 题解归档" />
-    <Filter Include="03 题解归档\unclassified" />
-    <Filter Include="04 历史恢复" />
-    <Filter Include="04 历史恢复\legacy" />
-    <Filter Include="04 历史恢复\recovered" />
+    <Filter Include="03 题解归档\cf" />
+    <Filter Include="03 题解归档\cf\1500" />
+    <Filter Include="03 题解归档\cf\1500\C" />
     <Filter Include="05 模板" />
     <Filter Include="05 模板\modules" />
     <Filter Include="06 示例" />
@@ -26,20 +25,17 @@
     <ClInclude Include="include\pch.h">
       <Filter>02 公共头文件</Filter>
     </ClInclude>
-    <None Include="solutions\unclassified\o.cpp">
-      <Filter>03 题解归档\unclassified</Filter>
+    <None Include="solutions\cf\1500\C\expected.txt">
+      <Filter>03 题解归档\cf\1500\C</Filter>
     </None>
-    <None Include="archive\legacy\pch.cpp">
-      <Filter>04 历史恢复\legacy</Filter>
+    <None Include="solutions\cf\1500\C\input.txt">
+      <Filter>03 题解归档\cf\1500\C</Filter>
     </None>
-    <None Include="archive\recovered\apostrophe.cpp">
-      <Filter>04 历史恢复\recovered</Filter>
+    <None Include="solutions\cf\1500\C\main.cpp">
+      <Filter>03 题解归档\cf\1500\C</Filter>
     </None>
-    <None Include="archive\recovered\right_bracket.cpp">
-      <Filter>04 历史恢复\recovered</Filter>
-    </None>
-    <None Include="archive\recovered\semicolon.cpp">
-      <Filter>04 历史恢复\recovered</Filter>
+    <None Include="solutions\cf\1500\C\README.md">
+      <Filter>03 题解归档\cf\1500\C</Filter>
     </None>
     <None Include="templates\main.cpp">
       <Filter>05 模板</Filter>
@@ -72,6 +68,9 @@
       <Filter>08 工具</Filter>
     </None>
     <None Include="tools\test_cp.py">
+      <Filter>08 工具</Filter>
+    </None>
+    <None Include="tools\test_template.py">
       <Filter>08 工具</Filter>
     </None>
     <None Include="docs\reorganization.json">

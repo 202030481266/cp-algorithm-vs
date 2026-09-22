@@ -69,7 +69,7 @@ solutions/
   atcoder/abc400/E/
   luogu/Pxxxx/
   training/2026-09-22/A/
-  unclassified/o.cpp
+  unclassified/       # 暂时不知道题号时可自行创建
 ```
 
 一个题目的“二分 + 贪心”“DP + 数据结构”等标签写在该题 README.md。
@@ -130,7 +130,7 @@ cmd /d /c ".\build\bin\x64\Debug\cp-algorithm.exe < .\data\input.txt > .\data\ou
 
 ### B. F5 断点调试时读文件
 
-新模板已经包含以下分支。当前保留的旧 main.cpp 没有自动插入，可自行把它加在 main() 开头：
+新模板已经包含以下分支。使用其他源码时，可把它加在 main() 开头：
 
 ```cpp
 #ifdef LOCAL_FILE
@@ -243,8 +243,8 @@ python tools/cp.py run --input build/stress/failures/实际目录/input.txt --ex
 VS 用 MSVC，工具默认用 g++；两者都跑一遍有助于发现依赖差异。
 本机现有 g++ 是 15.2.0；比赛环境版本和标准仍以题目平台为准。
 
-新模板列出标准头文件，单独提交也能使用。
-旧 main.cpp 用 _MSC_VER 分支包含 pch.h，GCC 分支包含 bits/stdc++.h；
+新模板是包含标准头文件的单文件模板，至少需要 C++20，单独提交也能使用。
+部分旧题解用 _MSC_VER 分支包含 pch.h，GCC 分支包含 bits/stdc++.h；
 其 format、concepts、ranges 依赖相应标准库支持，降低 --std 不会自动改写这些代码。
 pch.h、dbg.h、AtCoder Library 等本地头文件不一定在评测环境中存在。
 需确认平台提供的库，或按比赛规则把自己的必要实现合并进提交文件。
@@ -288,5 +288,110 @@ python -m unittest discover -s tools -p "test_*.py"
 ```
 
 测试使用 build/ 下的隔离临时目录，验证归档/切题备份、拒绝覆盖、路径边界、
-VS 编译列表、输出比较与子进程超时。不会对当前 main.cpp 执行 new/load。
+VS 编译列表、输出比较与子进程超时；也会实际编译模板，检查容器打印、宏开关和文件 I/O。
+不会对当前 main.cpp 执行 new/load。
+单独检查模板可运行 python -m unittest discover -s tools -p test_template.py -v；
+在 VS Developer PowerShell 中先设置 $env:CP_TEMPLATE_CXX = "cl"，即可用 MSVC 跑同一组模板测试。
 
+
+## 9. 模板宏与数据结构输出
+
+templates/main.cpp 沿用当前 main.cpp 的类型别名、常量和多测入口。
+执行 python tools/cp.py new 后，新题会使用这份模板；先在 VS 中保存当前题目。
+
+### 常用宏与工具
+
+| 写法 | 用途 |
+| --- | --- |
+| all(a)、rall(a) | 正向/反向迭代器区间，支持标准容器和原生数组 |
+| sz(a) | 元素数量，转为 int |
+| a.pb(x)、a.eb(...) | push_back、emplace_back |
+| p.fi、p.se | pair 的 first、second |
+| rep(i, l, r) | int 下标从 l 到 r-1 |
+| per(i, l, r) | int 下标从 r-1 到 l |
+| chmin(x, y)、chmax(x, y) | 更新最小/最大值，返回是否发生更新 |
+| minpq<T> | 小根堆，priority_queue 默认仍为大根堆 |
+
+rep/per 的左右边界各求值一次；all/rall 会访问参数两次，传普通容器变量即可。
+别名保留 ll、ull、uint、ld、pr、vec、pii、pll、vi、vl、vii、vll、vp、vpp。
+MAXN、INF、LLINF、MOD_197、MOD_998、MAXB 保留原来的默认值，按题目需要修改。
+
+### debug：带变量名的调试输出
+
+```cpp
+vi a{3, 1, 2};
+sort(all(a));
+vp edges{{1, 2}, {2, 3}};
+map<int, vi> graph{{1, {2, 3}}, {2, {1}}};
+
+debug(a, edges, graph);
+debug(make_tuple(a, optional<int>{7}, string("ok")));
+```
+
+输出写到 cerr，带文件名、行号和表达式名，例如：
+
+```text
+[main.cpp:123] [a, edges, graph] = [{1, 2, 3}, {{1, 2}, {2, 3}}, {{1, {2, 3}}, {2, {1}}}]
+```
+
+支持：
+
+- vector、array、原生数组、deque、list、set、map、unordered_set/map 及可遍历的 ranges。
+- 嵌套容器、pair、tuple，空容器也能打印。
+- optional 显示 Some(...) 或 None；variant 显示当前值。
+- stack、queue、priority_queue 按出栈/出队顺序打印。
+- bool 和 vector<bool> 使用 true/false；字符串加引号，换行等常用字符转义显示。
+- bitset、complex，以及自己提供了 operator<< 的结构体。
+
+栈、队列和堆通过复制后弹出来观察内容，原数据保持不变，元素需要可复制。
+大容器的调试输出有相应开销；unordered 容器的显示顺序按实际遍历顺序，不保证排序。
+这些类型可以嵌套，例如 pair<int, vector<int>> 或 tuple<vector<int>, optional<int>>。
+
+自定义结构体只需提供输出运算符：
+
+```cpp
+struct Node { int u, v, w; };
+
+ostream& operator<<(ostream& out, const Node& x) {
+    return out << '(' << x.u << ", " << x.v << ", " << x.w << ')';
+}
+
+// solve() 中：
+vec<Node> nodes{{1, 2, 10}, {2, 3, 20}};
+debug(nodes);
+```
+
+### 二维表与正式答案输出
+
+```cpp
+vii dp{{1, 2}, {3, 4}};
+debug_matrix(dp);  // cerr，每行一行，适合看 DP 表/网格。
+
+vi answer{1, 3, 5};
+print(answer);    // cout：1 3 5，然后换行。
+print(answer, ',');  // cout：1,3,5，然后换行。
+for (const auto& row : dp) print(row);  // 正式输出二维表。
+```
+
+print 接收元素可以直接 cout 输出的一维区间，不添加括号和调试标签。
+打印 pair 等复杂元素作为题目答案时，按题面要求自己组织格式。
+debug_matrix 的输出形如：
+
+```text
+[main.cpp:123] [dp] = [
+  {1, 2}
+  {3, 4}
+]
+```
+
+### 开关
+
+- MULTI_CASE_INPUT：取消模板中对应注释，自动先读 T；默认单组输入。
+- LOCAL_FILE：在 VS 项目属性中添加，使用 data/input.txt 和 data/output.txt。
+- NO_DEBUG：取消模板中对应注释，关闭 debug/debug_matrix。
+- ONLINE_JUDGE：平台定义它时自动关闭 debug/debug_matrix，优先于本地 LOCAL 宏。
+
+调试默认启用。debug 宏可安全用在 if/else 中，调用参数仅求值一次；
+关闭调试后参数不求值，例如 debug(++cnt) 不会增加 cnt。
+因此程序的必要计算应写在 debug 之外，避免开关日志时改变解法行为。
+不提供 ONLINE_JUDGE 的平台，可以自行启用 NO_DEBUG 后提交。
