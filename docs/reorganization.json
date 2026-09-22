@@ -1,0 +1,111 @@
+{
+  "created_utc": "2026-09-22T06:09:08.4179936Z",
+  "backup": "backups/before-organize-20260922-140907.zip",
+  "files": [
+    {
+      "original": ";",
+      "destination": "archive/recovered/semicolon.cpp",
+      "bytes": 7414,
+      "last_write_utc": "2025-10-18T18:53:34.8375957Z",
+      "sha256": "09159F096B72CCDF9E31989B8DF0D18C9EE4A48BCFFD5CABE048DBD8710C03A8"
+    },
+    {
+      "original": "'",
+      "destination": "archive/recovered/apostrophe.cpp",
+      "bytes": 5324,
+      "last_write_utc": "2026-09-16T05:05:09.3012572Z",
+      "sha256": "C2564A89A14B28A7BFD8D6A86AC115EF44F532074DDD3E30E9DF4D7539D48141"
+    },
+    {
+      "original": "]",
+      "destination": "archive/recovered/right_bracket.cpp",
+      "bytes": 3000,
+      "last_write_utc": "2026-07-23T18:05:44.7477198Z",
+      "sha256": "57C851BC53E494F78E14845D887D38F6B73D579155B1734C3DEB050C1F90CAE5"
+    },
+    {
+      "original": "cp-algorithm.sln",
+      "destination": "cp-algorithm.sln",
+      "bytes": 1451,
+      "last_write_utc": "2025-08-29T10:49:49.6310458Z",
+      "sha256": "449D14A1BBD069EB949A59B51CD313A7984DB76A2D50B51F61D9F9CD7F98322F"
+    },
+    {
+      "original": "cp-algorithm.vcxproj",
+      "destination": "cp-algorithm.vcxproj",
+      "bytes": 8092,
+      "last_write_utc": "2026-09-01T10:12:46.2661292Z",
+      "sha256": "94FA2083DDA7189C05ED98D34775498449DFE5EDFF4437CDED46BCDAA93DA171"
+    },
+    {
+      "original": "cp-algorithm.vcxproj.filters",
+      "destination": "cp-algorithm.vcxproj.filters",
+      "bytes": 1536,
+      "last_write_utc": "2026-09-01T10:12:46.2189606Z",
+      "sha256": "07D7FE73FB54D8910ED5CBE7E496CF0611B11CD843C00750DAFA5F007078378F"
+    },
+    {
+      "original": "cp-algorithm.vcxproj.user",
+      "destination": "cp-algorithm.vcxproj.user",
+      "bytes": 225,
+      "last_write_utc": "2026-09-16T03:09:59.5199514Z",
+      "sha256": "A0C24E8908C9BCC5EB33CDD38762DA3A86013FE87F0C681238EC4BCEE56D15E1"
+    },
+    {
+      "original": "dbg.h",
+      "destination": "include/dbg.h",
+      "bytes": 33257,
+      "last_write_utc": "2025-08-29T10:59:11.2709597Z",
+      "sha256": "A05A5122E6E1F0D984011F31F07E67381582086D9B42F94EF5A09E3DDB511070"
+    },
+    {
+      "original": "main.cpp",
+      "destination": "main.cpp",
+      "bytes": 4429,
+      "last_write_utc": "2026-09-22T05:56:07.4966238Z",
+      "sha256": "83EC5246EE4303EA7A4B88D8237637EC3C146D070958A60448A1D9D1EB9083E9"
+    },
+    {
+      "original": "o.cpp",
+      "destination": "solutions/unclassified/o.cpp",
+      "bytes": 3817,
+      "last_write_utc": "2026-09-01T08:57:24.7137636Z",
+      "sha256": "77FE0B3B66DED0DD6566CE3466E2F2D52A2206A54F9ADC3D9CC49EEDE9C68EC1"
+    },
+    {
+      "original": "ops.cppm",
+      "destination": "templates/modules/ops.cppm",
+      "bytes": 533,
+      "last_write_utc": "2026-05-09T21:09:35.3787448Z",
+      "sha256": "B1932B5D53E17AFD8CBD7B3C3C53DF8756D69FC281F53FEE9A7255FC097530EF"
+    },
+    {
+      "original": "pch.cpp",
+      "destination": "archive/legacy/pch.cpp",
+      "bytes": 16,
+      "last_write_utc": "2025-08-29T10:53:20.9323620Z",
+      "sha256": "767C147B79A2D6C6488F245D364E406BF927D83E92475247CE92792F71F0BB2D"
+    },
+    {
+      "original": "pch.h",
+      "destination": "include/pch.h",
+      "bytes": 872,
+      "last_write_utc": "2025-11-22T22:00:12.0827559Z",
+      "sha256": "F4C0EED16952166AFCEAFEB03A8EB96935B91B3547BD2EAD69483941F68385EE"
+    },
+    {
+      "original": "random_utils.cppm",
+      "destination": "templates/modules/random_utils.cppm",
+      "bytes": 1502,
+      "last_write_utc": "2026-08-01T03:30:31.3794781Z",
+      "sha256": "BE0CA7011A115E88D540E01E8378514575A346049B1C89618758B4705C8B7900"
+    },
+    {
+      "original": "sparse_table.cppm",
+      "destination": "templates/modules/sparse_table.cppm",
+      "bytes": 1136,
+      "last_write_utc": "2026-05-09T21:12:42.3046866Z",
+      "sha256": "D97E06782C059BA8A230B3C49137F5B63D7F5CD44CB40FA5351F4E926089BA1A"
+    }
+  ]
+}

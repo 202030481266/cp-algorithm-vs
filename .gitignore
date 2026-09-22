@@ -1,0 +1,57 @@
+# Visual Studio: machine-specific settings and caches
+.vs/
+ipch/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db*
+*.VC.VC.opendb
+
+# Build directories (including the old Visual Studio layout)
+/build/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+Win32/
+
+# Compiled C/C++ binaries and intermediate files
+*.exe
+*.dll
+*.obj
+*.o
+*.lib
+*.a
+*.pdb
+*.idb
+*.ilk
+*.pch
+*.gch
+*.ipch
+*.ifc
+*.exp
+*.iobj
+*.ipdb
+*.tlog
+*.lastbuildstate
+
+# Local backups of source files and project settings
+/backups/
+
+# Python caches and local virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+
+# Generated output for the current problem
+# Keep input.txt, expected.txt, and archived sample .out files tracked.
+/data/output.txt
+/data/output.stderr.txt
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Keep .sln, .vcxproj, .vcxproj.filters, source code, samples and docs.

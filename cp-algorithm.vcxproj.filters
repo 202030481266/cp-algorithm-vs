@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="01 当前题目" />
+    <Filter Include="02 公共头文件" />
+    <Filter Include="03 题解归档" />
+    <Filter Include="03 题解归档\unclassified" />
+    <Filter Include="04 历史恢复" />
+    <Filter Include="04 历史恢复\legacy" />
+    <Filter Include="04 历史恢复\recovered" />
+    <Filter Include="05 模板" />
+    <Filter Include="05 模板\modules" />
+    <Filter Include="06 示例" />
+    <Filter Include="06 示例\stress" />
+    <Filter Include="07 测试数据" />
+    <Filter Include="08 工具" />
+    <Filter Include="09 使用说明" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>01 当前题目</Filter>
+    </ClCompile>
+    <ClInclude Include="include\dbg.h">
+      <Filter>02 公共头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pch.h">
+      <Filter>02 公共头文件</Filter>
+    </ClInclude>
+    <None Include="solutions\unclassified\o.cpp">
+      <Filter>03 题解归档\unclassified</Filter>
+    </None>
+    <None Include="archive\legacy\pch.cpp">
+      <Filter>04 历史恢复\legacy</Filter>
+    </None>
+    <None Include="archive\recovered\apostrophe.cpp">
+      <Filter>04 历史恢复\recovered</Filter>
+    </None>
+    <None Include="archive\recovered\right_bracket.cpp">
+      <Filter>04 历史恢复\recovered</Filter>
+    </None>
+    <None Include="archive\recovered\semicolon.cpp">
+      <Filter>04 历史恢复\recovered</Filter>
+    </None>
+    <None Include="templates\main.cpp">
+      <Filter>05 模板</Filter>
+    </None>
+    <None Include="templates\modules\ops.cppm">
+      <Filter>05 模板\modules</Filter>
+    </None>
+    <None Include="templates\modules\random_utils.cppm">
+      <Filter>05 模板\modules</Filter>
+    </None>
+    <None Include="templates\modules\sparse_table.cppm">
+      <Filter>05 模板\modules</Filter>
+    </None>
+    <None Include="examples\stress\brute.cpp">
+      <Filter>06 示例\stress</Filter>
+    </None>
+    <None Include="examples\stress\gen.cpp">
+      <Filter>06 示例\stress</Filter>
+    </None>
+    <None Include="examples\stress\solution.cpp">
+      <Filter>06 示例\stress</Filter>
+    </None>
+    <None Include="data\expected.txt">
+      <Filter>07 测试数据</Filter>
+    </None>
+    <None Include="data\input.txt">
+      <Filter>07 测试数据</Filter>
+    </None>
+    <None Include="tools\cp.py">
+      <Filter>08 工具</Filter>
+    </None>
+    <None Include="tools\test_cp.py">
+      <Filter>08 工具</Filter>
+    </None>
+    <None Include="docs\reorganization.json">
+      <Filter>09 使用说明</Filter>
+    </None>
+    <None Include="docs\REORGANIZATION.md">
+      <Filter>09 使用说明</Filter>
+    </None>
+    <None Include="docs\WORKFLOW.md">
+      <Filter>09 使用说明</Filter>
+    </None>
+    <None Include="README.md">
+      <Filter>09 使用说明</Filter>
+    </None>
+    <None Include=".gitignore">
+      <Filter>09 使用说明</Filter>
+    </None>
+    <None Include=".editorconfig">
+      <Filter>09 使用说明</Filter>
+    </None>
+  </ItemGroup>
+</Project>
