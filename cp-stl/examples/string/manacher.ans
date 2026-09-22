@@ -1,0 +1,5 @@
+longest=abba [0,4)
+odd_radius(aba,1)=2
+even_radius(abba,2)=2
+palindrome_count=6
+empty=[0,0)

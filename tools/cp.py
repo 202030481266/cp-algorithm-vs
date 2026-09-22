@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Small ICPC workspace helper. Requires Python 3.10+ and g++ for compilation."""
+"""ICPC workspace helper. Requires Python 3.10+ and a C++ compiler for compilation."""
 from __future__ import annotations
 
 import argparse
@@ -23,6 +23,7 @@ ET.register_namespace("", NS)
 WORK_FILES = ("main.cpp", "data/input.txt", "data/expected.txt", "data/output.txt")
 GROUPS = {
     "include": "02 公共头文件", "solutions": "03 题解归档",
+    "cp-stl": "04 算法库 cp-stl",
     "archive": "04 历史恢复", "templates": "05 模板",
     "examples": "06 示例", "data": "07 测试数据",
     "tools": "08 工具", "docs": "09 使用说明",
@@ -61,7 +62,7 @@ def sync_project() -> None:
                 continue
             parents = path.parent.relative_to(ROOT / folder).parts
             group = "\\".join((title, *parents))
-            kind = "ClInclude" if folder == "include" and path.suffix in {".h", ".hpp"} else "None"
+            kind = "ClInclude" if folder in {"include", "cp-stl"} and path.suffix in {".h", ".hpp"} else "None"
             entries.append((str(relative).replace("/", "\\"), kind, group))
     for filename in ("README.md", ".gitignore", ".editorconfig"):
         if (ROOT / filename).exists():
@@ -155,14 +156,23 @@ def compile_source(source: Path, target: Path, args: argparse.Namespace) -> list
         raise ValueError(f"Missing source: {source}")
     compiler = shutil.which(args.cxx)
     if not compiler:
-        raise ValueError(f"Compiler not found: {args.cxx}. Add g++ to PATH or use --cxx FULL_PATH.")
+        raise ValueError(f"Compiler not found: {args.cxx}. Add g++ to PATH, use a VS developer terminal for cl, or use --cxx FULL_PATH.")
     target.parent.mkdir(parents=True, exist_ok=True)
-    command = [compiler, f"-std={args.std}", "-O2", "-Wall", "-Wextra",
-               "-DLOCAL", "-I", "include"]
-    for directory in args.include:
-        command.extend(["-I", str(Path(directory).resolve())])
-    command.extend([str(source.relative_to(ROOT)), "-o", str(target.relative_to(ROOT))])
-    result = subprocess.run(command, cwd=ROOT, stdout=subprocess.PIPE,
+    includes = [ROOT / "include", ROOT / "cp-stl", ROOT]
+    includes.extend(Path(directory).resolve() for directory in args.include)
+    if Path(compiler).stem.lower() == "cl":
+        standard = "c++latest" if args.std == "c++23" else args.std
+        command = [compiler, "/nologo", "/EHsc", "/utf-8", "/permissive-",
+                   f"/std:{standard}", "/O2", "/W3", "/DLOCAL", "/D_CRT_SECURE_NO_WARNINGS"]
+        command.extend("/I" + str(directory) for directory in includes)
+        command.extend([str(source), "/Fe:" + str(target),
+                        "/Fo:" + str(target.with_suffix(".obj"))])
+    else:
+        command = [compiler, f"-std={args.std}", "-O2", "-Wall", "-Wextra", "-DLOCAL"]
+        for directory in includes:
+            command.extend(["-I", str(directory)])
+        command.extend([str(source), "-o", target.name])
+    result = subprocess.run(command, cwd=target.parent, stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, timeout=120)
     if result.stdout:
         try:
@@ -264,6 +274,7 @@ def save_failure(status: str, seed: int, runs: dict[str, Run],
         "comparison": "exact bytes" if args.exact else "whitespace-separated tokens",
         "sources": {role: str(path.relative_to(ROOT)) for role, path in sources.items()},
         "compile_commands": commands,
+        "compile_working_directories": {role: str(ROOT / "build/stress/bin") for role in sources},
         "results": {role: result.metadata() for role, result in runs.items()},
     }
     (destination / "metadata.json").write_text(
@@ -302,6 +313,44 @@ def stress(args: argparse.Namespace) -> int:
     return 0
 
 
+def export_solution(args: argparse.Namespace) -> int:
+    from export_submission import expand_submission
+    source, output = local_path(args.source), local_path(args.output)
+    directories = [ROOT / "include", ROOT / "cp-stl", ROOT]
+    directories.extend(Path(directory).resolve() for directory in args.include)
+    count = expand_submission(source, output, directories, ROOT)
+    print(f"Exported: {output.relative_to(ROOT)} ({count} local headers expanded).")
+    return 0
+
+
+def run_example(args: argparse.Namespace) -> int:
+    examples = (ROOT / "cp-stl/examples").resolve()
+    relative = Path(args.name)
+    if relative.suffix != ".cpp":
+        relative = relative.with_suffix(".cpp")
+    source = (examples / relative).resolve()
+    if not source.is_relative_to(examples) or not source.is_file():
+        raise ValueError("Use a cp-stl example name such as data_structures/fenwick.")
+    relative = source.relative_to(examples)
+    executable = ROOT / "build/examples" / relative.with_suffix("") / "program.exe"
+    compile_source(source, executable, args)
+    input_file, answer = source.with_suffix(".in"), source.with_suffix(".ans")
+    result = execute([str(executable)], input_file.read_bytes() if input_file.exists() else b"", args.timeout)
+    if result.stdout:
+        sys.stdout.write(result.stdout.decode("utf-8", errors="replace").replace("\r\n", "\n"))
+    if result.stderr:
+        sys.stderr.write(result.stderr.decode("utf-8", errors="replace").replace("\r\n", "\n"))
+    status = result.status("EXAMPLE")
+    if status:
+        print(status)
+        return 1
+    if answer.exists():
+        matched = equal_output(result.stdout, answer.read_bytes(), False)
+        print("MATCH" if matched else "WRONG ANSWER")
+        return 0 if matched else 1
+    return 0
+
+
 def positive_int(value: str) -> int:
     result = int(value)
     if result <= 0:
@@ -317,7 +366,7 @@ def positive_float(value: str) -> float:
 
 
 def compiler_options(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--cxx", default="g++", help="g++/clang++ command or full path")
+    parser.add_argument("--cxx", default="g++", help="g++/clang++/cl command or full path (cl needs a VS developer terminal)")
     parser.add_argument("--std", choices=("c++17", "c++20", "c++23"), default="c++23")
     parser.add_argument("-I", "--include", action="append", default=[], help="Extra include directory")
 
@@ -352,6 +401,14 @@ def main() -> int:
     tester.add_argument("--timeout", type=positive_float, default=2.0)
     tester.add_argument("--exact", action="store_true")
     compiler_options(tester)
+    exporter = commands.add_parser("export", help="Expand local headers into one OJ submission")
+    exporter.add_argument("--source", default="main.cpp")
+    exporter.add_argument("--output", default="build/submission.cpp")
+    exporter.add_argument("-I", "--include", action="append", default=[], help="Extra header directory")
+    example = commands.add_parser("example", help="Compile a cp-stl example and compare its bundled answer")
+    example.add_argument("name", help="e.g. data_structures/fenwick (relative to cp-stl/examples)")
+    example.add_argument("--timeout", type=positive_float, default=2.0)
+    compiler_options(example)
     args = parser.parse_args()
     try:
         if args.command == "sync":
@@ -363,6 +420,10 @@ def main() -> int:
             return switch_problem(args.problem if args.command == "load" else None)
         if args.command == "run":
             return run_solution(args)
+        if args.command == "export":
+            return export_solution(args)
+        if args.command == "example":
+            return run_example(args)
         return stress(args)
     except (OSError, ValueError, ET.ParseError, subprocess.TimeoutExpired) as error:
         print(f"ERROR: {error}", file=sys.stderr)

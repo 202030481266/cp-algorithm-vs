@@ -1,0 +1,5 @@
+size=4
+min(1,4)=6
+max(0,3)=18
+gcd(0,4)=3
+single=6

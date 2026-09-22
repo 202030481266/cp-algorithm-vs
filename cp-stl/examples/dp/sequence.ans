@@ -1,0 +1,5 @@
+strict_lis=3
+nondecreasing=4
+inversions=3
+window_min: 1 1 2
+oversized_window=0

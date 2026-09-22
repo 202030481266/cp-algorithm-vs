@@ -1,0 +1,2 @@
+[line 11] a, sum = [1, 2, 3], 6
+[line 12] std::make_tuple(7, std::string("ok")) = (7, "ok")

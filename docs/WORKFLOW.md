@@ -22,7 +22,7 @@ Release / x64 用于观察优化后的运行表现；Debug 适合查越界、断
 | 调试 → 工作目录 | $(ProjectDir) |
 | C/C++ → 语言 | C++23 |
 | C/C++ → 预编译头 | 不使用 |
-| 额外包含目录 | include/，以及原有 D:\CP-Templates-and-Solutions\ac-library |
+| 额外包含目录 | include/、cp-stl/、项目根目录，以及原有 D:\CP-Templates-and-Solutions\ac-library |
 | 编译器额外选项 | /utf-8 |
 | 预处理器定义 | LOCAL、_CRT_SECURE_NO_WARNINGS 等；没有默认启用 LOCAL_FILE |
 
@@ -107,7 +107,7 @@ python tools/cp.py run --input data/input.txt --output data/output.txt
 python tools/cp.py run --expected data/expected.txt
 ```
 
-默认用 g++ -O2 -std=c++23 编译 main.cpp，附加 include/ 目录。
+默认用 g++ -O2 -std=c++23 编译 main.cpp，附加 include/、cp-stl/ 和项目根目录。
 每次重新编译成功后才会运行；编译失败不会偷偷运行旧程序。
 调试输出 stderr 单独保存在 output.stderr.txt，不会混进待比较答案。
 输出文件会被本次结果替换；需要保留时，指定另外的 --output 路径。
@@ -395,3 +395,11 @@ debug_matrix 的输出形如：
 关闭调试后参数不求值，例如 debug(++cnt) 不会增加 cnt。
 因此程序的必要计算应写在 debug 之外，避免开关日志时改变解法行为。
 不提供 ONLINE_JUDGE 的平台，可以自行启用 NO_DEBUG 后提交。
+
+## 10. CP-STL 算法库
+
+算法头文件、手册、示例位于 cp-stl/，已加入 VS 的“04 算法库 cp-stl”。
+直接 include "类别/模板.hpp" 即可；MSVC 和工具的编译路径都已配置。
+使用 `python tools/cp.py example data_structures/fenwick` 运行例子，
+用 `python tools/cp.py export` 生成可提交的 build/submission.cpp。
+完整操作、类型限制和检查方法见 [CP-STL 使用说明](CP_STL.md)。

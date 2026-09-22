@@ -1,0 +1,4 @@
+hull: (0,0) (2,0) (2,2) (0,2)
+twice_area=8
+ccw=true
+collinear_vertices=2

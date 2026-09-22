@@ -4,6 +4,7 @@
 
 直接用 Visual Studio 打开 **cp-algorithm.sln**，日常只编辑根目录的 **main.cpp**。
 新题通过工具载入 templates/main.cpp，历史题解保存到 solutions/。
+已接入 **CP-STL 的 35 个算法模板**，支持 Visual Studio / MSVC；[使用说明](docs/CP_STL.md) · [模板索引](cp-stl/docs/usage/README.md)。
 
 第一次使用：保存 VS 中尚未保存的编辑；若 VS 提示项目在外部被修改，选择重新加载。
 如果目录视图没刷新，关闭并重新打开解决方案。平时在解决方案资源管理器中关闭“显示所有文件”，按已配置的分类浏览。
@@ -15,6 +16,7 @@
 | main.cpp | 当前题目，VS 唯一参与编译的 .cpp |
 | solutions/平台/比赛/题号/ | 已保存题解、样例、题目链接和算法标签 |
 | include/ | 公共头文件；原来的 pch.h、dbg.h 在这里 |
+| cp-stl/ | 算法模板库、逐个使用手册和示例，已适配 MSVC |
 | templates/ | 新题模板；modules/ 保留原来的 C++ 模块实验 |
 | examples/stress/ | 可以直接运行的“最大非空子段和”对拍示例 |
 | data/input.txt、expected.txt | 当前题目的输入、期望输出 |
@@ -54,6 +56,20 @@ python tools/cp.py sync
 ```
 
 它会更新 VS 分类；归档、模板、对拍代码可以打开查看，但不参与主项目编译。
+
+## 使用算法模板
+
+在 main.cpp 顶部包含需要的头文件，例如 `#include "data_structures/fenwick.hpp"`，通过 `cp::Fenwick<long long>` 使用；VS 与命令行工具已配置路径。
+
+```powershell
+# 跑库中自带例子，自动读取输入并核对答案
+python tools/cp.py example data_structures/fenwick
+
+# 展开当前解答依赖的本地头文件，提交 build/submission.cpp
+python tools/cp.py export
+```
+
+完整步骤、MSVC 兼容范围和检查命令见 [CP-STL 使用说明](docs/CP_STL.md)。
 
 ## 文件输入输出
 
@@ -100,7 +116,7 @@ python tools/cp.py stress --brute data/brute.cpp --gen data/gen.cpp --iterations
 
 本机现有 VS 使用 MSVC v145；工具的自动编译使用 PATH 中的 g++，默认 C++23。
 新模板至少需要 C++20，可加 --std c++20；工具也支持用 --std c++17 编译只使用 C++17 的其他源码。
---cxx 指定 GCC/Clang 路径，-I 添加第三方头文件目录。
+--cxx 指定 GCC/Clang 路径，或在 VS Developer PowerShell 中使用 --cxx cl；-I 添加第三方头文件目录。
 新模板沿用 ll/vi/vii/vp 等别名、常量与多测开关，提供 all/rall/sz、rep/per、debug、debug_matrix 和 print。
 debug 支持嵌套容器、pair/tuple、optional/variant、栈和队列；print(a) 向标准输出打印一行答案。具体示例见[模板使用说明](docs/WORKFLOW.md#9-模板宏与数据结构输出)。
 部分旧题解使用 format/concepts/ranges，需要支持相应特性的编译器。

@@ -1,0 +1,5 @@
+distinct=2
+count(10)=2
+count(-7)=1
+missing=true
+highest_bit=1

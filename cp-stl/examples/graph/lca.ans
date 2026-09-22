@@ -1,0 +1,5 @@
+lca(3,4)=1
+lca(4,5)=0
+distance(4,5)=4
+depth(4)=2
+ancestors: 4 1 0 -1

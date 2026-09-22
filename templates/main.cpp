@@ -1,4 +1,9 @@
-// C++20+. Self-contained: copy this file directly when submitting.
+// C++20+. With local headers, export via: python tools/cp.py export
+// CP-STL index: cp-stl/docs/usage/README.md
+// Uncomment only what this problem needs; VS and tools/cp.py know these paths.
+// #include "data_structures/fenwick.hpp"
+// #include "graph/shortest_path.hpp"
+// #include "math/combinatorics.hpp"
 #include <algorithm>
 #include <array>
 #include <bit>

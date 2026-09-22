@@ -1,0 +1,6 @@
+a=11 mod=13
+sum=3 difference=6
+product=3 quotient=10
+power=8 inverse=8
+read=12 equal=true
+default_mod=998244353

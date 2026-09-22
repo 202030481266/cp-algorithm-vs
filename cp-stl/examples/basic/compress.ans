@@ -1,0 +1,5 @@
+distinct=3
+indices: 2 0 2 1
+lower_bound(21)=2
+lower_bound(101)=3
+original_at_1=20

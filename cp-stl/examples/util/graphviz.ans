@@ -1,0 +1,18 @@
+default:
+graph G {
+  rankdir=TB;
+  node [shape=circle];
+  0;
+  1;
+  2;
+  0 -- 1 [label="7"];
+  1 -- 2;
+}
+custom:
+digraph G {
+  rankdir=LR;
+  node [shape=circle];
+  1;
+  2;
+  1 -> 2 [label="#0: 9"];
+}

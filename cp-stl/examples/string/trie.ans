@@ -1,0 +1,7 @@
+app=2
+prefix_ap=3
+size=4
+erase_app=true
+app_after=1
+erase_ape=false
+empty_word=1

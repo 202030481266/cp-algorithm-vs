@@ -1,0 +1,6 @@
+empty_query=false
+size=3 count(5)=2
+max_xor(2)=7
+after_one_erase=1
+after_two_erases=1
+erase_missing=false
