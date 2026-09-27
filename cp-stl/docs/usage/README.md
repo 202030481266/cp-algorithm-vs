@@ -42,7 +42,7 @@ python tools/cp.py example "data_structures/fenwick"
 | 模板源码 | 使用方法 | 完整示例 |
 | --- | --- | --- |
 | [graph/shortest_path.hpp](../../graph/shortest_path.hpp) | [BFS、01 BFS、Dijkstra 与 Floyd](graph/shortest_path.md) | [运行示例](../../examples/graph/shortest_path.cpp) |
-| [graph/mst.hpp](../../graph/mst.hpp) | [Kruskal 最小生成树 / 森林](graph/mst.md) | [运行示例](../../examples/graph/mst.cpp) |
+| [graph/mst.hpp](../../graph/mst.hpp) | [Kruskal 与稠密图 Prim 最小生成树 / 森林](graph/mst.md) | [运行示例](../../examples/graph/mst.cpp) |
 | [graph/topological_sort.hpp](../../graph/topological_sort.hpp) | [拓扑排序与有向环判断](graph/topological_sort.md) | [运行示例](../../examples/graph/topological_sort.cpp) |
 | [graph/scc.hpp](../../graph/scc.hpp) | [强连通分量与缩点](graph/scc.md) | [运行示例](../../examples/graph/scc.cpp) |
 | [graph/two_sat.hpp](../../graph/two_sat.hpp) | [2-SAT 布尔约束](graph/two_sat.md) | [运行示例](../../examples/graph/two_sat.cpp) |

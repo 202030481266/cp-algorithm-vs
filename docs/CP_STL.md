@@ -2,7 +2,7 @@
 
 已从 D:/CP-Templates-and-Solutions/cp-stl 导入全部 35 个头文件、使用手册、38 个示例和算法回归程序，保存于 workspace 的 `cp-stl/`。这是项目内的副本，克隆本 workspace 后可直接使用；原始目录未改动。导入源文件的 SHA-256 见 [cp-stl-import.json](cp-stl-import.json)。
 
-本地新增了 [计数排序与基数排序](../cp-stl/docs/usage/basic/sort.md)；当前共 36 个头文件、39 个示例。
+本地新增了 [计数排序与基数排序](../cp-stl/docs/usage/basic/sort.md)，并在 MST 模板中补充了 [稠密图与完全图 Prim](../cp-stl/docs/usage/graph/mst.md)，支持邻接矩阵及按需计算边权；当前共 36 个头文件、39 个示例。
 
 ## 第一次打开
 

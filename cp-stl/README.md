@@ -27,7 +27,7 @@
 2. 算法函数和类型位于 `namespace cp`，例如 `cp::DSU dsu(n);`；DOT 输出工具位于 `namespace graphviz`，`debug(...)` 是宏。
 3. 头文件支持 **MSVC / GNU C++17 及以上**；workspace 主模板需要 C++20。宽整数兼容方式和性能差异见 [适配说明](../docs/CP_STL.md)。
 4. 每个头文件都包含自己所需的头文件；有内部依赖时使用相对 `#include`，不需要预编译头、模块或 `import std`。
-5. 图的邻接表只存真实的 `n` 个点。无向边要插入两次；Kruskal 的边列表每条无向边只存一次。
+5. 图的邻接表只存真实的 `n` 个点。无向边要插入两次；Kruskal 的边列表每条无向边只存一次；稠密图 Prim 使用对称邻接矩阵或边权函数。
 6. 和、距离、容量默认使用 `long long`。结果仍须在类型范围内；每个模板的适用条件和复杂度写在文件开头。
 7. `.hpp` 是可复用组件，没有 `main()`。请运行自己的解答或 [示例目录](examples/README.md)中的 `.cpp`。
 
@@ -71,7 +71,7 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | 模板 | 用途 / 复杂度 | 使用方法 | 完整例子 |
 | --- | --- | --- | --- |
 | [shortest_path.hpp](graph/shortest_path.hpp) | BFS、01 BFS、Dijkstra、Floyd；Dijkstra 禁止负边 | [说明](docs/usage/graph/shortest_path.md) | [示例](examples/graph/shortest_path.cpp) |
-| [mst.hpp](graph/mst.hpp) | Kruskal 最小生成树/森林，O(m log m) | [说明](docs/usage/graph/mst.md) | [示例](examples/graph/mst.cpp) |
+| [mst.hpp](graph/mst.hpp) | 最小生成树/森林：Kruskal O(m log m)；稠密图 Prim O(n²)，支持矩阵及按需计算边权 | [说明](docs/usage/graph/mst.md) | [示例](examples/graph/mst.cpp) |
 | [topological_sort.hpp](graph/topological_sort.hpp) | 拓扑排序，O(n+m)；长度不足 n 表示有环 | [说明](docs/usage/graph/topological_sort.md) | [示例](examples/graph/topological_sort.cpp) |
 | [scc.hpp](graph/scc.hpp) | 强连通分量，迭代 Kosaraju，O(n+m)；编号按拓扑序 | [说明](docs/usage/graph/scc.md) | [示例](examples/graph/scc.cpp) |
 | [two_sat.hpp](graph/two_sat.hpp) | 2-SAT，O(n+m)，无解返回 `nullopt` | [说明](docs/usage/graph/two_sat.md) | [示例](examples/graph/two_sat.cpp) |

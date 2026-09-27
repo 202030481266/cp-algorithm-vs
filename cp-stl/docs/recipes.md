@@ -46,6 +46,23 @@ auto dist = cp::dijkstra(g, 0);
 
 无权图用 `vector<vector<int>>` 和 `cp::bfs(g, source)`，不可达标记为 -1。Floyd 允许负边但不允许负环；矩阵对角线先置 0，其他置 INF64，重边取最小值。
 
+## 稠密图与完全图的最小生成树
+
+边列表使用 `cp::kruskal(n, edges)`；稠密图的对称邻接矩阵使用 `cp::prim_dense(matrix, no_edge)`。完全图可传入边权函数，在 O(n²) 时间和 O(n) 额外空间内求解，无需存储所有边，前提是单次边权计算为 O(1)。
+
+```cpp
+#include <cstdlib>
+#include "graph/mst.hpp"
+
+std::vector<long long> x{0, 2, 5, 9};
+auto tree = cp::prim_dense(int(x.size()), [&](int u, int v) {
+    return std::abs(x[u] - x[v]);
+});
+// tree.connected == true，tree.weight == 9。
+```
+
+Prim 默认用 `LLONG_MAX` 表示缺边，可通过最后一个参数更换标记；矩阵和边权函数须对称，允许负边。图不连通时两个算法都返回最小生成森林，使用前检查 `connected`。接口、边权范围及完整矩阵示例见 [MST 使用说明](usage/graph/mst.md)。
+
 ## 树链剖分接区间结构
 
 ```cpp

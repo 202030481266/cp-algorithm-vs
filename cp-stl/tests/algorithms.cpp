@@ -328,6 +328,86 @@ void data_structures() {
     assert(trie.size() == 0 && !trie.erase(values[0]));
 }
 
+void dense_mst() {
+    auto check = [](const vector<vector<long long>>& matrix, long long no_edge = LLONG_MAX) {
+        const auto original = matrix;
+        int n = int(matrix.size());
+        vector<UndirectedEdge> edges;
+        for (int u = 0; u < n; ++u) for (int v = u + 1; v < n; ++v)
+            if (matrix[u][v] != no_edge) edges.push_back({u, v, matrix[u][v]});
+        const auto expected = kruskal(n, edges);
+        const auto explicit_result = prim_dense(matrix, no_edge);
+        int calls = 0;
+        const auto implicit_result = prim_dense(n, [&](int u, int v) {
+            assert(0 <= u && u < n && 0 <= v && v < n && u != v);
+            ++calls;
+            return matrix[u][v];
+        }, no_edge);
+        assert(calls == n * (n - 1) / 2);
+        assert(matrix == original);
+        for (const auto& result : {explicit_result, implicit_result}) {
+            assert(result.connected == expected.connected && result.weight == expected.weight);
+            assert(result.edges.size() == expected.edges.size());
+            DSU selected(n);
+            long long sum = 0;
+            for (auto e : result.edges) {
+                assert(0 <= e.u && e.u < n && 0 <= e.v && e.v < n);
+                assert(e.weight != no_edge && e.weight == matrix[e.u][e.v]);
+                assert(selected.merge(e.u, e.v));
+                sum += e.weight;
+            }
+            assert(sum == result.weight);
+            for (auto e : edges) assert(selected.same(e.u, e.v));
+            assert(result.connected == (n == 0 || selected.components == 1));
+        }
+        return explicit_result;
+    };
+    auto empty = check({});
+    assert(empty.connected && empty.weight == 0 && empty.edges.empty());
+    auto single = check({{-20}}); // A negative self-loop must be ignored.
+    assert(single.connected && single.weight == 0 && single.edges.empty());
+    auto isolated = check(vector<vector<long long>>(4, vector<long long>(4, LLONG_MAX)));
+    assert(!isolated.connected && isolated.weight == 0 && isolated.edges.empty());
+    auto zero = check(vector<vector<long long>>(6, vector<long long>(6, 0)));
+    assert(zero.connected && zero.weight == 0 && zero.edges.size() == 5);
+    assert(check({{0, LLONG_MIN}, {LLONG_MIN, 0}}).weight == LLONG_MIN);
+    assert(check({{0, LLONG_MAX - 1}, {LLONG_MAX - 1, 0}}).weight == LLONG_MAX - 1);
+    assert(check({{0, LLONG_MAX}, {LLONG_MAX, 0}}, 0).weight == LLONG_MAX);
+    assert(check({{0, 10, 7, 7}, {10, 0, -2, 7}, {7, -2, 0, 5}, {7, 7, 5, 0}}, 7).weight == 13);
+    auto forest = check({
+        {-200, 5, -100, -100, -100}, {5, -200, -100, -100, -100},
+        {-100, -100, -200, -3, -100}, {-100, -100, -3, -200, -100},
+        {-100, -100, -100, -100, -200}
+    }, -100);
+    assert(!forest.connected && forest.weight == 2 && forest.edges.size() == 2);
+
+    mt19937 prim_rng(20260927);
+    for (int trial = 0; trial < 300; ++trial) {
+        int n = uniform_int_distribution<int>(0, 40)(prim_rng);
+        vector<vector<long long>> matrix(n, vector<long long>(n, LLONG_MAX));
+        for (int u = 0; u < n; ++u) {
+            matrix[u][u] = -1000;
+            for (int v = u + 1; v < n; ++v) {
+                bool present = trial % 4 == 0 || uniform_int_distribution<int>(0, 3)(prim_rng) != 0;
+                if (trial % 4 == 2) present = present && (u < n / 2) == (v < n / 2);
+                if (trial % 4 == 3) present = false;
+                if (present) matrix[u][v] = matrix[v][u] = uniform_int_distribution<int>(-10, 10)(prim_rng);
+            }
+        }
+        check(matrix);
+    }
+
+    // A complete graph supplied only by its weight function, without an n*n matrix.
+    const int n = 2000;
+    int calls = 0;
+    auto complete = prim_dense(n, [&](int u, int v) {
+        ++calls;
+        return std::abs(1LL * u - v);
+    });
+    assert(complete.connected && complete.weight == n - 1 && int(complete.edges.size()) == n - 1);
+    assert(calls == n * (n - 1) / 2);
+}
+
 void graphs() {
     for (int trial = 0; trial < 120; ++trial) {
         int n = random_int(2, 9);
@@ -385,6 +465,15 @@ void graphs() {
         auto result = kruskal(n, edges);
         assert(result.connected == (best != LLONG_MAX));
         if (result.connected) assert(result.weight == best);
+        vector<vector<long long>> matrix(n, vector<long long>(n, LLONG_MAX));
+        for (auto e : edges) {
+            matrix[e.u][e.v] = min(matrix[e.u][e.v], e.weight);
+            matrix[e.v][e.u] = min(matrix[e.v][e.u], e.weight);
+        }
+        auto dense = prim_dense(matrix);
+        assert(dense.connected == (best != LLONG_MAX));
+        assert(dense.weight == result.weight);
+        if (dense.connected) assert(dense.weight == best);
     }
     for (int trial = 0; trial < 150; ++trial) {
         int n = random_int(1, 6);
@@ -691,6 +780,6 @@ void utilities_and_geometry() {
 }
 
 int main() {
-    integer_sorting(); data_structures(); graphs(); trees(); strings(); math_and_dp(); utilities_and_geometry();
+    integer_sorting(); data_structures(); dense_mst(); graphs(); trees(); strings(); math_and_dp(); utilities_and_geometry();
     cout << "All template tests passed (seed 20260919; random brute-force checks + 200000-node chain).\n";
 }
