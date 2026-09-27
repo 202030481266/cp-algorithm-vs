@@ -88,6 +88,10 @@
     <ClCompile Include="main.cpp" />
     <ClInclude Include="include\dbg.h" />
     <ClInclude Include="include\pch.h" />
+    <None Include="solutions\cf\1054\G\expected.txt" />
+    <None Include="solutions\cf\1054\G\input.txt" />
+    <None Include="solutions\cf\1054\G\main.cpp" />
+    <None Include="solutions\cf\1054\G\README.md" />
     <None Include="solutions\cf\1500\C\expected.txt" />
     <None Include="solutions\cf\1500\C\input.txt" />
     <None Include="solutions\cf\1500\C\main.cpp" />
