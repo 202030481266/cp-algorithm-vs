@@ -71,7 +71,7 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | 模板 | 用途 / 复杂度 | 使用方法 | 完整例子 |
 | --- | --- | --- | --- |
 | [shortest_path.hpp](graph/shortest_path.hpp) | BFS、01 BFS、Dijkstra、Floyd；Dijkstra 禁止负边 | [说明](docs/usage/graph/shortest_path.md) | [示例](examples/graph/shortest_path.cpp) |
-| [mst.hpp](graph/mst.hpp) | 最小生成树/森林：Kruskal O(m log m)；稠密图 Prim O(n²)，支持矩阵及按需计算边权 | [说明](docs/usage/graph/mst.md) | [示例](examples/graph/mst.cpp) |
+| [mst.hpp](graph/mst.hpp) | 最小生成树/森林：Kruskal O(m log m)；稠密图 Prim O(n²)，可选最大生成树，支持整数矩阵及按需计算边权 | [说明](docs/usage/graph/mst.md) | [示例](examples/graph/mst.cpp) |
 | [topological_sort.hpp](graph/topological_sort.hpp) | 拓扑排序，O(n+m)；长度不足 n 表示有环 | [说明](docs/usage/graph/topological_sort.md) | [示例](examples/graph/topological_sort.cpp) |
 | [scc.hpp](graph/scc.hpp) | 强连通分量，迭代 Kosaraju，O(n+m)；编号按拓扑序 | [说明](docs/usage/graph/scc.md) | [示例](examples/graph/scc.cpp) |
 | [two_sat.hpp](graph/two_sat.hpp) | 2-SAT，O(n+m)，无解返回 `nullopt` | [说明](docs/usage/graph/two_sat.md) | [示例](examples/graph/two_sat.cpp) |

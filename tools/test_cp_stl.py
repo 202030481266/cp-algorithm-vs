@@ -180,13 +180,15 @@ int main() {
             'cp::radix_sort(a); cp::counting_sort(a); cp::Fenwick<long long> f(a); '
             'f.add(1, 5); print(std::vector<long long>{f.sum(0, 3)}); '
             'auto tree = cp::prim_dense(3, [](int u, int v) { return 1LL * (u + v); }); '
-            'print(std::vector<long long>{tree.weight}); }\n', encoding="utf-8")
+            'auto maximum = cp::prim_dense(std::vector<std::vector<int>>{{0, 1, 2}, {1, 0, 3}, {2, 3, 0}}, '
+            'std::numeric_limits<long long>::max(), std::greater<long long>{}); '
+            'print(std::vector<long long>{tree.weight, maximum.weight}); }\n', encoding="utf-8")
         exe = self.compile(source, "workspace", std="c++20")
-        self.assertEqual(self.run_program(exe).stdout.split(), [b"1", b"2", b"0", b"1", b"2", b"0", b"11", b"3"])
+        self.assertEqual(self.run_program(exe).stdout.split(), [b"1", b"2", b"0", b"1", b"2", b"0", b"11", b"3", b"5"])
         output = self.build / "submission.cpp"
         expand_submission(source, output, [LIB, ROOT / "include", ROOT], ROOT)
         exe = self.compile(output, "submission", std="c++20", includes=False)
-        self.assertEqual(self.run_program(exe).stdout.split(), [b"1", b"2", b"0", b"1", b"2", b"0", b"11", b"3"])
+        self.assertEqual(self.run_program(exe).stdout.split(), [b"1", b"2", b"0", b"1", b"2", b"0", b"11", b"3", b"5"])
 
     def test_usage_examples_and_links(self):
         fence = chr(96) * 3

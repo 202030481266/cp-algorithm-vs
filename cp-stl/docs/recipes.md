@@ -46,7 +46,7 @@ auto dist = cp::dijkstra(g, 0);
 
 无权图用 `vector<vector<int>>` 和 `cp::bfs(g, source)`，不可达标记为 -1。Floyd 允许负边但不允许负环；矩阵对角线先置 0，其他置 INF64，重边取最小值。
 
-## 稠密图与完全图的最小生成树
+## 稠密图与完全图的最小 / 最大生成树
 
 边列表使用 `cp::kruskal(n, edges)`；稠密图的对称邻接矩阵使用 `cp::prim_dense(matrix, no_edge)`。完全图可传入边权函数，在 O(n²) 时间和 O(n) 额外空间内求解，无需存储所有边，前提是单次边权计算为 O(1)。
 
@@ -61,7 +61,15 @@ auto tree = cp::prim_dense(int(x.size()), [&](int u, int v) {
 // tree.connected == true，tree.weight == 9。
 ```
 
-Prim 默认用 `LLONG_MAX` 表示缺边，可通过最后一个参数更换标记；矩阵和边权函数须对称，允许负边。图不连通时两个算法都返回最小生成森林，使用前检查 `connected`。接口、边权范围及完整矩阵示例见 [MST 使用说明](usage/graph/mst.md)。
+Prim 默认用 `LLONG_MAX` 表示缺边；矩阵和边权函数须对称，允许负边。传入 `std::greater<long long>{}` 可直接求最大生成树，结果保留原始边权：
+
+```cpp
+auto maximum = cp::prim_dense(n, [&](int u, int v) -> long long {
+    return (col[u] & col[v]).count();
+}, LLONG_MAX, std::greater<long long>{});
+```
+
+每个无序点对恰好计算一次，共 n(n-1)/2 次。矩阵也支持 `vector<vector<int>>`，应按实际点数 n 创建；其最大生成树调用为 `cp::prim_dense(matrix, no_edge, std::greater<long long>{})`。缺边标记不会改变优化方向；图不连通时返回对应的最小 / 最大生成森林，使用前检查 `connected`。接口、边权范围及完整矩阵示例见 [MST 使用说明](usage/graph/mst.md)。
 
 ## 树链剖分接区间结构
 

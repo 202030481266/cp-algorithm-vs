@@ -45,7 +45,7 @@ python tools/cp.py example "template"
 | 使用方法 | 示例程序 | 预期输出 |
 | --- | --- | --- |
 | [BFS、01 BFS、Dijkstra 与 Floyd](../docs/usage/graph/shortest_path.md) | [graph/shortest_path.cpp](graph/shortest_path.cpp) | [.ans](graph/shortest_path.ans) |
-| [Kruskal 与稠密图 / 完全图 Prim](../docs/usage/graph/mst.md) | [graph/mst.cpp](graph/mst.cpp) | [.ans](graph/mst.ans) |
+| [Kruskal 与稠密图 / 完全图 Prim（含最大生成树）](../docs/usage/graph/mst.md) | [graph/mst.cpp](graph/mst.cpp) | [.ans](graph/mst.ans) |
 | [拓扑排序与有向环判断](../docs/usage/graph/topological_sort.md) | [graph/topological_sort.cpp](graph/topological_sort.cpp) | [.ans](graph/topological_sort.ans) |
 | [强连通分量与缩点](../docs/usage/graph/scc.md) | [graph/scc.cpp](graph/scc.cpp) | [.ans](graph/scc.ans) |
 | [2-SAT 布尔约束](../docs/usage/graph/two_sat.md) | [graph/two_sat.cpp](graph/two_sat.cpp) | [.ans](graph/two_sat.ans) |

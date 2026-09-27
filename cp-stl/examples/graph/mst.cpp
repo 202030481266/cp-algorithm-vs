@@ -1,3 +1,4 @@
+#include <bitset>
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -43,4 +44,23 @@ int main() {
     std::cout << "complete_connected=" << complete_tree.connected << '\n';
     std::cout << "complete_weight=" << complete_tree.weight
               << " edges=" << complete_tree.edges.size() << '\n';
+
+    // 最大生成树：比较器同时控制选点和更新，返回的边权仍是原始正权。
+    // int 邻接矩阵也可直接传入；这里用 -1 表示缺边。
+    std::vector<std::vector<int>> int_matrix{
+        {0, 4, 1, -1}, {4, 0, 2, 1}, {1, 2, 0, 5}, {-1, 1, 5, 0}
+    };
+    auto max_tree = cp::prim_dense(int_matrix, -1, std::greater<long long>{});
+    std::cout << "max_weight=" << max_tree.weight
+              << " edges=" << max_tree.edges.size() << '\n';
+
+    // 完全图：边权为两列共同为 1 的位数，每个无序点对仅计算一次。
+    std::vector<std::bitset<4>> columns{0b1111, 0b0111, 0b0011, 0b0001};
+    int queries = 0;
+    auto max_complete = cp::prim_dense(int(columns.size()), [&](int u, int v) -> long long {
+        ++queries;
+        return (columns[u] & columns[v]).count();
+    }, no_edge, std::greater<long long>{});
+    std::cout << "max_complete_weight=" << max_complete.weight
+              << " queries=" << queries << '\n';
 }

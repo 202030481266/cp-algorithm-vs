@@ -329,20 +329,37 @@ void data_structures() {
 }
 
 void dense_mst() {
-    auto check = [](const vector<vector<long long>>& matrix, long long no_edge = LLONG_MAX) {
+    auto check = [](const vector<vector<long long>>& matrix, long long no_edge = LLONG_MAX,
+                    bool maximum = false) {
         const auto original = matrix;
         int n = int(matrix.size());
         vector<UndirectedEdge> edges;
         for (int u = 0; u < n; ++u) for (int v = u + 1; v < n; ++v)
             if (matrix[u][v] != no_edge) edges.push_back({u, v, matrix[u][v]});
-        const auto expected = kruskal(n, edges);
-        const auto explicit_result = prim_dense(matrix, no_edge);
+        MSTResult expected;
+        if (!maximum) expected = kruskal(n, edges);
+        else {
+            sort(edges.begin(), edges.end(), [](auto a, auto b) { return a.weight > b.weight; });
+            DSU components(n);
+            for (auto e : edges) if (components.merge(e.u, e.v)) {
+                expected.weight += e.weight;
+                expected.edges.push_back(e);
+            }
+            expected.connected = n == 0 || components.components == 1;
+        }
+        const auto explicit_result = maximum ? prim_dense(matrix, no_edge, greater<long long>{})
+                                             : prim_dense(matrix, no_edge);
         int calls = 0;
-        const auto implicit_result = prim_dense(n, [&](int u, int v) {
+        vector<vector<bool>> queried(n, vector<bool>(n));
+        auto weight = [&](int u, int v) {
             assert(0 <= u && u < n && 0 <= v && v < n && u != v);
+            assert(!queried[u][v] && !queried[v][u]);
+            queried[u][v] = true;
             ++calls;
             return matrix[u][v];
-        }, no_edge);
+        };
+        const auto implicit_result = maximum ? prim_dense(n, weight, no_edge, greater<long long>{})
+                                             : prim_dense(n, weight, no_edge);
         assert(calls == n * (n - 1) / 2);
         assert(matrix == original);
         for (const auto& result : {explicit_result, implicit_result}) {
@@ -362,24 +379,36 @@ void dense_mst() {
         }
         return explicit_result;
     };
-    auto empty = check({});
-    assert(empty.connected && empty.weight == 0 && empty.edges.empty());
-    auto single = check({{-20}}); // A negative self-loop must be ignored.
-    assert(single.connected && single.weight == 0 && single.edges.empty());
-    auto isolated = check(vector<vector<long long>>(4, vector<long long>(4, LLONG_MAX)));
-    assert(!isolated.connected && isolated.weight == 0 && isolated.edges.empty());
-    auto zero = check(vector<vector<long long>>(6, vector<long long>(6, 0)));
-    assert(zero.connected && zero.weight == 0 && zero.edges.size() == 5);
-    assert(check({{0, LLONG_MIN}, {LLONG_MIN, 0}}).weight == LLONG_MIN);
-    assert(check({{0, LLONG_MAX - 1}, {LLONG_MAX - 1, 0}}).weight == LLONG_MAX - 1);
-    assert(check({{0, LLONG_MAX}, {LLONG_MAX, 0}}, 0).weight == LLONG_MAX);
-    assert(check({{0, 10, 7, 7}, {10, 0, -2, 7}, {7, -2, 0, 5}, {7, 7, 5, 0}}, 7).weight == 13);
-    auto forest = check({
-        {-200, 5, -100, -100, -100}, {5, -200, -100, -100, -100},
-        {-100, -100, -200, -3, -100}, {-100, -100, -3, -200, -100},
-        {-100, -100, -100, -100, -200}
-    }, -100);
-    assert(!forest.connected && forest.weight == 2 && forest.edges.size() == 2);
+    for (bool maximum : {false, true}) {
+        auto empty = check({}, LLONG_MAX, maximum);
+        assert(empty.connected && empty.weight == 0 && empty.edges.empty());
+        auto single = check({{-20}}, LLONG_MAX, maximum); // Ignore negative self-loops.
+        assert(single.connected && single.weight == 0 && single.edges.empty());
+        auto isolated = check(vector<vector<long long>>(4, vector<long long>(4, LLONG_MAX)), LLONG_MAX, maximum);
+        assert(!isolated.connected && isolated.weight == 0 && isolated.edges.empty());
+        auto zero = check(vector<vector<long long>>(6, vector<long long>(6, 0)), LLONG_MAX, maximum);
+        assert(zero.connected && zero.weight == 0 && zero.edges.size() == 5);
+        assert(check({{0, LLONG_MIN}, {LLONG_MIN, 0}}, LLONG_MAX, maximum).weight == LLONG_MIN);
+        assert(check({{0, LLONG_MAX - 1}, {LLONG_MAX - 1, 0}}, LLONG_MAX, maximum).weight == LLONG_MAX - 1);
+        assert(check({{0, LLONG_MAX}, {LLONG_MAX, 0}}, 0, maximum).weight == LLONG_MAX);
+        assert(check({{0, 10, 7, 7}, {10, 0, -2, 7}, {7, -2, 0, 5}, {7, 7, 5, 0}}, 7, maximum).weight == 13);
+        auto forest = check({
+            {-200, 5, -100, -100, -100}, {5, -200, -100, -100, -100},
+            {-100, -100, -200, -3, -100}, {-100, -100, -3, -200, -100},
+            {-100, -100, -100, -100, -200}
+        }, -100, maximum);
+        assert(!forest.connected && forest.weight == 2 && forest.edges.size() == 2);
+        auto negative = check({{0, -2, -5}, {-2, 0, -3}, {-5, -3, 0}}, LLONG_MAX, maximum);
+        assert(negative.connected && negative.weight == (maximum ? -5 : -8));
+    }
+
+    const vector<vector<int>> ints{
+        {0, 4, 1, INT_MIN}, {4, 0, 2, 1}, {1, 2, 0, 5}, {INT_MIN, 1, 5, 0}
+    };
+    assert(prim_dense(ints, INT_MIN).weight == 4);
+    assert(prim_dense(ints, INT_MIN, greater<long long>{}).weight == 11);
+    assert(prim_dense(vector<vector<int>>{{0, INT_MIN}, {INT_MIN, 0}}).weight == INT_MIN);
+    assert(prim_dense({{0, 2}, {2, 0}}).weight == 2); // Preserve braced matrix calls.
 
     mt19937 prim_rng(20260927);
     for (int trial = 0; trial < 300; ++trial) {
@@ -395,6 +424,7 @@ void dense_mst() {
             }
         }
         check(matrix);
+        check(matrix, LLONG_MAX, true);
     }
 
     // A complete graph supplied only by its weight function, without an n*n matrix.
@@ -450,7 +480,7 @@ void graphs() {
             int u = random_int(0, n - 1), v = random_int(0, n - 1);
             edges.push_back({u, v, random_int(-5, 10)});
         }
-        long long best = LLONG_MAX;
+        long long best = LLONG_MAX, largest = LLONG_MIN;
         for (int mask = 0; mask < (1 << m); ++mask) {
             if (int(bitset<32>(unsigned(mask)).count()) != n - 1) continue;
             vector<vector<int>> candidate(n);
@@ -460,7 +490,10 @@ void graphs() {
                 candidate[e.u].push_back(e.v); candidate[e.v].push_back(e.u); weight += e.weight;
             }
             auto reach = bfs(candidate, 0);
-            if (count(reach.begin(), reach.end(), -1) == 0) best = min(best, weight);
+            if (count(reach.begin(), reach.end(), -1) == 0) {
+                best = min(best, weight);
+                largest = max(largest, weight);
+            }
         }
         auto result = kruskal(n, edges);
         assert(result.connected == (best != LLONG_MAX));
@@ -474,6 +507,14 @@ void graphs() {
         assert(dense.connected == (best != LLONG_MAX));
         assert(dense.weight == result.weight);
         if (dense.connected) assert(dense.weight == best);
+        vector<vector<long long>> max_matrix(n, vector<long long>(n, LLONG_MIN));
+        for (auto e : edges) {
+            max_matrix[e.u][e.v] = max(max_matrix[e.u][e.v], e.weight);
+            max_matrix[e.v][e.u] = max(max_matrix[e.v][e.u], e.weight);
+        }
+        auto maximum = prim_dense(max_matrix, LLONG_MIN, greater<long long>{});
+        assert(maximum.connected == (largest != LLONG_MIN));
+        if (maximum.connected) assert(maximum.weight == largest);
     }
     for (int trial = 0; trial < 150; ++trial) {
         int n = random_int(1, 6);

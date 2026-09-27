@@ -8,3 +8,5 @@ dense_forest_connected=false
 dense_forest_weight=4
 complete_connected=true
 complete_weight=9 edges=3
+max_weight=11 edges=3
+max_complete_weight=6 queries=6
