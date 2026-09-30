@@ -9,6 +9,8 @@
     <Filter Include="03 题解归档\cf\1054\G" />
     <Filter Include="03 题解归档\cf\1500" />
     <Filter Include="03 题解归档\cf\1500\C" />
+    <Filter Include="03 题解归档\cf\1610" />
+    <Filter Include="03 题解归档\cf\1610\F" />
     <Filter Include="04 算法库 cp-stl" />
     <Filter Include="04 算法库 cp-stl\basic" />
     <Filter Include="04 算法库 cp-stl\data_structures" />
@@ -80,6 +82,18 @@
     </None>
     <None Include="solutions\cf\1500\C\README.md">
       <Filter>03 题解归档\cf\1500\C</Filter>
+    </None>
+    <None Include="solutions\cf\1610\F\expected.txt">
+      <Filter>03 题解归档\cf\1610\F</Filter>
+    </None>
+    <None Include="solutions\cf\1610\F\input.txt">
+      <Filter>03 题解归档\cf\1610\F</Filter>
+    </None>
+    <None Include="solutions\cf\1610\F\main.cpp">
+      <Filter>03 题解归档\cf\1610\F</Filter>
+    </None>
+    <None Include="solutions\cf\1610\F\README.md">
+      <Filter>03 题解归档\cf\1610\F</Filter>
     </None>
     <ClInclude Include="cp-stl\basic\compress.hpp">
       <Filter>04 算法库 cp-stl\basic</Filter>

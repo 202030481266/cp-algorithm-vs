@@ -96,6 +96,10 @@
     <None Include="solutions\cf\1500\C\input.txt" />
     <None Include="solutions\cf\1500\C\main.cpp" />
     <None Include="solutions\cf\1500\C\README.md" />
+    <None Include="solutions\cf\1610\F\expected.txt" />
+    <None Include="solutions\cf\1610\F\input.txt" />
+    <None Include="solutions\cf\1610\F\main.cpp" />
+    <None Include="solutions\cf\1610\F\README.md" />
     <ClInclude Include="cp-stl\basic\compress.hpp" />
     <ClInclude Include="cp-stl\basic\search.hpp" />
     <ClInclude Include="cp-stl\basic\sort.hpp" />
