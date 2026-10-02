@@ -24,16 +24,56 @@ python tools/cp.py fetch 1610F
 
 ## 题目写法
 
-| 平台 | 可以这样写 | 默认归档名 |
-| --- | --- | --- |
-| Codeforces | 题目链接（contest、problemset、gym）、`1610F`、`1610/F`、`cf/1610/F` | `cf/1610/F`；Gym 为 `cf/gym/104114/A` |
-| AtCoder | 题目链接、`abc400_e`、`abc400/E`、`atcoder/abc400/E` | `atcoder/abc400/E` |
-| LeetCode | 题目链接（leetcode.cn 或 leetcode.com，周赛链接也可以）、`leetcode/two-sum` | `leetcode/two-sum` |
+直接粘贴浏览器地址栏中的题目链接总是可行的。为了少打字，也可以只写链接中的“比赛号 + 题号”部分（简写）。
 
-直接粘贴浏览器地址栏中的链接总是可行的，简写只是为了少打字。
+```powershell
+python tools/cp.py new 1610F
+python tools/cp.py new abc400_e
+python tools/cp.py new lc/two-sum
+```
 
-- `leetcode/<slug>` 简写访问 leetcode.cn；用 leetcode.com 时粘贴链接。
-- AtCoder 简写按“比赛名_题号”推算任务编号。少数比赛的任务编号与比赛名不一致（如部分 ABC 与 ARC 同场举办），这时请粘贴链接。
+### Codeforces：比赛号 + 题号
+
+链接 `https://codeforces.com/contest/1610/problem/F` 中取 `1610` 和 `F`。
+
+| 写法 | 说明 |
+| --- | --- |
+| `1610F` | 最常用 |
+| `1610/F`、`cf1610F`、`cf/1610/F` | 与上面相同 |
+| `1856E1` | 带数字的题号（E1、E2）也可以 |
+| `1610f` | 题号不区分大小写，自动转成大写 |
+| `gym/104114/A`、`cf/gym/104114/A` | Gym 题；比赛号不小于 100000 时也会自动按 Gym 处理 |
+
+链接可以是 contest、problemset 或 gym 页面。默认归档名为 `cf/1610/F`，Gym 为 `cf/gym/104114/A`。
+
+### AtCoder：任务编号
+
+链接 `https://atcoder.jp/contests/abc400/tasks/abc400_e` 中取最后一段 `abc400_e`。
+
+| 写法 | 说明 |
+| --- | --- |
+| `abc400_e` | 链接最后一段；ARC、AGC 等同理，如 `arc180_a` |
+| `abc400/E`、`atcoder/abc400/E` | 比赛名 + 题号，与上面相同 |
+
+默认归档名为 `atcoder/abc400/E`。
+
+简写按“比赛名_题号”推算任务编号。少数比赛的任务编号与比赛名不一致（如部分早期 ABC 与 ARC 同场举办，
+ABC 页面里的任务编号是 `arc0xx_a`），按简写推算会找不到题目，这时请粘贴链接。
+
+### LeetCode：题目的英文名（slug）
+
+链接 `https://leetcode.cn/problems/two-sum/` 中取 `problems/` 后面的 `two-sum`。
+
+| 写法 | 说明 |
+| --- | --- |
+| `leetcode/two-sum`、`lc/two-sum` | 访问力扣中国站 leetcode.cn |
+
+链接可以来自 leetcode.cn 或 leetcode.com，周赛题目的链接也可以；用国际站时请粘贴链接。默认归档名为 `leetcode/two-sum`。
+
+### 其他
+
+- 简写与归档名格式相同：`cf/1610/F`、`atcoder/abc400/E`、`leetcode/two-sum` 既能用于 new/fetch，也是 save/load 使用的名字。
+- 无法识别的写法会直接报错并列出可用格式，不会抓取别的题目。例如只写 `two-sum` 时，需要改成 `leetcode/two-sum`。
 - 想换一个归档名，加 `--name`，例如 `python tools/cp.py new 1610F --name cf/1610/F-v2`。
 
 ## 会写入哪些文件

@@ -49,7 +49,7 @@ python tools/cp.py save
 python tools/cp.py load cf/2100/A
 ```
 
-- 题目也可以写成简写，如 `2100A`、`abc400_e`、`leetcode/two-sum`；支持的写法和限制见[样例抓取说明](docs/FETCH.md)。
+- 题目也可以写成简写，如 `2100A`、`abc400_e`、`lc/two-sum`；各平台的写法见[题目写法](docs/FETCH.md#题目写法)。
 - 已经在写代码、只想补抓样例：`python tools/cp.py fetch 2100A`，不会改动 main.cpp。
 - 不抓样例、只换成空白模板：`python tools/cp.py new`。没有抓取过题目时，save 要写出归档名，如 `save cf/2100/A`。
 - save 遇到已有归档会询问 `[y/N]`：输入 `y` 或 `yes`（不区分大小写）才会覆盖代码和样例，回车或其他输入取消。
