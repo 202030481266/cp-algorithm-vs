@@ -45,7 +45,7 @@ __pycache__/
 .venv/
 
 # Generated output for the current problem
-# Keep input.txt, expected.txt, and archived sample .out files tracked.
+# Keep input.txt, expected.txt, problem.json and samples/ (.in/.ans) tracked.
 /data/output.txt
 /data/output.stderr.txt
 

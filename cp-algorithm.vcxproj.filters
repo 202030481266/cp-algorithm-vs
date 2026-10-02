@@ -56,6 +56,9 @@
     <ClInclude Include="include\dbg.h">
       <Filter>02 公共头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\leetcode.h">
+      <Filter>02 公共头文件</Filter>
+    </ClInclude>
     <ClInclude Include="include\pch.h">
       <Filter>02 公共头文件</Filter>
     </ClInclude>
@@ -611,6 +614,9 @@
     <None Include="tools\export_submission.py">
       <Filter>08 工具</Filter>
     </None>
+    <None Include="tools\fetch_problem.py">
+      <Filter>08 工具</Filter>
+    </None>
     <None Include="tools\test_cp.py">
       <Filter>08 工具</Filter>
     </None>
@@ -620,6 +626,9 @@
     <None Include="tools\test_export.py">
       <Filter>08 工具</Filter>
     </None>
+    <None Include="tools\test_fetch.py">
+      <Filter>08 工具</Filter>
+    </None>
     <None Include="tools\test_template.py">
       <Filter>08 工具</Filter>
     </None>
@@ -627,6 +636,9 @@
       <Filter>09 使用说明</Filter>
     </None>
     <None Include="docs\CP_STL.md">
+      <Filter>09 使用说明</Filter>
+    </None>
+    <None Include="docs\FETCH.md">
       <Filter>09 使用说明</Filter>
     </None>
     <None Include="docs\reorganization.json">

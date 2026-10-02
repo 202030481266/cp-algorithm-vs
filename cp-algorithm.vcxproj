@@ -87,6 +87,7 @@
   <ItemGroup Label="WorkspaceFiles">
     <ClCompile Include="main.cpp" />
     <ClInclude Include="include\dbg.h" />
+    <ClInclude Include="include\leetcode.h" />
     <ClInclude Include="include\pch.h" />
     <None Include="solutions\cf\1054\G\expected.txt" />
     <None Include="solutions\cf\1054\G\input.txt" />
@@ -272,12 +273,15 @@
     <None Include="data\input.txt" />
     <None Include="tools\cp.py" />
     <None Include="tools\export_submission.py" />
+    <None Include="tools\fetch_problem.py" />
     <None Include="tools\test_cp.py" />
     <None Include="tools\test_cp_stl.py" />
     <None Include="tools\test_export.py" />
+    <None Include="tools\test_fetch.py" />
     <None Include="tools\test_template.py" />
     <None Include="docs\cp-stl-import.json" />
     <None Include="docs\CP_STL.md" />
+    <None Include="docs\FETCH.md" />
     <None Include="docs\reorganization.json" />
     <None Include="docs\REORGANIZATION.md" />
     <None Include="docs\WORKFLOW.md" />

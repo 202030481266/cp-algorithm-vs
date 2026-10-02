@@ -1,8 +1,8 @@
 # 在 Visual Studio 中使用 CP-STL
 
-已从 D:/CP-Templates-and-Solutions/cp-stl 导入全部 35 个头文件、使用手册、38 个示例和算法回归程序，保存于 workspace 的 `cp-stl/`。这是项目内的副本，克隆本 workspace 后可直接使用；原始目录未改动。导入源文件的 SHA-256 见 [cp-stl-import.json](cp-stl-import.json)。
+`cp-stl/` 是从 D:/CP-Templates-and-Solutions/cp-stl 导入的项目内副本，现有 **36 个头文件、39 个示例**，以及使用手册和算法回归程序。克隆本 workspace 后可直接使用，不依赖原始目录。
 
-本地新增了 [计数排序与基数排序](../cp-stl/docs/usage/basic/sort.md)，并在 MST 模板中补充了 [稠密图与完全图 Prim](../cp-stl/docs/usage/graph/mst.md)，支持整数邻接矩阵、按需计算边权及最大生成树；当前共 36 个头文件、39 个示例。
+导入时为 35 个头文件、38 个示例，各文件的 SHA-256 见 [cp-stl-import.json](cp-stl-import.json)。之后本地新增了 [计数排序与基数排序](../cp-stl/docs/usage/basic/sort.md)，并在 MST 模板中补充了 [稠密图与完全图 Prim](../cp-stl/docs/usage/graph/mst.md)，支持整数邻接矩阵、按需计算边权及最大生成树。
 
 ## 第一次打开
 
@@ -35,7 +35,7 @@ cout << bit.sum(0, 3) << '\n'; // 11
 算法位于 `cp::`，下标默认 0-based，区间通常为 `[l,r)`。具体前置条件看对应使用手册。
 也支持带库前缀的包含方式，例如 `#include "cp-stl/data_structures/fenwick.hpp"`。
 
-执行 `python tools/cp.py new` 仍使用 [templates/main.cpp](../templates/main.cpp)，其中已加上常用头文件入口提示。原有别名、debug/debug_matrix、print、多测开关和 LOCAL_FILE 保持原来的用法。当前工作入口与样例没有因导入而被替换。
+执行 `python tools/cp.py new` 仍使用 [templates/main.cpp](../templates/main.cpp)，其中已加上常用头文件入口提示。原有别名、debug/debug_matrix、print、多测开关和 LOCAL_FILE 保持原来的用法。
 
 默认模板已经有 debug，不必再包含 util/debug.hpp。独立程序可使用库的 debug（LOCAL 启用，ONLINE_JUDGE 或 NO_DEBUG 关闭）；已有 debug 宏时库会保留它。
 

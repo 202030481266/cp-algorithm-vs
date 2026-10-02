@@ -6,6 +6,8 @@ import subprocess
 import tempfile
 import unittest
 
+from cp import toolchain_env
+
 ROOT = Path(__file__).resolve().parents[1]
 
 HARNESS = r'''
@@ -154,6 +156,7 @@ class TemplateTests(unittest.TestCase):
         cls.compiler = os.environ.get("CP_TEMPLATE_CXX", "g++")
         if not shutil.which(cls.compiler):
             raise unittest.SkipTest(f"Compiler not on PATH: {cls.compiler}")
+        cls.env = toolchain_env(cls.compiler)
         parent = ROOT / "build/template-tests"
         parent.mkdir(parents=True, exist_ok=True)
         cls.temporary = tempfile.TemporaryDirectory(prefix="case-", dir=parent)
@@ -188,7 +191,7 @@ class TemplateTests(unittest.TestCase):
             else:
                 command = [cls.compiler, "-std=c++20", "-Wall", "-Wextra", "-pedantic", "-DLOCAL",
                            *[f"-D{flag}" for flag in flags], relative_source, "-o", relative_executable]
-            result = subprocess.run(command, cwd=ROOT, capture_output=True, timeout=90)
+            result = subprocess.run(command, cwd=ROOT, capture_output=True, timeout=90, env=cls.env)
             if result.returncode:
                 raise AssertionError((result.stdout + result.stderr).decode("utf-8", errors="replace"))
             cls.compiled[name] = executable
@@ -196,7 +199,7 @@ class TemplateTests(unittest.TestCase):
 
     def run_binary(self, executable, *args, input=b""):
         result = subprocess.run([str(executable), *args], cwd=self.folder,
-                                input=input, capture_output=True, timeout=10)
+                                input=input, capture_output=True, timeout=10, env=self.env)
         self.assertEqual(result.returncode, 0, result.stderr.decode("utf-8", errors="replace"))
         self.assertEqual(result.stderr, b"")
         return result.stdout.replace(b"\r\n", b"\n")

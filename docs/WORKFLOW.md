@@ -57,16 +57,19 @@ VS 的 F5 编译和运行的是启动项目，不是“当前编辑器里打开�
 
 ## 3. 如何分类而不越分越乱
 
-建议实体目录按来源保存：
+实体目录按来源保存。抓取样例时工具自动使用前三种名字：
 
 ```text
 solutions/
-  codeforces/2100/A/
+  cf/2100/A/
     main.cpp
     input.txt
     expected.txt
+    samples/          # 抓取到的全部样例：1.in、1.ans、2.in…
+    problem.json      # 归档名、题目链接、标题
     README.md
   atcoder/abc400/E/
+  leetcode/two-sum/
   luogu/Pxxxx/
   training/2026-09-22/A/
   unclassified/       # 暂时不知道题号时可自行创建
@@ -81,15 +84,24 @@ solutions/
 
 | 命令 | 行为 |
 | --- | --- |
-| python tools/cp.py save codeforces/2100/A | 保存 main.cpp、输入、期望输出；已有目录先确认覆盖，笔记不存在时生成骨架，刷新 VS 分类 |
-| python tools/cp.py new | 将当前工作备份到 backups/work-时间-随机后缀/，载入模板，清空当前样例与输出 |
-| python tools/cp.py load codeforces/2100/A | 先备份当前工作，再载入已归档源码和样例 |
+| python tools/cp.py new 题目链接或简写 | 备份当前工作，载入模板（LeetCode 生成带本地驱动的代码），抓取全部样例 |
+| python tools/cp.py new | 备份当前工作，载入模板，清空当前样例与输出 |
+| python tools/cp.py fetch 题目链接或简写 | 备份后只更新样例和题目信息，不改 main.cpp |
+| python tools/cp.py test | 编译一次，检查 data/samples 中的全部样例 |
+| python tools/cp.py save [cf/2100/A] | 保存代码、输入、期望输出和样例；省略名字时用抓取或载入的题目；已有目录先确认覆盖；刷新 VS 分类 |
+| python tools/cp.py load cf/2100/A | 先备份当前工作，再载入已归档的代码和样例 |
 | python tools/cp.py sync | 刷新 VS 中的文件列表与筛选器 |
 
+抓取支持的写法、写入的文件和 LeetCode 用法见[样例抓取说明](FETCH.md)。
+
 save 遇到已有目录会询问是否覆盖（`[y/N]`）；输入 `y` 或 `yes`（不区分大小写）确认，回车或其他输入取消。
-确认后更新归档的 main.cpp、input.txt、expected.txt，保留已有 README.md 笔记及其他辅助文件，当前题目保持不变。
 标准输入结束、无法读取确认时也会取消保存。
-new/load 的备份包括 main.cpp、input.txt、expected.txt 和 output.txt。
+确认后更新归档的 main.cpp、input.txt、expected.txt、samples/ 和 problem.json，
+保留已有 README.md 笔记及其他辅助文件，当前题目保持不变。
+抓取过题目时，save 还会把链接填进 README.md 中空着的“题目链接”一行。
+
+new/load/fetch 前的备份位于 backups/work-时间-随机后缀/，包括 main.cpp、data/ 下的 input.txt、expected.txt、
+output.txt、problem.json 和 samples/。
 data/brute.cpp、data/gen.cpp 等自建辅助文件保持原位，不会随 save/load 一起归档；
 要保留每题的生成器与暴力，请把它们复制到该题目录，再 sync。
 不要把上一题的生成器和暴力误用到下一题。
@@ -113,6 +125,7 @@ python tools/cp.py run --expected data/expected.txt
 每次重新编译成功后才会运行；编译失败不会偷偷运行旧程序。
 调试输出 stderr 单独保存在 output.stderr.txt，不会混进待比较答案。
 输出文件会被本次结果替换；需要保留时，指定另外的 --output 路径。
+有多组样例时用 `python tools/cp.py test` 一次检查 data/samples 中的全部样例，见[样例抓取说明](FETCH.md#test一次检查全部样例)。
 
 如果想直接运行 VS 刚生成的 MSVC 程序：
 
@@ -243,7 +256,14 @@ python tools/cp.py run --input build/stress/failures/实际目录/input.txt --ex
 ## 6. 提交与编译器差异
 
 VS 用 MSVC，工具默认用 g++；两者都跑一遍有助于发现依赖差异。
-本机现有 g++ 是 15.2.0；比赛环境版本和标准仍以题目平台为准。
+用 `g++ --version` 查看本机版本；比赛环境的编译器版本和标准以题目平台为准。
+
+工具调用 g++、运行编译出的程序时，会把编译器所在目录放到 PATH 最前面。
+这个目录在运行时由 PATH 查找得到，没有写死，换电脑或换安装位置都不用改配置。
+MinGW 的链接器和程序需要从 PATH 加载 libwinpthread、libstdc++ 等 DLL；Git for Windows（Git Bash 中的 mingw64/bin）
+或 Anaconda 自带的同名旧 DLL 若排在前面，会混用两套 C 运行时，表现为 `ld returned 116 exit status` 或程序莫名崩溃。
+自己在终端里直接运行 g++ 或 .exe 遇到这类问题时，先把 g++ 所在目录放到 PATH 最前面再试；
+PowerShell 中用 `(Get-Command g++).Source` 查看它的位置（MSYS2 默认是 C:\msys64\ucrt64\bin）。
 
 新模板是包含标准头文件的单文件模板，至少需要 C++20，单独提交也能使用。
 部分旧题解用 _MSC_VER 分支包含 pch.h，GCC 分支包含 bits/stdc++.h；
@@ -266,9 +286,10 @@ python tools/cp.py run -I D:\CP-Templates-and-Solutions\ac-library
 
 build/ 存放可重新生成的程序与中间文件，但其中 stress/failures/ 的反例值得保留，
 清理 build 前先把重要反例移入对应题目的目录。
-旧 x64/ 与 cp-algorithm/x64/ 已移动到 build/legacy/，没有删除原始文件。
+在当初整理的电脑上，旧 x64/ 与 cp-algorithm/x64/ 已移动到 build/legacy/，没有删除原始文件；
+build/ 不进 Git，其他电脑上的克隆没有这个目录。
 
-.vs/ 是 IDE 的隐藏缓存。检查时约 2.39 GiB，VS 正在使用，整理时保留。
+.vs/ 是 VS 自动维护的隐藏缓存，可能占用数 GB。
 需要回收这部分空间时先保存工作、关闭 VS，之后可以删除 .vs，再打开解决方案让它重建；
 窗口布局、断点等部分本地状态也可能随之重置，重新索引需要时间。
 不要误删 .sln、.vcxproj、源码或 include/。
@@ -280,8 +301,9 @@ build/ 存放可重新生成的程序与中间文件，但其中 stress/failures
 backups/ 只存在于本机，不会随 Git 克隆下载；日常提交与同步命令见根目录 README.md。
 
 恢复切题前的工作：在 backups/work-.../ 中找 main.cpp 与 data/，复制所需文件回原位置。
-恢复整理前的布局：先备份现有工作，再把 backups/before-organize-...zip 解压到独立目录查看，
-不要直接覆盖现在继续写过的题目。ZIP 中保留了当时的全部根目录源码和 VS 配置。
+恢复整理前的布局（只在当初整理的电脑上有备份）：先备份现有工作，再把 backups/before-organize-...zip
+解压到独立目录查看，不要直接覆盖现在继续写过的题目。ZIP 中保留了当时的全部根目录源码和 VS 配置，
+文件映射见[整理记录](REORGANIZATION.md)。
 
 ## 8. 工具自检
 
@@ -291,15 +313,18 @@ python -m unittest discover -s tools -p "test_*.py"
 
 测试使用 build/ 下的隔离临时目录，验证归档/切题备份、覆盖确认与取消、笔记保留、路径边界、
 VS 编译列表、输出比较与子进程超时；也会实际编译模板，检查容器打印、宏开关和文件 I/O。
+样例抓取部分用离线保存的页面片段检查三个平台的解析、save/load/fetch 对样例的处理和 test 的判定，
+并实际编译 LeetCode 驱动，核对各种参数类型的输出格式；测试不访问网络。
 不会对当前 main.cpp 执行 new/load。
 单独检查模板可运行 python -m unittest discover -s tools -p test_template.py -v；
-在 VS Developer PowerShell 中先设置 $env:CP_TEMPLATE_CXX = "cl"，即可用 MSVC 跑同一组模板测试。
+在 VS Developer PowerShell 中先设置 $env:CP_TEMPLATE_CXX = "cl"，即可用 MSVC 跑同一组模板测试；
+LeetCode 驱动对应的变量是 $env:CP_LEETCODE_CXX = "cl"（test_fetch.py）。
 
 
 ## 9. 模板宏与数据结构输出
 
-templates/main.cpp 沿用当前 main.cpp 的类型别名、常量和多测入口。
-执行 python tools/cp.py new 后，新题会使用这份模板；先在 VS 中保存当前题目。
+templates/main.cpp 沿用整理前 main.cpp 的类型别名、常量和多测入口。
+执行 python tools/cp.py new（或 new 加 Codeforces/AtCoder 题目）后，新题会使用这份模板；先在 VS 中保存当前题目。
 
 ### 常用宏与工具
 

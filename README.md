@@ -1,129 +1,124 @@
 # cp-algorithm-vs
 
-用于 ICPC 训练的 Visual Studio C++ 写题工作区。
+用于 ICPC 训练的 Visual Studio C++ 写题工作区。根目录 **main.cpp** 写当前题目，
+`tools/cp.py` 负责抓样例、测样例、归档、对拍和导出提交代码。
 
-直接用 Visual Studio 打开 **cp-algorithm.sln**，日常只编辑根目录的 **main.cpp**。
-新题通过工具载入 templates/main.cpp，历史题解保存到 solutions/。
-已接入 **CP-STL 的 36 个算法模板**，支持 Visual Studio / MSVC；[使用说明](docs/CP_STL.md) · [模板索引](cp-stl/docs/usage/README.md)。
+- 从 **Codeforces、AtCoder、LeetCode** 自动抓取样例，一条命令跑完全部样例：[样例抓取说明](docs/FETCH.md)
+- 已接入 **CP-STL 的 36 个算法模板**，支持 Visual Studio / MSVC：[使用说明](docs/CP_STL.md) · [模板索引](cp-stl/docs/usage/README.md)
+- Visual Studio 设置、文件输入输出、对拍与模板宏：[工作流教程](docs/WORKFLOW.md)
 
-第一次使用：保存 VS 中尚未保存的编辑；若 VS 提示项目在外部被修改，选择重新加载。
-如果目录视图没刷新，关闭并重新打开解决方案。平时在解决方案资源管理器中关闭“显示所有文件”，按已配置的分类浏览。
+用 Visual Studio 打开 **cp-algorithm.sln**。工具在外部修改 main.cpp 或项目文件后，VS 会提示重新加载，选择重新加载即可。
+解决方案资源管理器中建议关闭“显示所有文件”，按已配置的分类浏览。
 
-## 文件放哪里
+## 目录
 
 | 路径 | 用途 |
 | --- | --- |
-| main.cpp | 当前题目，VS 唯一参与编译的 .cpp |
-| solutions/平台/比赛/题号/ | 已保存题解、样例、题目链接和算法标签 |
-| include/ | 公共头文件；原来的 pch.h、dbg.h 在这里 |
-| cp-stl/ | 算法模板库、逐个使用手册和示例，已适配 MSVC |
-| templates/ | 新题模板；modules/ 保留原来的 C++ 模块实验 |
-| examples/stress/ | 可以直接运行的“最大非空子段和”对拍示例 |
-| data/input.txt、expected.txt | 当前题目的输入、期望输出 |
-| tools/cp.py | 归档、切题、运行和对拍工具 |
-| build/ | 所有编译输出、对拍反例、历史编译产物 |
-| backups/ | 整理前的 ZIP；每次 new/load 前自动备份当前工作 |
+| main.cpp | 当前题目，VS 中唯一参与编译的 .cpp |
+| data/input.txt、expected.txt | 当前题目的输入与期望输出；抓取样例后是第 1 组样例 |
+| data/samples/ | 抓取到的全部样例：1.in、1.ans、2.in… |
+| data/problem.json | 当前题目的归档名、链接和标题，由工具维护 |
+| solutions/平台/比赛/题号/ | 已归档的代码、样例和笔记 README.md |
+| templates/main.cpp | 新题模板；modules/ 保留早期的 C++ 模块实验 |
+| include/ | 公共头文件 pch.h、dbg.h，以及 LeetCode 本地驱动 leetcode.h |
+| cp-stl/ | 算法模板库、使用手册和示例，已适配 MSVC |
+| examples/stress/ | 可以直接运行的对拍示例（最大非空子段和） |
+| tools/ | 命令行工具 cp.py 及其测试 |
 | docs/ | 详细教程、整理记录与哈希清单 |
-| .vs/ | VS 自动维护的隐藏缓存 |
+| build/ | 编译产物、测试输出、对拍反例，不进 Git |
+| backups/ | 每次 new/load/fetch 前自动备份的当前工作，不进 Git |
 
-按平台与题号保存实体文件，比如 solutions/codeforces/2100/A/main.cpp。
-“二分、图论、DP”等算法标签写在该题 README.md 里，同一题无需为多个标签复制多份。
+归档按平台和题号存放，例如 solutions/cf/2100/A/、solutions/atcoder/abc400/E/、solutions/leetcode/two-sum/。
+“二分、图论、DP”等算法标签写在该题的 README.md 里，同一道题不必为多个标签复制多份。
 
-## 每天只需这几步
+## 日常流程
 
-在 VS 的“视图 → 终端”打开 PowerShell，切到这个项目根目录。下列命令使用电脑上已有的 Python。
+在 VS 的“视图 → 终端”中打开 PowerShell（位于项目根目录）。工具读写的是磁盘上的文件，执行命令前先 Ctrl+Shift+S 保存。
 
 ```powershell
-# 1. 写完或临时离开当前题目，先在 VS 中 Ctrl+Shift+S 保存磁盘文件。
-python tools/cp.py save codeforces/2100/A
+# 1. 开新题：备份当前工作，载入模板，抓取全部样例
+python tools/cp.py new https://codeforces.com/contest/2100/problem/A
 
-# 2. 开始新题：先自动备份当前工作，再把 templates/main.cpp 复制到 main.cpp。
-python tools/cp.py new
+# 2. 写完后编译一次，检查所有样例
+python tools/cp.py test
 
-# 3. 回到旧题：先自动备份当前工作，再加载对应代码与样例。
-python tools/cp.py load codeforces/2100/A
+# 3. 归档到 solutions/cf/2100/A（名字取自抓取的题目）
+python tools/cp.py save
+
+# 回到以前的题目：先备份当前工作，再载入归档的代码和样例
+python tools/cp.py load cf/2100/A
 ```
 
-把示例中的平台、比赛号、题号换成你自己的。
-save 遇到已有目录会询问是否覆盖（`[y/N]`）：输入 `y` 或 `yes`（不区分大小写）确认，回车或其他输入取消。
-确认后更新归档中的代码和样例，保留已有 README.md 笔记及其他辅助文件；想保留多个版本可用 A-v2 等新名称。
-命令操作的是**已保存到磁盘**的文件；new/load 后让 VS 重新加载外部改动。
-想改新题默认代码，只编辑 templates/main.cpp。
+- 题目也可以写成简写，如 `2100A`、`abc400_e`、`leetcode/two-sum`；支持的写法和限制见[样例抓取说明](docs/FETCH.md)。
+- 已经在写代码、只想补抓样例：`python tools/cp.py fetch 2100A`，不会改动 main.cpp。
+- 不抓样例、只换成空白模板：`python tools/cp.py new`。没有抓取过题目时，save 要写出归档名，如 `save cf/2100/A`。
+- save 遇到已有归档会询问 `[y/N]`：输入 `y` 或 `yes`（不区分大小写）才会覆盖代码和样例，回车或其他输入取消。
+  已有的 README.md 笔记和其他文件会保留；想保留多个版本，可以另起名字，如 `save cf/2100/A-v2`。
+- 想改新题的默认代码，编辑 templates/main.cpp。
+- 手工新增或移动归档、模板文件后，运行 `python tools/cp.py sync` 刷新 VS 中的分类。
+  归档、模板和对拍代码可以在 VS 中打开查看，但不参与主项目编译。
 
-手工新增或移动归档、模板文件后，运行：
+## LeetCode
 
 ```powershell
-python tools/cp.py sync
+python tools/cp.py new https://leetcode.cn/problems/two-sum/
 ```
 
-它会更新 VS 分类；归档、模板、对拍代码可以打开查看，但不参与主项目编译。
+生成的 main.cpp 包含 LeetCode 给出的代码框架和一个本地驱动：在框架里写解答，`test` 就能跑全部示例，F5 也能断点调试。
+**提交时只复制两条分隔线之间的代码。** 支持的参数类型和注意事项见[样例抓取说明](docs/FETCH.md#leetcode)。
 
-## 使用算法模板
+## 运行与调试
 
-在 main.cpp 顶部包含需要的头文件，例如 `#include "data_structures/fenwick.hpp"`，通过 `cp::Fenwick<long long>` 使用；VS 与命令行工具已配置路径。
+| 命令 | 作用 |
+| --- | --- |
+| `python tools/cp.py test` | 用 g++ 编译 main.cpp，逐个运行 data/samples 中的样例并判定 |
+| `python tools/cp.py run` | 编译 main.cpp，运行一次 data/input.txt，输出写到 data/output.txt |
+| `python tools/cp.py run --expected data/expected.txt` | 同上，并与期望输出比较 |
+| 在 test 或 run 后加 `--exe build/bin/x64/Debug/cp-algorithm.exe` | 改用 VS 已生成的程序（先 Ctrl+Shift+B 生成） |
 
-```powershell
-# 跑库中自带例子，自动读取输入并核对答案
-python tools/cp.py example data_structures/fenwick
+- 默认按空白分隔的 token 比较，忽略多余空白和换行风格，但区分大小写；`--exact` 改为逐字节比较。
+- 每次运行默认限时 2 秒，可加 `--timeout 5`。
+- run 的标准错误写到 data/output.stderr.txt，不会混进答案；test 的输出保存在 build/tools/test/output/。
 
-# 展开当前解答依赖的本地头文件，提交 build/submission.cpp
-python tools/cp.py export
-```
+想在 **F5 断点调试时自动读取 data/input.txt**，在项目属性中添加 LOCAL_FILE 宏，步骤见
+[Visual Studio、文件 I/O 与对拍教程](docs/WORKFLOW.md#b-f5-断点调试时读文件)。
 
-完整步骤、MSVC 兼容范围和检查命令见 [CP-STL 使用说明](docs/CP_STL.md)。
-
-## 文件输入输出
-
-把题目输入放进 data/input.txt；把正确答案放进 data/expected.txt。可以先用 VS 生成，再运行已有程序：
-
-```powershell
-# VS 中选择 Debug / x64，Ctrl+Shift+B 生成后执行：
-python tools/cp.py run --exe build/bin/x64/Debug/cp-algorithm.exe
-
-# 比较样例答案（默认忽略空白差异，字符大小写仍区分）：
-python tools/cp.py run --exe build/bin/x64/Debug/cp-algorithm.exe --expected data/expected.txt
-
-# 也可以让工具用 g++ 自动编译当前 main.cpp 并运行：
-python tools/cp.py run
-```
-
-标准输出写到 data/output.txt，cerr / 标准错误写到 data/output.stderr.txt。
-run 默认每次限时 2 秒，可加 --timeout 5。
-未给 --expected 时只运行，不判断答案是否正确。
-整理时保留的 main.cpp 中 solve() 还没有最终输出，因此它能编译不等于题目已做完。
-初始 input.txt/expected.txt 留空，使用前请填入当前题目的有效数据。
-
-如果想 **F5 断点调试时自动读文件**，使用模板中的 LOCAL_FILE 分支，具体设置见
-[Visual Studio、文件 I/O 与对拍教程](docs/WORKFLOW.md)。
-
-## 先跑一次完整对拍示例
+## 对拍
 
 ```powershell
+# 先跑一次自带示例
 python tools/cp.py stress --solution examples/stress/solution.cpp --brute examples/stress/brute.cpp --gen examples/stress/gen.cpp --iterations 1000
-```
 
-工具用 g++ 分别编译三个程序，按种子造输入，把同一份输入交给正解与暴力，再比较输出。
-不一致、超时或异常退出就停止，将反例、标准错误、种子、编译命令和当时的源码保存到
-build/stress/failures/ 下；三个程序都要用标准输入输出，不要在代码里硬编码 freopen。
-
-针对自己的题，把 brute.cpp 和 gen.cpp 放在 data/，实现对应逻辑后运行：
-
-```powershell
+# 自己的题：在 data/ 写好 brute.cpp 和 gen.cpp，默认把 main.cpp 当作待测程序
 python tools/cp.py stress --brute data/brute.cpp --gen data/gen.cpp --iterations 10000
 ```
 
-这条命令默认把 main.cpp 当待测程序。示例里的暴力和生成器只适用于最大非空子段和，
-要改成当前题目的输入格式、约束与暴力解法。详见[完整教程](docs/WORKFLOW.md)。
+工具用 g++ 编译三个程序；gen 按种子生成一份输入，交给正解和暴力，比较两者输出。
+出现不一致、超时或异常退出就停止，把反例、标准错误、种子、编译命令和当时的源码保存到 build/stress/failures/。
+三个程序都使用标准输入输出，不要在代码里写死 freopen。
+示例中的暴力和生成器只适用于最大非空子段和，要按自己题目的输入格式和约束改写。详见[对拍教程](docs/WORKFLOW.md#5-怎样写对拍)。
 
-本机现有 VS 使用 MSVC v145；工具的自动编译使用 PATH 中的 g++，默认 C++23。
-新模板至少需要 C++20，可加 --std c++20；工具也支持用 --std c++17 编译只使用 C++17 的其他源码。
---cxx 指定 GCC/Clang 路径，或在 VS Developer PowerShell 中使用 --cxx cl；-I 添加第三方头文件目录。
-新模板沿用 ll/vi/vii/vp 等别名、常量与多测开关，提供 all/rall/sz、rep/per、debug、debug_matrix 和 print。
-debug 支持嵌套容器、pair/tuple、optional/variant、栈和队列；print(a) 向标准输出打印一行答案。具体示例见[模板使用说明](docs/WORKFLOW.md#9-模板宏与数据结构输出)。
-部分旧题解使用 format/concepts/ranges，需要支持相应特性的编译器。
+## 算法模板与提交
 
-整理前的备份位置及文件映射见[整理记录](docs/REORGANIZATION.md)。
+在 main.cpp 顶部包含需要的头文件，例如 `#include "data_structures/fenwick.hpp"`，然后通过 `cp::Fenwick<long long>` 使用；
+VS 与命令行工具都已配置好包含路径。
 
+```powershell
+# 运行库中自带的例子，自动读取输入并核对答案
+python tools/cp.py example data_structures/fenwick
+
+# 展开当前代码依赖的本地头文件，生成可提交的 build/submission.cpp
+python tools/cp.py export
+```
+
+模板中的 rep/per、all/rall、debug、debug_matrix、print 等用法见[模板说明](docs/WORKFLOW.md#9-模板宏与数据结构输出)。
+
+## 编译器
+
+- VS 使用 MSVC（v145 工具集，C++23）。工具的 test/run/stress 默认使用 PATH 中的 g++ 和 `-std=c++23`。
+- 新模板至少需要 C++20；只用 C++17 的其他源码可加 `--std c++17`。部分旧题解用到 format/concepts/ranges，需要编译器支持。
+- `--cxx` 指定 GCC/Clang 的路径；在 VS Developer PowerShell 中用 `--cxx cl` 改用 MSVC。`-I` 添加第三方头文件目录。
+- 工具自检：`python -m unittest discover -s tools -p "test_*.py"`，覆盖范围见[工作流教程](docs/WORKFLOW.md#8-工具自检)。
 
 ## GitHub 仓库与日常同步
 
@@ -144,12 +139,11 @@ git clone https://github.com/202030481266/cp-algorithm-vs.git
 cd cp-algorithm-vs
 ```
 
-然后用 Visual Studio 打开 cp-algorithm.sln。项目使用 v145 工具集，
-本机原有的 AtCoder Library 绝对路径需按新电脑的实际位置调整。
-工具的编译运行功能另需 Python 和 g++。
+然后用 Visual Studio 打开 cp-algorithm.sln。项目使用 v145 工具集；
+项目属性里 AtCoder Library 的包含目录是本机绝对路径，需要按新电脑的实际位置调整。
+工具的编译运行功能另需 Python 3.10+ 和 g++。
 
-.gitignore 已排除 VS 缓存、个人配置、编译产物、Python 缓存、运行输出和本地备份。
-源码、VS 共享项目配置、模板、样例输入与期望输出、工具和文档会纳入版本管理。
-没有全局忽略 *.out，以便保存题目的样例答案。
-backups/ 中的历史 ZIP 和切题备份只存在于本机，克隆仓库不会带上它们。
-重要对拍反例请复制到对应题目目录再提交，因为 build/ 不上传。
+.gitignore 已排除 VS 缓存、个人配置、编译产物、Python 缓存、运行输出和本地备份；
+源码、VS 共享项目配置、模板、样例、工具和文档都纳入版本管理。
+backups/ 和 build/ 只存在于本机：重要的对拍反例请复制到对应题目目录再提交。
+整理前的文件映射和备份位置见[整理记录](docs/REORGANIZATION.md)。

@@ -10,6 +10,8 @@ import subprocess
 import tempfile
 import unittest
 
+from cp import toolchain_env
+
 ROOT = Path(__file__).resolve().parents[1]
 LIB = ROOT / "cp-stl"
 
@@ -21,6 +23,7 @@ class CPSTLTests(unittest.TestCase):
         if not cls.compiler:
             raise unittest.SkipTest("Selected C++ compiler is not on PATH")
         cls.msvc = Path(cls.compiler).stem.lower() == "cl"
+        cls.env = toolchain_env(cls.compiler)
         checks = ROOT / "build/checks"
         checks.mkdir(parents=True, exist_ok=True)
         cls.temp = tempfile.TemporaryDirectory(prefix="cp-stl 验证-", dir=checks)
@@ -48,13 +51,14 @@ class CPSTLTests(unittest.TestCase):
                 command += ["-I", str(LIB), "-I", str(ROOT / "include"), "-I", str(ROOT)]
             command += ["-fsyntax-only"] if syntax else ["-o", exe.name]
         command += list(extra) + [str(source)]
-        compiled = subprocess.run(command, cwd=directory, capture_output=True, timeout=120)
+        compiled = subprocess.run(command, cwd=directory, capture_output=True, timeout=120, env=self.env)
         self.assertEqual(compiled.returncode, 0,
                          f"{source}\n" + (compiled.stdout + compiled.stderr).decode("utf-8", "replace"))
         return exe
 
     def run_program(self, exe, data=b""):
-        result = subprocess.run([str(exe)], input=data, capture_output=True, timeout=60, cwd=exe.parent)
+        result = subprocess.run([str(exe)], input=data, capture_output=True, timeout=60, cwd=exe.parent,
+                                env=self.env)
         self.assertEqual(result.returncode, 0, result.stderr.decode("utf-8", "replace"))
         return result
 
