@@ -1,0 +1,4 @@
+size=5 rank(4)=3 kth(2)=3
+prev(4)=3 next(4)=5 count(1)=1 has_next(5)=false
+seq=9 3 2 5 4
+sum(1,4)=10

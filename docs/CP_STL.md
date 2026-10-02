@@ -1,8 +1,13 @@
 # 在 Visual Studio 中使用 CP-STL
 
-`cp-stl/` 是从 D:/CP-Templates-and-Solutions/cp-stl 导入的项目内副本，现有 **36 个头文件、39 个示例**，以及使用手册和算法回归程序。克隆本 workspace 后可直接使用，不依赖原始目录。
+`cp-stl/` 是从 D:/CP-Templates-and-Solutions/cp-stl 导入的项目内副本，现有 **65 个头文件、68 个示例**，以及使用手册和算法回归程序。克隆本 workspace 后可直接使用，不依赖原始目录。
 
 导入时为 35 个头文件、38 个示例，各文件的 SHA-256 见 [cp-stl-import.json](cp-stl-import.json)。之后本地新增了 [计数排序与基数排序](../cp-stl/docs/usage/basic/sort.md)，并在 MST 模板中补充了 [稠密图与完全图 Prim](../cp-stl/docs/usage/graph/mst.md)，支持整数邻接矩阵、按需计算边权及最大生成树。
+
+随后对照左程云《算法讲解》（algorithm-journey 仓库）补充了 29 个进阶模板，并扩展了懒标记线段树（通用 `LazySegmentTree<Info,Tag>`）和线性基（前缀线性基）：
+可持久化结构、平衡树、LCT、莫队、割点与双连通、点分治、虚树、Kruskal 重构树、换根 DP、Pollard-Rho、扩展 CRT、高斯消元等。
+每个模板的使用手册末尾列出对应讲次和练习题；按课程查找见 [左程云课程对照表](../cp-stl/docs/course-map.md)。
+实现参考 ACL 等常见竞赛写法，只借用课程的题目清单，没有复制课程代码。这些模板的随机对拍在 `cp-stl/tests/ext_*.cpp`。
 
 ## 第一次打开
 
@@ -87,13 +92,15 @@ python tools/cp.py export --source solutions/cf/1500/C/main.cpp --output build/c
 - 模幂与一般模数逆元保留完整的 long long 输入范围。GCC 使用原生 128 位模乘；MSVC 在乘积能放入无符号 64 位时直接求模，否则使用精确加倍法。大模数下单次模乘 O(log mod)，模幂最坏 O(log exponent · log mod)，逆元最坏 O(log² mod)。常用 998244353 / 1000000007 模数无需加倍法。
 - 凸包沿用原库 `|x|,|y| <= 1e9` 的坐标约束。MSVC 下 CrossProduct 为 long long，在该范围内叉积精确；GCC 下保留原生 128 位类型。
 - 轻量起手式与测试程序改用标准头文件；MSVC 不提供 i128 别名。
+- `math/prime.hpp` 的 Montgomery 乘法只需要 64×64 位乘积的高 64 位：GCC/Clang 用原生 128 位整数，MSVC x64 用 `__umulh`，其他平台拆成 32 位计算，三条路径都经过测试。
+- 新增的树、图模板（LCT、割点与双连通、O(1) LCA、点分治、树上启发式合并、换根 DP 等）全部用显式栈实现，MSVC 默认 1MB 栈上的 20 万点长链也不会爆栈。
 
 其余算法接口保留原库形式。没有引入额外的宽整数库。
 
 ## 检查与后续维护
 
 ```powershell
-# GCC：全部头文件、39 个例子、原随机对拍、数学边界和导出检查
+# GCC：全部头文件、68 个例子、原随机对拍、新增模板的随机对拍、数学边界和导出检查
 python tools/test_cp_stl.py
 
 # MSVC：在 VS Developer PowerShell 中执行同一套检查

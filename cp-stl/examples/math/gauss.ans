@@ -1,0 +1,3 @@
+real: unique=true x = 5.00 3.00 -2.00
+mod 7: rank=1 free=1 one solution=3,0
+xor: solvable=false rank=2

@@ -1,0 +1,3 @@
+top(a)=1 top(b)=3
+after pop top=3 node2_value=8
+max_top=9

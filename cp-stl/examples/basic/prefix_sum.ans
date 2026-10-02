@@ -1,0 +1,5 @@
+sum all=45 lower-right 2x2=28
+1 1 0 0
+1 11 10 10
+0 10 10 10
+arithmetic: 10 11 13 15 17 10

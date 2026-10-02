@@ -1,0 +1,6 @@
+query 0 distinct=2 mode_count=2
+query 1 distinct=3 mode_count=2
+query 2 distinct=3 mode_count=2
+query 3 distinct=3 mode_count=3
+with updates: 3 2 3
+restored: 1 2 1 3

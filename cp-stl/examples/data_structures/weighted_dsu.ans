@@ -1,0 +1,4 @@
+sum[0,2)=8 sum[0,5)=17
+sum[0,1)_known=false
+consistent=true conflict=true
+x0^x2=0

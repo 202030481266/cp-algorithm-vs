@@ -4,7 +4,7 @@
 `tools/cp.py` 负责抓样例、测样例、归档、对拍和导出提交代码。
 
 - 从 **Codeforces、AtCoder、LeetCode** 自动抓取样例，一条命令跑完全部样例：[样例抓取说明](docs/FETCH.md)
-- 已接入 **CP-STL 的 36 个算法模板**，支持 Visual Studio / MSVC：[使用说明](docs/CP_STL.md) · [模板索引](cp-stl/docs/usage/README.md)
+- 已接入 **CP-STL 的 65 个算法模板**，支持 Visual Studio / MSVC：[使用说明](docs/CP_STL.md) · [模板索引](cp-stl/docs/usage/README.md) · [左程云课程对照表](cp-stl/docs/course-map.md)
 - Visual Studio 设置、文件输入输出、对拍与模板宏：[工作流教程](docs/WORKFLOW.md)
 
 用 Visual Studio 打开 **cp-algorithm.sln**。工具在外部修改 main.cpp 或项目文件后，VS 会提示重新加载，选择重新加载即可。

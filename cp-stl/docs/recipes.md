@@ -6,10 +6,12 @@
 
 ## 树状数组与线段树怎么选
 
-- 单点加、区间求和：`Fenwick<long long>`。
+- 单点加、区间求和：`Fenwick<long long>`；区间加、区间求和或二维：`RangeFenwick` / `Fenwick2D` / `RangeFenwick2D`。
 - 单点赋值、区间最值或自定义合并：`SegmentTree<T,Op>`。
-- 区间加、区间和：`RangeAddSum`。
+- 区间加、区间和：`RangeAddSum`；区间赋值、取反、仿射等其他标记：`LazySegmentTree<Info,Tag>`（预置 `SumMinMax` + `AssignAdd`）。
+- 区间取 min/max（chmin/chmax）再求和：`SegmentTreeBeats`。
 - 数组不变，查询 min/max/gcd/and/or：`SparseTable`。求和不能直接用重叠 ST 查询。
+- 下标很大且必须在线：`DynamicSegmentTree`；需要历史版本或区间第 k 小：`PersistentSegmentTree` / `RangeKth`。
 
 ```cpp
 #include "data_structures/segment_tree.hpp"
@@ -124,7 +126,7 @@ fib[0][0] = fib[0][1] = fib[1][0] = 1;
 M fn = fib.pow(n)[0][1];
 ```
 
-组合数预处理要求质数模数且预处理上界小于模数。n 更大时不能直接扩阶乘表，需要 Lucas 或其他数论方法。`PrimeSieve(n).factorize(x)` 只接受 x<=n；不能用小筛直接分解任意 64 位数。
+组合数预处理要求质数模数且预处理上界小于模数。n 更大时不能直接扩阶乘表，需要 Lucas 或其他数论方法。`PrimeSieve(n).factorize(x)` 只接受 x<=n；任意 64 位数用 [math/prime.hpp](usage/math/prime.md) 的 `factorize`（Pollard-Rho）。
 
 ## DP、前缀和与常见循环
 
@@ -186,7 +188,7 @@ Graphviz 工具只输出 DOT，不要求安装 Graphviz；需要渲染时再用 
 
 ## 更复杂的算法：使用现有 ACL
 
-本 workspace 保留原 VS 配置中的外部 ACL 路径；cp-stl 的 36 个头文件本身不依赖 ACL。
+本 workspace 保留原 VS 配置中的外部 ACL 路径；cp-stl 的 65 个头文件本身不依赖 ACL。ACL 的 lazysegtree 已由 cp-stl 的 `LazySegmentTree` 覆盖，提交时不必再展开外部库。
 
 需要 ACL 时，VS 按已有包含目录查找。命令行运行和导出须显式增加其目录，例如：
 

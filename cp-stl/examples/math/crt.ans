@@ -1,0 +1,6 @@
+gcd=6 x=-1 y=2 check=6
+3x=1 (mod 10): x=7 period=10
+crt: x=23 mod 105
+excrt: x=11 mod 12
+conflict=true
+4x+6y=10: x=1+3k, y=1-2k

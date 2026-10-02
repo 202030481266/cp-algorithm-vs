@@ -63,7 +63,7 @@ class CPSTLTests(unittest.TestCase):
         return result
 
     def test_all_headers_are_self_contained(self):
-        self.assertEqual(len(self.headers), 36)
+        self.assertEqual(len(self.headers), 65)
         def check(header):
             relative = header.relative_to(LIB)
             source = self.build / ("header_" + "_".join(relative.parts) + ".cpp")
@@ -74,7 +74,7 @@ class CPSTLTests(unittest.TestCase):
 
     def test_all_examples_and_debug_switch(self):
         sources = sorted((LIB / "examples").rglob("*.cpp"))
-        self.assertEqual(len(sources), 39)
+        self.assertEqual(len(sources), 68)
         def check(source):
             relative = source.relative_to(LIB / "examples")
             exe = self.compile(source, "examples/" + relative.as_posix())
@@ -98,6 +98,15 @@ class CPSTLTests(unittest.TestCase):
     def test_original_random_algorithm_checks(self):
         exe = self.compile(LIB / "tests/algorithms.cpp", "algorithms")
         self.assertIn(b"All template tests passed", self.run_program(exe).stdout)
+
+    def test_extension_random_algorithm_checks(self):
+        sources = sorted((LIB / "tests").glob("ext_*.cpp"))
+        self.assertEqual([source.stem for source in sources], ["ext_data_structures", "ext_graph", "ext_math"])
+        def check(source):
+            exe = self.compile(source, "extensions/" + source.stem)
+            self.assertIn(b"tests passed", self.run_program(exe).stdout, source.name)
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            list(pool.map(check, sources))
 
     def test_portability_against_python_integers(self):
         source = self.build / "boundaries.cpp"

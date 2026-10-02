@@ -19,4 +19,10 @@ int main() {
     std::cout << '\n';
     std::cout << "kth(4)_exists=" << basis.kth(4).has_value() << '\n';
     std::cout << "with_initial_2=" << basis.max_xor(2) << '\n';
+
+    // 前缀线性基：按顺序插入，max_xor(l) 只使用下标 >= l 的元素。
+    cp::PrefixXorBasis prefix;
+    for (std::uint64_t x : {8, 1, 2, 4}) prefix.push_back(x);
+    std::cout << "range_max [0,4)=" << prefix.max_xor(0) << " [1,4)=" << prefix.max_xor(1)
+              << " [3,4)=" << prefix.max_xor(3) << '\n';
 }

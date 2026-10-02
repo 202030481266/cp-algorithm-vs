@@ -1,0 +1,4 @@
+path(2,3)=9 connected(0,4)=false
+link_again=false
+path(2,3)=23
+lca(2,3)=0 root(3)=0

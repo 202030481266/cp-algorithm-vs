@@ -1,0 +1,4 @@
+directed: 0 1 2 0 2
+edge ids: 0 1 2 3
+undirected: 0 1 2 3 4 2 0
+star_has_path=false

@@ -1,0 +1,2 @@
+sum=22 min=3 max=5
+sum=19 max(0,3)=4

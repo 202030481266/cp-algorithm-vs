@@ -5,3 +5,4 @@ maximum=6
 sorted: 0 3 5 6
 kth(4)_exists=false
 with_initial_2=7
+range_max [0,4)=15 [1,4)=7 [3,4)=4

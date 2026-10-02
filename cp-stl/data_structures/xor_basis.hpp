@@ -3,8 +3,10 @@
 // 完整示例：cp-stl/examples/data_structures/xor_basis.cpp
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cstdint>
 #include <optional>
+#include <utility>
 #include <vector>
 
 namespace cp {
@@ -49,5 +51,32 @@ public:
         return value;
     }
     int rank() const { return rank_; }
+};
+// 前缀线性基：按顺序 push_back(x)，元素下标依次为 0,1,2,...；每个基向量保留尽量靠后的下标。
+// max_xor(l) 只用下标 >= l 的已插入元素，求子集最大异或和（允许空子集，至少为 0）。
+// 插入/查询 O(64)。把询问按右端点离线排序，即可回答任意区间 [l,r) 的最大异或和。
+class PrefixXorBasis {
+    std::array<std::uint64_t, 64> basis_{};
+    std::array<int, 64> pos_{};
+    int count_ = 0;
+public:
+    void push_back(std::uint64_t x) {
+        int p = count_++;
+        for (int i = 63; i >= 0 && x; --i) {
+            if (!(x >> i & 1)) continue;
+            if (!basis_[i]) { basis_[i] = x; pos_[i] = p; return; }
+            // 新元素更靠后：让它占据这一位，把旧基向量继续往低位消。
+            if (pos_[i] < p) { std::swap(basis_[i], x); std::swap(pos_[i], p); }
+            x ^= basis_[i];
+        }
+    }
+    std::uint64_t max_xor(int l) const {
+        assert(0 <= l && l <= count_);
+        std::uint64_t result = 0;
+        for (int i = 63; i >= 0; --i)
+            if (basis_[i] && pos_[i] >= l) result = std::max(result, result ^ basis_[i]);
+        return result;
+    }
+    int size() const { return count_; }
 };
 } // namespace cp

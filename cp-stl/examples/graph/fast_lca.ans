@@ -1,0 +1,3 @@
+lca(3,4)=1 lca(3,5)=0 distance(4,5)=4
+is_ancestor(1,4)=true is_ancestor(2,4)=false
+subtree(1): 1 3 4
