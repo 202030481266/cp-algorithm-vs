@@ -101,6 +101,13 @@
     <None Include="solutions\cf\1610\F\input.txt" />
     <None Include="solutions\cf\1610\F\main.cpp" />
     <None Include="solutions\cf\1610\F\README.md" />
+    <None Include="solutions\cf\1896\F\expected.txt" />
+    <None Include="solutions\cf\1896\F\input.txt" />
+    <None Include="solutions\cf\1896\F\main.cpp" />
+    <None Include="solutions\cf\1896\F\problem.json" />
+    <None Include="solutions\cf\1896\F\README.md" />
+    <None Include="solutions\cf\1896\F\samples\1.ans" />
+    <None Include="solutions\cf\1896\F\samples\1.in" />
     <ClInclude Include="cp-stl\basic\compress.hpp" />
     <ClInclude Include="cp-stl\basic\monotonic_stack.hpp" />
     <ClInclude Include="cp-stl\basic\prefix_sum.hpp" />
