@@ -55,7 +55,7 @@ python tools/cp.py example math/number_theory
 python tools/cp.py example "中文 路径/求和"
 ```
 
-自动读取例子旁的 .in（没有则使用空输入），与 .ans 比较并打印 MATCH；不占用当前题目的 data 文件。
+自动读取例子旁的 .in（没有则使用空输入），与 `cp-stl/examples/expected/` 中同名的 .ans 比较并打印 MATCH；不占用当前题目的 data 文件。
 程序输出在终端，编译产物放在 build/examples/。
 
 默认用 PATH 中的 g++。若要用 MSVC，在 VS 的 Developer PowerShell 中执行：

@@ -9,7 +9,7 @@
 3. 按题目修改示例数据或在自己的解答中引用头文件。数组与字符串区间通常为 `[l,r)`，图的点从 `0` 开始；具体约束以对应说明为准。
 4. 提交到 OJ 前执行 `python tools/cp.py export`，展开引用的本地头文件。
 
-每个示例旁的 `.ans` 是预期标准输出，`util/debug.err` 是本地模式的预期标准错误输出。也可以在仓库根目录运行，例如：
+预期标准输出集中放在 `examples/expected/` 中（如 `expected/data_structures/fenwick.ans`），`expected/util/debug.err` 是本地模式的预期标准错误输出。也可以在仓库根目录运行，例如：
 
 ```powershell
 python tools/cp.py example "data_structures/fenwick"

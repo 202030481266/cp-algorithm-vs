@@ -582,7 +582,9 @@ def run_example(args: argparse.Namespace) -> int:
     relative = source.relative_to(examples)
     executable = ROOT / "build/examples" / relative.with_suffix("") / "program.exe"
     compile_source(source, executable, args)
-    input_file, answer = source.with_suffix(".in"), source.with_suffix(".ans")
+    # 期望输出集中放在 examples/expected/，按例子的相对路径存放，避免和源码混在一起。
+    input_file = source.with_suffix(".in")
+    answer = (examples / "expected" / relative).with_suffix(".ans")
     data = input_file.read_bytes() if input_file.exists() else b""
     result = execute([str(executable)], data, args.timeout, toolchain_env(args.cxx))
     if result.stdout:

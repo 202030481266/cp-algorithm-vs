@@ -74,6 +74,7 @@ class CPSTLTests(unittest.TestCase):
 
     def test_all_examples_and_debug_switch(self):
         sources = sorted((LIB / "examples").rglob("*.cpp"))
+        expected = LIB / "examples/expected"
         self.assertEqual(len(sources), 68)
         def check(source):
             relative = source.relative_to(LIB / "examples")
@@ -81,8 +82,8 @@ class CPSTLTests(unittest.TestCase):
             input_file = source.with_suffix(".in")
             result = self.run_program(exe, input_file.read_bytes() if input_file.exists() else b"")
             self.assertEqual(result.stdout.replace(b"\r\n", b"\n"),
-                             source.with_suffix(".ans").read_bytes().replace(b"\r\n", b"\n"), str(relative))
-            error = source.with_suffix(".err")
+                             (expected / relative).with_suffix(".ans").read_bytes().replace(b"\r\n", b"\n"), str(relative))
+            error = (expected / relative).with_suffix(".err")
             self.assertEqual(result.stderr.replace(b"\r\n", b"\n"),
                              error.read_bytes().replace(b"\r\n", b"\n") if error.exists() else b"", str(relative))
         with ThreadPoolExecutor(max_workers=3) as pool:
