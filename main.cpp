@@ -253,122 +253,44 @@ inline constexpr int MAXB = 30;
 
 #define MULTI_CASE_INPUT
 
-//(1, 101) + 10 -> (1, 1)
-//(1, 101) + 01 -> (1, 1)
-//(1, 101) + 00 -> (1, 101)
-//(1, 101) + 11 -> (101, 1)
-//(1, 1) + 10 -> (1, 101)
-//(1, 1) + 01 -> (1, 101)
-//(1, 1) + 00 -> (1, 1)
-//(1, 1) + 11 -> (1, 1)
-// starts from (1, 1)
-
 void solve() {
-    int n;
-    cin >> n;
-    n *= 2;
     string s;
     cin >> s;
-    int cnt = 0;
+    int n = (int)s.size();
+    int base = n + 1;
+    vector<int> cnt(2 * n + 3, 0);
+    int x = base;
     for (char c : s) {
-        if (c == '1') ++cnt;
-    }
-    if (s[0] != s[n - 1]) {
-        cout << -1 << '\n';
-        return;
-    }
-    vec<string> ans;
-    if (s[0] == '1') {
-        string tmp;
-        rep(i, 0, n / 2) tmp += "()";
-        ans.pb(tmp);
-        for (auto& c : s) c = c == '1' ? '0' : '1';
-    }
-    vec<string> seq(2);
-    seq[0].pb('(');
-    seq[1].pb('(');
-    int cur = 0; 
-    for (int i = 1; i < n; i += 2) {
-        if (n - i == 1) {
-            if (s[n - 1] != '0') {
-                cout << -1 << '\n';
-                return;
-            }
-            seq[0] += ')';
-            seq[1] += ')';
-            break;
-        }
-        if (n - i == 3) { // [i, n)
-            if (cur) {
-                // 101 + 111 -> 010
-                // 101 + 001 -> 100
-                if (s[n - 3] == s[n - 2]) {
-                    cout << -1 << '\n';
-                    return;
-                }
-                int u = cur & 1;
-                seq[u] += ")))";
-                seq[u ^ 1] += s[n - 3] == '0' ? ")()" : "())";
-            }
-            else {
-                // 111 + 111 / 001 + 001 -> 000
-                // 111 + 001 -> 110
-                if (s[n - 3] != s[n - 2]) {
-                    cout << -1 << '\n';
-                    return;
-                }
-                seq[0] += ")()";
-                seq[1] += s[n - 3] == '0' ? ")()" : "())";
-            }
-            break;
-        }
-        int w = (s[i] - '0') * 2 + (s[i + 1] - '0');
-        if (cur) {
-            int u = cur & 1;
-            if (w == 0) {
-                seq[u] += ")(";
-                seq[u ^ 1] += ")(";
-            }
-            else if (w == 1) {
-                seq[u] += "))";
-                seq[u ^ 1] += ")(";
-                cur = 0;
-            }
-            else if (w == 2) {
-                seq[u] += "))";
-                seq[u ^ 1] += "()";
-                cur = 0;
-            }
-            else {
-                seq[u] += ")(";
-                seq[u ^ 1] += "()";
-            }
+        if (c == '1') {
+            ++cnt[x];
+            ++x;
         }
         else {
-            if (w == 0) {
-                seq[0] += ")(";
-                seq[1] += ")(";
-            }
-            else if (w == 1) {
-                seq[0] += "((";
-                seq[1] += "()";
-                cur = 2;
-            }
-            else if (w == 2) {
-                seq[0] += ")(";
-                seq[1] += "((";
-                cur = 3;
-            }
-            else {
-                seq[0] += ")(";
-                seq[1] += "()";
-            }
+            --x;
+            ++cnt[x];
         }
     }
-    ans.pb(seq[0]);
-    ans.pb(seq[1]);
-    cout << ans.size() << '\n';
-    for (string& s : ans) cout << s << '\n';
+    string ans;
+    ans.reserve(n);
+    x = base;
+
+    for (int i = 0; i < n; ++i) {
+        int left = cnt[x - 1];
+        int right = cnt[x];
+
+        if (left > 0 && (left >= 2 || right == 0)) {
+            ans += '0';
+            --cnt[x - 1];
+            --x;
+        }
+        else {
+            ans += '1';
+            --cnt[x];
+            ++x;
+        }
+    }
+
+    cout << ans << '\n';
 }
 
 
