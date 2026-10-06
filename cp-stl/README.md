@@ -134,7 +134,7 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | [convex_hull.hpp](geometry/convex_hull.hpp) | 整数叉积、Andrew 凸包，去除中间共线点 | [说明](docs/usage/geometry/convex_hull.md) | [示例](examples/geometry/convex_hull.cpp) |
 | [rectangle_union.hpp](geometry/rectangle_union.hpp) | 轴平行矩形并集的面积 / 周长，O(n log n) | [说明](docs/usage/geometry/rectangle_union.md) | [示例](examples/geometry/rectangle_union.cpp) |
 | [debug.hpp](util/debug.hpp) | `debug(a, b)`，容器/pair/tuple 输出到 stderr；仅 LOCAL 启用 | [说明](docs/usage/util/debug.md) | [示例](examples/util/debug.cpp) |
-| [random.hpp](util/random.hpp) | 随机数据、打乱；支持固定种子重现对拍 | [说明](docs/usage/util/random.md) | [示例](examples/util/random.cpp) |
+| [random.hpp](util/random.hpp) | 对拍数据生成：随机数、数组、互异数组、排列、拆分、字符串、树、图；同一种子在 MSVC / GCC 上生成相同数据 | [说明](docs/usage/util/random.md) | [示例](examples/util/random.cpp) |
 | [hash.hpp](util/hash.hpp) | unordered_map 的随机盐哈希 | [说明](docs/usage/util/hash.md) | [示例](examples/util/hash.cpp) |
 | [graphviz.hpp](util/graphviz.hpp) | 保留原有图结构 DOT 输出工具，默认 0-based | [说明](docs/usage/util/graphviz.md) | [示例](examples/util/graphviz.cpp) |
 
@@ -144,4 +144,4 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 
 默认编译器是 g++；在 Visual Studio Developer PowerShell 中设置 `$env:CP_STL_CXX = "cl"` 后可运行同一组 MSVC 检查。
 
-`tests/algorithms.cpp` 保留固定种子的朴素算法对拍，包括 20 万节点长链；`tests/ext_*.cpp` 是新增模板的随机对拍（数据结构、图论、数学与几何）。测试程序通过独立工具编译，不参与主项目生成。
+`tests/algorithms.cpp` 保留固定种子的朴素算法对拍，包括 20 万节点长链；`tests/ext_*.cpp` 是新增模板的随机对拍（数据结构、图论、数学与几何、随机数据生成）。测试程序通过独立工具编译，不参与主项目生成。

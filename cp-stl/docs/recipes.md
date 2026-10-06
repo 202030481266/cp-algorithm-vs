@@ -178,9 +178,11 @@ auto answer = sat.solve();        // nullopt 表示无解
 #include "util/random.hpp"
 #include "util/graphviz.hpp"
 
-cp::Random random(42);            // 固定种子便于重现
+cp::Random random(42);            // 固定种子便于重现；对拍 gen 中用 argv[1] 作种子
 auto a = random.array(10, -5, 5);
-debug(a);                         // LOCAL 下输出到 stderr
+auto p = random.permutation(10, 1);   // 1..10 的排列
+auto edges = random.tree(10);         // 随机树，点编号 0..9
+debug(a, p, edges);               // LOCAL 下输出到 stderr
 std::string dot = graphviz::to_dot(3, {{0, 1, 7}, {1, 2, {}}});
 ```
 

@@ -102,7 +102,7 @@ class CPSTLTests(unittest.TestCase):
 
     def test_extension_random_algorithm_checks(self):
         sources = sorted((LIB / "tests").glob("ext_*.cpp"))
-        self.assertEqual([source.stem for source in sources], ["ext_data_structures", "ext_graph", "ext_math"])
+        self.assertEqual([source.stem for source in sources], ["ext_data_structures", "ext_graph", "ext_math", "ext_util"])
         def check(source):
             exe = self.compile(source, "extensions/" + source.stem)
             self.assertIn(b"tests passed", self.run_program(exe).stdout, source.name)

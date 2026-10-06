@@ -987,6 +987,9 @@
     <None Include="cp-stl\tests\ext_math.cpp">
       <Filter>04 算法库 cp-stl\tests</Filter>
     </None>
+    <None Include="cp-stl\tests\ext_util.cpp">
+      <Filter>04 算法库 cp-stl\tests</Filter>
+    </None>
     <ClInclude Include="cp-stl\util\debug.hpp">
       <Filter>04 算法库 cp-stl\util</Filter>
     </ClInclude>

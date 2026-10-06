@@ -392,6 +392,7 @@
     <None Include="cp-stl\tests\ext_data_structures.cpp" />
     <None Include="cp-stl\tests\ext_graph.cpp" />
     <None Include="cp-stl\tests\ext_math.cpp" />
+    <None Include="cp-stl\tests\ext_util.cpp" />
     <ClInclude Include="cp-stl\util\debug.hpp" />
     <ClInclude Include="cp-stl\util\graphviz.hpp" />
     <ClInclude Include="cp-stl\util\hash.hpp" />

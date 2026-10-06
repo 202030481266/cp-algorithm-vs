@@ -201,6 +201,8 @@ seed → gen → 同一份输入 → solution → 输出 A
 先手算几个小样例验证 brute，再随机比较。
 gen 的范围要小到 brute 能完成，并覆盖题面约束：非负/正数、图是否连通、边是否允许重复等。
 还应主动造 n=1、全相等、全负数、边界值、重复值等容易漏掉的情况。
+gen 可以 `#include "util/random.hpp"`，用 `cp::Random rnd(std::stoull(argv[1]))` 生成数组、互异数组、排列、字符串、树和图，
+见 [随机数据生成](../cp-stl/docs/usage/util/random.md)；同一 seed 在 VS 和 g++ 下生成相同的输入。
 示例题是“最大**非空**连续子段和”，正解 O(n)，暴力枚举区间 O(n²)；
 生成器包含全负、全零、全正、正负交替、大值等模式。
 

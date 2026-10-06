@@ -9,6 +9,8 @@
 每个模板的使用手册末尾列出对应讲次和练习题；按课程查找见 [左程云课程对照表](../cp-stl/docs/course-map.md)。
 实现参考 ACL 等常见竞赛写法，只借用课程的题目清单，没有复制课程代码。这些模板的随机对拍在 `cp-stl/tests/ext_*.cpp`。
 
+[util/random.hpp](../cp-stl/docs/usage/util/random.md) 扩充成了对拍数据生成器，可生成互异数组、排列、拆分、字符串、树和简单图；同一种子在 MSVC 与 GCC 上生成相同的数据。
+
 ## 第一次打开
 
 保存 VS 中尚未保存的编辑，接受项目文件的外部修改并重新加载 `cp-algorithm.sln`。
