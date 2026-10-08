@@ -250,49 +250,19 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
+#include "util/random.hpp"
 
-#define MULTI_CASE_INPUT
-
-void solve() {
-    string s;
-    cin >> s;
-    int n = (int)s.size();
-    int base = n + 1;
-    vector<int> cnt(2 * n + 3, 0);
-    int x = base;
-    for (char c : s) {
-        if (c == '1') {
-            ++cnt[x];
-            ++x;
-        }
-        else {
-            --x;
-            ++cnt[x];
-        }
-    }
-    string ans;
-    ans.reserve(n);
-    x = base;
-
-    for (int i = 0; i < n; ++i) {
-        int left = cnt[x - 1];
-        int right = cnt[x];
-
-        if (left > 0 && (left >= 2 || right == 0)) {
-            ans += '0';
-            --cnt[x - 1];
-            --x;
-        }
-        else {
-            ans += '1';
-            --cnt[x];
-            ++x;
-        }
-    }
-
-    cout << ans << '\n';
+template<class T> void print(const char* name, const std::vector<T>& a) {
+    std::cout << name << ':';
+    for (const auto& x : a) std::cout << ' ' << x;
+    std::cout << '\n';
 }
 
+void solve() {
+    cp::Random rnd(42);
+    int n = int(rnd.integer(15, 20));
+    print(rnd.array(n, 1, 3));
+}
 
 int main() {
 #ifdef LOCAL_FILE
