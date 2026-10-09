@@ -7,6 +7,9 @@
     <Filter Include="03 题解归档\cf" />
     <Filter Include="03 题解归档\cf\1054" />
     <Filter Include="03 题解归档\cf\1054\G" />
+    <Filter Include="03 题解归档\cf\1446" />
+    <Filter Include="03 题解归档\cf\1446\d1" />
+    <Filter Include="03 题解归档\cf\1446\d1\samples" />
     <Filter Include="03 题解归档\cf\1458" />
     <Filter Include="03 题解归档\cf\1458\d" />
     <Filter Include="03 题解归档\cf\1458\d\samples" />
@@ -89,6 +92,39 @@
     </None>
     <None Include="solutions\cf\1054\G\README.md">
       <Filter>03 题解归档\cf\1054\G</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\expected.txt">
+      <Filter>03 题解归档\cf\1446\d1</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\input.txt">
+      <Filter>03 题解归档\cf\1446\d1</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\main.cpp">
+      <Filter>03 题解归档\cf\1446\d1</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\problem.json">
+      <Filter>03 题解归档\cf\1446\d1</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\README.md">
+      <Filter>03 题解归档\cf\1446\d1</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\samples\1.ans">
+      <Filter>03 题解归档\cf\1446\d1\samples</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\samples\1.in">
+      <Filter>03 题解归档\cf\1446\d1\samples</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\samples\2.ans">
+      <Filter>03 题解归档\cf\1446\d1\samples</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\samples\2.in">
+      <Filter>03 题解归档\cf\1446\d1\samples</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\samples\3.ans">
+      <Filter>03 题解归档\cf\1446\d1\samples</Filter>
+    </None>
+    <None Include="solutions\cf\1446\d1\samples\3.in">
+      <Filter>03 题解归档\cf\1446\d1\samples</Filter>
     </None>
     <None Include="solutions\cf\1458\d\expected.txt">
       <Filter>03 题解归档\cf\1458\d</Filter>

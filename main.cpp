@@ -250,18 +250,41 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
-#include "util/random.hpp"
-
-template<class T> void print(const char* name, const std::vector<T>& a) {
-    std::cout << name << ':';
-    for (const auto& x : a) std::cout << ' ' << x;
-    std::cout << '\n';
-}
 
 void solve() {
-    cp::Random rnd(42);
-    int n = int(rnd.integer(15, 20));
-    print(rnd.array(n, 1, 3));
+    int n;
+    cin >> n;
+
+    vi a(n), cnt(101);
+    for (int& v : a) {
+        cin >> v;
+        ++cnt[v];
+    }
+
+    int x = int(max_element(all(cnt)) - cnt.begin());
+    int ans = 0;
+    vi first(2 * n + 1);
+
+    rep(y, 1, 101) {
+        if (y == x || cnt[y] == 0) continue;
+
+        // first[n + d]：前缀计数差 d 最早出现时的前缀长度。
+        fill(all(first), -1);
+        first[n] = 0;
+
+        int sum = 0;
+        rep(i, 0, n) {
+            sum += (a[i] == x) - (a[i] == y);
+            int& pos = first[n + sum];
+            if (pos == -1) {
+                pos = i + 1;
+            }
+            else {
+                chmax(ans, i + 1 - pos);
+            }
+        }
+    }
+    cout << ans << '\n';
 }
 
 int main() {
