@@ -250,41 +250,72 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
+#define MULTI_CASE_INPUT
 
 void solve() {
     int n;
     cin >> n;
-
-    vi a(n), cnt(101);
-    for (int& v : a) {
-        cin >> v;
-        ++cnt[v];
+    string s;
+    cin >> s;
+    vi pre(n), suf(n);
+    pre[0] = s[0] - '0';
+    suf[n - 1] = s[n - 1] - '0';
+    rep(i, 1, n) pre[i] = pre[i - 1] + s[i] - '0';
+    per(i, 0, n - 1) suf[i] = suf[i + 1] + s[i] - '0';
+    if (pre[n - 1] == 0) {
+        cout << -1 << '\n';
+        return;
     }
-
-    int x = int(max_element(all(cnt)) - cnt.begin());
-    int ans = 0;
-    vi first(2 * n + 1);
-
-    rep(y, 1, 101) {
-        if (y == x || cnt[y] == 0) continue;
-
-        // first[n + d]：前缀计数差 d 最早出现时的前缀长度。
-        fill(all(first), -1);
-        first[n] = 0;
-
-        int sum = 0;
-        rep(i, 0, n) {
-            sum += (a[i] == x) - (a[i] == y);
-            int& pos = first[n + sum];
-            if (pos == -1) {
-                pos = i + 1;
-            }
-            else {
-                chmax(ans, i + 1 - pos);
-            }
+    if (n == 1) {
+        cout << 0 << '\n';
+        return;
+    }
+    if (pre[n - 1] >= n - pre[n - 1]) {
+        cout << n << '\n';
+        return;
+    }
+    // n>=3
+    rep(i, 0, n) {
+        if (pre[i] > i + 1 - pre[i]) {
+            cout << n + 1 << '\n';
+            return;
         }
     }
-    cout << ans << '\n';
+    per(i, 0, n) {
+        if (suf[i] > n - i - suf[i]) {
+            cout << n + 1 << '\n';
+            return;
+        }
+    }
+    int ones = pre[n - 1], zeros = n - ones;
+    // 2*pre[j]-j > zeros-ones+(2*pre[i]-i)
+    vi a(n);
+    rep(i, 0, n) a[i] = 2 * pre[i] - i;
+    int mx = a[0];
+    rep(i, 1, n - 1) {
+        if (a[i] + zeros - ones < mx) {
+            cout << n + 1 << '\n';
+            return;
+        }
+        chmax(mx, a[i]);
+    }
+    if (pre[n - 2] >= n - 1 - pre[n - 2] || suf[1] >= n - 1 - suf[1]) {
+        cout << n + 1 << '\n';
+        return;
+    }
+    //n+2判断比较困难
+    //pre[i]-pre[j]>=(i-j)-(pre[i]-pre[j])+2
+    //2*(pre[i]-pre[j])>=i-j+2 => 2*pre[i]-i >= 2*pre[j]-j+2
+    int mn = a[0];
+    rep(i, 1, n - 1) {
+        if (a[i] >= mn + 2) {
+            cout << n + 2 << '\n';
+            return;
+        }
+        chmin(mn, a[i]);
+    }
+    if (s[1] == '1' || s[n - 2] == '1' || ones >= zeros - 2) cout << n + 2 << '\n';
+    else cout << n + 3 << '\n';
 }
 
 int main() {

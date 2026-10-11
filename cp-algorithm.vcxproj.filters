@@ -20,6 +20,9 @@
     <Filter Include="03 题解归档\cf\1896" />
     <Filter Include="03 题解归档\cf\1896\F" />
     <Filter Include="03 题解归档\cf\1896\F\samples" />
+    <Filter Include="03 题解归档\cf\2189" />
+    <Filter Include="03 题解归档\cf\2189\E" />
+    <Filter Include="03 题解归档\cf\2189\E\samples" />
     <Filter Include="04 算法库 cp-stl" />
     <Filter Include="04 算法库 cp-stl\basic" />
     <Filter Include="04 算法库 cp-stl\data_structures" />
@@ -191,6 +194,27 @@
     </None>
     <None Include="solutions\cf\1896\F\samples\1.in">
       <Filter>03 题解归档\cf\1896\F\samples</Filter>
+    </None>
+    <None Include="solutions\cf\2189\E\expected.txt">
+      <Filter>03 题解归档\cf\2189\E</Filter>
+    </None>
+    <None Include="solutions\cf\2189\E\input.txt">
+      <Filter>03 题解归档\cf\2189\E</Filter>
+    </None>
+    <None Include="solutions\cf\2189\E\main.cpp">
+      <Filter>03 题解归档\cf\2189\E</Filter>
+    </None>
+    <None Include="solutions\cf\2189\E\problem.json">
+      <Filter>03 题解归档\cf\2189\E</Filter>
+    </None>
+    <None Include="solutions\cf\2189\E\README.md">
+      <Filter>03 题解归档\cf\2189\E</Filter>
+    </None>
+    <None Include="solutions\cf\2189\E\samples\1.ans">
+      <Filter>03 题解归档\cf\2189\E\samples</Filter>
+    </None>
+    <None Include="solutions\cf\2189\E\samples\1.in">
+      <Filter>03 题解归档\cf\2189\E\samples</Filter>
     </None>
     <ClInclude Include="cp-stl\basic\compress.hpp">
       <Filter>04 算法库 cp-stl\basic</Filter>
