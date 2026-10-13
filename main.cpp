@@ -253,70 +253,38 @@ inline constexpr int MAXB = 30;
 #define MULTI_CASE_INPUT
 
 void solve() {
-    int n;
-    cin >> n;
+    ll n, m;
+    cin >> n >> m;
     string s;
     cin >> s;
-    vi pre(n), suf(n);
-    pre[0] = s[0] - '0';
-    suf[n - 1] = s[n - 1] - '0';
-    rep(i, 1, n) pre[i] = pre[i - 1] + s[i] - '0';
-    per(i, 0, n - 1) suf[i] = suf[i + 1] + s[i] - '0';
-    if (pre[n - 1] == 0) {
+    ll one = 0;
+    rep(i, 0, n) {
+        if (s[i] == '1') ++one;
+    }
+    if (m * one % n) {
         cout << -1 << '\n';
         return;
     }
-    if (n == 1) {
-        cout << 0 << '\n';
-        return;
-    }
-    if (pre[n - 1] >= n - pre[n - 1]) {
-        cout << n << '\n';
-        return;
-    }
-    // n>=3
+    ll x = m * one / n, y = m - x;
+    vl cnt(n + 1);
     rep(i, 0, n) {
-        if (pre[i] > i + 1 - pre[i]) {
-            cout << n + 1 << '\n';
+        cnt[i + 1] = cnt[i] + (s[i] - '0');
+    }
+    rep(i, m, n + 1) {
+        if (cnt[i] - cnt[i - m] == x) {
+            cout << 1 << '\n' << i - m + 1 << ' ' << i << '\n';
             return;
         }
     }
-    per(i, 0, n) {
-        if (suf[i] > n - i - suf[i]) {
-            cout << n + 1 << '\n';
+    rep(i, n - m + 1, n) {
+        ll k = i + m - n;
+        if (cnt[n] - cnt[i] + cnt[k] == x) {
+            cout << 2 << '\n' << 1 << ' ' << k << '\n' << i + 1 << ' ' << n << '\n';
             return;
         }
     }
-    int ones = pre[n - 1], zeros = n - ones;
-    // 2*pre[j]-j > zeros-ones+(2*pre[i]-i)
-    vi a(n);
-    rep(i, 0, n) a[i] = 2 * pre[i] - i;
-    int mx = a[0];
-    rep(i, 1, n - 1) {
-        if (a[i] + zeros - ones < mx) {
-            cout << n + 1 << '\n';
-            return;
-        }
-        chmax(mx, a[i]);
-    }
-    if (pre[n - 2] >= n - 1 - pre[n - 2] || suf[1] >= n - 1 - suf[1]) {
-        cout << n + 1 << '\n';
-        return;
-    }
-    //n+2判断比较困难
-    //pre[i]-pre[j]>=(i-j)-(pre[i]-pre[j])+2
-    //2*(pre[i]-pre[j])>=i-j+2 => 2*pre[i]-i >= 2*pre[j]-j+2
-    int mn = a[0];
-    rep(i, 1, n - 1) {
-        if (a[i] >= mn + 2) {
-            cout << n + 2 << '\n';
-            return;
-        }
-        chmin(mn, a[i]);
-    }
-    if (s[1] == '1' || s[n - 2] == '1' || ones >= zeros - 2) cout << n + 2 << '\n';
-    else cout << n + 3 << '\n';
 }
+
 
 int main() {
 #ifdef LOCAL_FILE
