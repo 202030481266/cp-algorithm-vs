@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='utf-8'?>
+<UserSettings>
+  <ApplicationIdentity version="17.0" />
+  <ToolsOptions />
+  <Category name="Environment_Group" RegisteredName="Environment_Group">
+    <Category name="Environment_FontsAndColors" Category="{1EDA5DD4-927A-43A7-810E-7FD247D0DA1D}" Package="{DA9FB551-C724-11D0-AE1F-00A0C90FFFC3}" RegisteredName="Environment_FontsAndColors" PackageName="CVsShellPackage">
+      <PropertyValue name="Version">2</PropertyValue>
+      <FontsAndColors Version="2.0">
+        <Categories>
+          <Category GUID="{A27B4E24-A735-4D1D-B8E7-9716E1E3D8E0}">
+            <Items>
+              <Item Name="Plain Text" Foreground="0x00CCCCCC" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="TextView Background" Foreground="0x02000000" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="Indicator Margin" Foreground="0x02000000" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="Line Number" Foreground="0x00817670" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="Selected Line Number" Foreground="0x00CCCCCC" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="Selected Text" Foreground="0x02000000" Background="0x00775032" BoldFont="No" />
+              <Item Name="Inactive Selected Text" Foreground="0x02000000" Background="0x00413D3B" BoldFont="No" />
+              <Item Name="CurrentLineActiveFormat" Foreground="0x00282828" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="CurrentLineInactiveFormat" Foreground="0x00282828" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="Caret (Primary)" Foreground="0x00ADAFAE" Background="0x02000000" BoldFont="No" />
+              <Item Name="Caret (Secondary)" Foreground="0x00ADAFAE" Background="0x02000000" BoldFont="No" />
+              <Item Name="Visible Whitespace" Foreground="0x003E3F3F" Background="0x02000000" BoldFont="No" />
+              <Item Name="StickyScroll Background" Foreground="0x02000000" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="brace pair level one" Foreground="0x0021D5F7" Background="0x02000000" BoldFont="No" />
+              <Item Name="brace pair level two" Foreground="0x00FDA150" Background="0x02000000" BoldFont="No" />
+              <Item Name="brace pair level three" Foreground="0x00D56ED4" Background="0x02000000" BoldFont="No" />
+              <Item Name="mismatched brace" Foreground="0x001800C6" Background="0x02000000" BoldFont="No" />
+              <Item Name="Brace Matching (Rectangle)" Foreground="0x00888888" Background="0x001C261D" BoldFont="No" />
+              <Item Name="brace matching" Foreground="0x00888888" Background="0x001C261D" BoldFont="No" />
+              <Item Name="MarkerFormatDefinition/HighlightedReference" Foreground="0x00474747" Background="0x00474747" BoldFont="No" />
+              <Item Name="MarkerFormatDefinition/HighlightedDefinition" Foreground="0x00474747" Background="0x00474747" BoldFont="No" />
+              <Item Name="MarkerFormatDefinition/CppHighlightedDefinition" Foreground="0x00474747" Background="0x00474747" BoldFont="No" />
+              <Item Name="MarkerFormatDefinition/HighlightedWrittenReference" Foreground="0x005A3E1B" Background="0x005A3E1B" BoldFont="No" />
+              <Item Name="MarkerFormatDefinition/FindHighlight" Foreground="0x0016315E" Background="0x0016315E" BoldFont="No" />
+              <Item Name="Identifier" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="Comment" Foreground="0x0057996E" Background="0x02000000" BoldFont="No" />
+              <Item Name="Keyword" Foreground="0x00D59E68" Background="0x02000000" BoldFont="No" />
+              <Item Name="Number" Foreground="0x00A9CEB6" Background="0x02000000" BoldFont="No" />
+              <Item Name="String" Foreground="0x00798FC7" Background="0x02000000" BoldFont="No" />
+              <Item Name="Operator" Foreground="0x00D4D4D4" Background="0x02000000" BoldFont="No" />
+              <Item Name="Preprocessor Keyword" Foreground="0x00BF85C1" Background="0x02000000" BoldFont="No" />
+              <Item Name="Excluded Code" Foreground="0x007E7E7E" Background="0x02000000" BoldFont="No" />
+              <Item Name="Type" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="Method" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="XML Doc Comment" Foreground="0x0057996E" Background="0x02000000" BoldFont="No" />
+              <Item Name="XML Doc Tag" Foreground="0x0057996E" Background="0x02000000" BoldFont="No" />
+              <Item Name="C/C++ User Keywords" Foreground="0x00D59E68" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppControlKeywordSyntacticTokenFormat" Foreground="0x00BF85C1" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppNewDeleteSemanticTokenFormat" Foreground="0x00BF85C1" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppMacroSemanticTokenFormat" Foreground="0x00D59E68" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppNamespaceSemanticTokenFormat" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppTypeSemanticTokenFormat" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppRefTypeSemanticTokenFormat" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppValueTypeSemanticTokenFormat" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppClassTemplateSemanticTokenFormat" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppGenericTypeSemanticTokenFormat" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppAttributesSyntacticTokenFormat" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppFunctionSemanticTokenFormat" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppMemberFunctionSemanticTokenFormat" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppStaticMemberFunctionSemanticTokenFormat" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppFunctionTemplateSemanticTokenFormat" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppOperatorSemanticTokenFormat" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppMemberOperatorSemanticTokenFormat" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppGlobalVariableSemanticTokenFormat" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppLocalVariableSemanticTokenFormat" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppParameterSemanticTokenFormat" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppMemberFieldSemanticTokenFormat" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppStaticMemberFieldSemanticTokenFormat" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppPropertySemanticTokenFormat" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppEventSemanticTokenFormat" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppEnumSemanticTokenFormat" Foreground="0x00FEC36E" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppLabelSemanticTokenFormat" Foreground="0x00C8C8C8" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppUDLRawSemanticTokenFormat" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppUDLNumberSemanticTokenFormat" Foreground="0x00A9CEB6" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppUDLStringSemanticTokenFormat" Foreground="0x00798FC7" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppStringEscapeCharacterSyntacticTokenFormat" Foreground="0x007FB9D2" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppStringDelimiterCharacterSyntacticTokenFormat" Foreground="0x00798FC7" Background="0x02000000" BoldFont="No" />
+              <Item Name="CppInlineHintsFormat" Foreground="0x00969696" Background="0x00262626" BoldFont="No" />
+              <Item Name="keyword - control" Foreground="0x00BF85C1" Background="0x02000000" BoldFont="No" />
+              <Item Name="punctuation" Foreground="0x00CCCCCC" Background="0x02000000" BoldFont="No" />
+              <Item Name="operator - overloaded" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="string - escape character" Foreground="0x007FB9D2" Background="0x02000000" BoldFont="No" />
+              <Item Name="string - verbatim" Foreground="0x00798FC7" Background="0x02000000" BoldFont="No" />
+              <Item Name="namespace name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="class name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="record class name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="struct name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="record struct name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="interface name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="enum name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="delegate name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="module name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="type parameter name" Foreground="0x00B0CA65" Background="0x02000000" BoldFont="No" />
+              <Item Name="method name" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="extension method name" Foreground="0x00ABDCDA" Background="0x02000000" BoldFont="No" />
+              <Item Name="property name" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="field name" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="event name" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="local name" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="parameter name" Foreground="0x00FDDDA8" Background="0x02000000" BoldFont="No" />
+              <Item Name="enum member name" Foreground="0x00FEC36E" Background="0x02000000" BoldFont="No" />
+              <Item Name="constant name" Foreground="0x00FEC36E" Background="0x02000000" BoldFont="No" />
+              <Item Name="label name" Foreground="0x00C8C8C8" Background="0x02000000" BoldFont="No" />
+              <Item Name="inline hints" Foreground="0x00969696" Background="0x00262626" BoldFont="No" />
+              <Item Name="xml doc comment - text" Foreground="0x0057996E" Background="0x02000000" BoldFont="No" />
+              <Item Name="xml doc comment - delimiter" Foreground="0x0057996E" Background="0x02000000" BoldFont="No" />
+              <Item Name="xml doc comment - name" Foreground="0x0057996E" Background="0x02000000" BoldFont="No" />
+            </Items>
+          </Category>
+        </Categories>
+      </FontsAndColors>
+    </Category>
+  </Category>
+</UserSettings>

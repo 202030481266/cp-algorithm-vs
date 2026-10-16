@@ -283,6 +283,11 @@ void solve() {
             return;
         }
     }
+    vector<int> arr(n);
+    arr.clear();
+    for (int i = 0; i < n; ++i) {
+        cin >> n;
+    }
 }
 
 

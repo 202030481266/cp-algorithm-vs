@@ -6,6 +6,18 @@
 
 预览图是用交付配色绘制的示意图；实际符号分类由 Visual Studio 的 C++ IntelliSense 决定。
 
+## 2026-10-15 名称修正
+
+对照 VS 2026（18.10.3）程序集中的格式定义和内置深色主题数据，修正了三个 VS 不识别的项目名称。此前这三项导入后没有生效，颜色值本身不变：
+
+- `control keyword` → `keyword - control`：C# / VB 中 `if`、`return` 等控制关键字现在与其他关键字同为蓝色 `#569CD6`。C++ 的控制关键字使用 `CppControlKeywordSyntacticTokenFormat`，此前已经生效，不受影响。
+- `Line Numbers` → `Line Number`：行号现在为 `#858585`，此前保持 VS 默认的 `#8A8A8A`，肉眼几乎看不出差别。
+- `Visible White Space` → `Visible Whitespace`：开启“显示空白”后，空格点和制表符箭头现在为灰色 `#858585`，此前为 VS 默认的深青色 `#144852`。
+
+`CurrentLineInactiveFormat` 在 VS 2026 中已没有对应项目，导入时会被忽略，不影响其他颜色。
+
+已导入旧版的用户只需重新导入同名 `.vssettings` 文件，选择“环境 → 字体和颜色”。
+
 ## 2026-10-11 优化版
 
 - 把 `CppMemberOperatorSemanticTokenFormat` 从函数橙色改为 `#B4B4B4`。普通、非成员重载和成员重载运算符使用同一灰色，覆盖 `cin >> n`、`cout << ans`、`vector[index]` 等情况。
@@ -89,6 +101,8 @@ Fenwick tree: 46
 ## 保真范围与验证
 
 核心语法颜色与本机 VA 值逐项匹配。主题文件包含 70 个原生项目，兼容版包含 81 个项目。已验证 XML 结构、无重复项目、RGB/COLORREF 转换和不设置字体/字号，并已编译运行示例。
+
+2026-10-15 起，原生项目名称均已对照 VS 2026 核对，除 `CurrentLineInactiveFormat` 外都能识别；兼容版中以 `VA ` 开头的 11 个项目需要安装 VA 才能核对。
 
 原生版现在包含局部变量和形参的分类加粗，仍不能实现 VA 按定义文件判断的动态字重、按系统库来源判断的斜体或其专属工具窗口行为。VS 与 VA 对未解析符号、依赖类型、构造函数等的分类可能不同；这些情况需要语言服务支持，单纯主题文件无法完全等同。
 

@@ -17,8 +17,8 @@
               <Item Name="String" Foreground="0x00859DD6" Background="0x02000000" BoldFont="No" />
               <Item Name="Operator" Foreground="0x00B4B4B4" Background="0x02000000" BoldFont="No" />
               <Item Name="Preprocessor Keyword" Foreground="0x009B9B9B" Background="0x02000000" BoldFont="No" />
-              <Item Name="Line Numbers" Foreground="0x00858585" Background="0x02000000" BoldFont="No" />
-              <Item Name="Visible White Space" Foreground="0x00858585" Background="0x02000000" BoldFont="No" />
+              <Item Name="Line Number" Foreground="0x00858585" Background="0x02000000" BoldFont="No" />
+              <Item Name="Visible Whitespace" Foreground="0x00858585" Background="0x02000000" BoldFont="No" />
               <Item Name="Excluded Code" Foreground="0x00858585" Background="0x02000000" BoldFont="No" />
               <Item Name="C/C++ User Keywords" Foreground="0x00D69C56" Background="0x02000000" BoldFont="No" />
               <Item Name="CppMacroSemanticTokenFormat" Foreground="0x00C563BD" Background="0x02000000" BoldFont="No" />
@@ -66,7 +66,7 @@
               <Item Name="parameter name" Foreground="0x006BB7BD" Background="0x02000000" BoldFont="No" />
               <Item Name="enum member name" Foreground="0x001E77B9" Background="0x02000000" BoldFont="No" />
               <Item Name="constant name" Foreground="0x006BB7BD" Background="0x02000000" BoldFont="No" />
-              <Item Name="control keyword" Foreground="0x00D69C56" Background="0x02000000" BoldFont="No" />
+              <Item Name="keyword - control" Foreground="0x00D69C56" Background="0x02000000" BoldFont="No" />
               <Item Name="string - escape character" Foreground="0x00859DD6" Background="0x02000000" BoldFont="No" />
               <Item Name="xml doc comment - text" Foreground="0x004AA657" Background="0x02000000" BoldFont="No" />
               <Item Name="xml doc comment - delimiter" Foreground="0x004AA657" Background="0x02000000" BoldFont="No" />
