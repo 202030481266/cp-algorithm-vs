@@ -1,0 +1,42 @@
+// Built-in defaults of Editor Font Styles.
+// A .editor-font-styles.json next to the document (or in a parent folder, or in %USERPROFILE%) is laid over
+// these values: "styles" entries merge property by property ("name": null removes one), sections key by key.
+{
+  // .vssettings files whose Text Editor colors are applied without importing them; relative paths start at
+  // the folder of the configuration file. Later files override items of earlier ones.
+  "colors": [],
+
+  // Keys are Fonts and Colors item names (as in .vssettings files) or classification names; * and ? match
+  // any characters. Later entries win. Styles change fonts only; colors come from Fonts and Colors or "colors".
+  "styles": {
+    "*comment*": { "italic": true },
+    "EditorFontStyles.SystemSymbol": { "italic": true },
+    "EditorFontStyles.LocalSymbol": { "bold": true },
+    "EditorFontStyles.CommentTag": { "bold": true }
+  },
+
+  // C/C++: names declared by the standard library headers (Visual Assist "System symbols in italics").
+  "systemSymbols": {
+    "enabled": true,
+    "extraNames": [],
+    "excludeNames": []
+  },
+
+  // C/C++: names declared in the current file (Visual Assist "Local symbols in bold").
+  "localSymbols": {
+    "enabled": true
+  },
+
+  // C/C++: whole words inside comments.
+  "commentTags": {
+    "enabled": true,
+    "words": [ "TODO", "FIXME", "HACK", "NOTE", "XXX", "BUG" ]
+  },
+
+  // Extra folders for #include "..." besides the document's folder and the .vcxproj include directories;
+  // relative paths start at the folder of the configuration file.
+  "includeDirectories": [],
+
+  // Write every Fonts and Colors item name to the Output window pane "Editor Font Styles".
+  "listClassifications": false
+}

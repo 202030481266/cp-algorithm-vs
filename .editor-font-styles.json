@@ -1,0 +1,6 @@
+// Editor Font Styles (themes/editor-font-styles): colors and font styles for every file in this repository.
+// The colors come from the .vssettings file below without importing it into Visual Studio.
+{
+  "$schema": "./themes/editor-font-styles/editor-font-styles.schema.json",
+  "colors": "themes/visual-assist-dark/Visual-Assist-Dark.vssettings"
+}

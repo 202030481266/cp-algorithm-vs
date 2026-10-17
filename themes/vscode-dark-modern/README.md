@@ -32,6 +32,8 @@
 
 ## 安装
 
+安装了同仓库的 [Editor Font Styles](../editor-font-styles/README.md) 扩展时可以不导入：把仓库根目录 `.editor-font-styles.json` 中的 `colors` 改为本目录的文件，例如 `themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings`，保存后立即生效。下面是不使用扩展时的导入步骤。
+
 导入向导的逐页说明与 [Visual Assist Dark 导入指南](../visual-assist-dark/INSTALL.md) 相同，只是文件换成本目录的文件。
 
 1. 确认 Visual Studio 使用内置的 **深色 / Dark** 主题；已经是深色时跳过这一步。

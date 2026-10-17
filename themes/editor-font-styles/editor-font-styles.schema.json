@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Editor Font Styles configuration (.editor-font-styles.json)",
+  "description": "Laid over the built-in defaults: styles merge property by property (null removes an entry), sections key by key.",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "colors": {
+      "description": ".vssettings files whose Text Editor colors are applied without importing them (relative to this file); later files override items of earlier ones.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } },
+        { "type": "null" }
+      ]
+    },
+    "styles": {
+      "description": "Fonts and Colors item names (as in .vssettings files, e.g. Comment, Keyword, CppFunctionSemanticTokenFormat, VA Class) or classification names (cppFunction). * and ? match any characters; later entries win.",
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [ { "type": "null" }, { "$ref": "#/definitions/style" } ]
+      }
+    },
+    "systemSymbols": {
+      "description": "C/C++: names declared by the standard library headers are styled as EditorFontStyles.SystemSymbol (italic by default).",
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "extraNames": { "description": "More names to treat as system symbols, e.g. gp_hash_table.", "type": "array", "items": { "type": "string" } },
+        "excludeNames": { "description": "Names never treated as system symbols.", "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "localSymbols": {
+      "description": "C/C++: names declared in the current file are styled as EditorFontStyles.LocalSymbol (bold by default).",
+      "type": "object",
+      "properties": { "enabled": { "type": "boolean", "default": true } },
+      "additionalProperties": false
+    },
+    "commentTags": {
+      "description": "C/C++: whole words inside comments are styled as EditorFontStyles.CommentTag.",
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "words": { "type": "array", "items": { "type": "string" }, "default": [ "TODO", "FIXME", "HACK", "NOTE", "XXX", "BUG" ] }
+      },
+      "additionalProperties": false
+    },
+    "includeDirectories": {
+      "description": "Extra folders searched for #include \"...\" after the document's folder and the .vcxproj include directories; relative to this file.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "listClassifications": {
+      "description": "Write every classification in priority order to the Output window pane \"Editor Font Styles\".",
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "style": {
+      "type": "object",
+      "properties": {
+        "italic": { "type": "boolean" },
+        "oblique": { "description": "Slant the regular glyphs instead of using the font's italic face (for fonts whose italics render wrongly).", "type": "boolean" },
+        "bold": { "type": "boolean" },
+        "fontFamily": { "description": "An installed font family, e.g. \"Cascadia Code\".", "type": "string" },
+        "fontScale": { "description": "Size relative to the editor font.", "type": "number", "minimum": 0.25, "maximum": 4 },
+        "underline": { "type": "boolean" },
+        "strikethrough": { "type": "boolean" },
+        "opacity": { "description": "Foreground opacity.", "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

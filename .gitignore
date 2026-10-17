@@ -36,6 +36,10 @@ Win32/
 *.tlog
 *.lastbuildstate
 
+# Visual Studio extension build output (python themes/editor-font-styles/build.py)
+/themes/editor-font-styles/bin/
+/themes/editor-font-styles/obj/
+
 # Local backups of source files and project settings
 /backups/
 
