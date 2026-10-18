@@ -253,43 +253,31 @@ inline constexpr int MAXB = 30;
 #define MULTI_CASE_INPUT
 
 void solve() {
-    ll n, m;
-    cin >> n >> m;
-    string s;
-    cin >> s;
-    ll one = 0;
-    rep(i, 0, n) {
-        if (s[i] == '1') ++one;
-    }
-    if (m * one % n) {
-        cout << -1 << '\n';
-        return;
-    }
-    ll x = m * one / n, y = m - x;
-    vl cnt(n + 1);
-    rep(i, 0, n) {
-        cnt[i + 1] = cnt[i] + (s[i] - '0');
-    }
-    rep(i, m, n + 1) {
-        if (cnt[i] - cnt[i - m] == x) {
-            cout << 1 << '\n' << i - m + 1 << ' ' << i << '\n';
-            return;
-        }
-    }
-    rep(i, n - m + 1, n) {
-        ll k = i + m - n;
-        if (cnt[n] - cnt[i] + cnt[k] == x) {
-            cout << 2 << '\n' << 1 << ' ' << k << '\n' << i + 1 << ' ' << n << '\n';
-            return;
-        }
-    }
-    vector<int> arr(n);
-    arr.clear();
-    for (int i = 0; i < n; ++i) {
-        cin >> n;
-    }
-}
+    int n;
+    cin >> n;
+    vector<long long> a(n);
+    for (auto& x : a) cin >> x;
 
+    long long total = accumulate(a.begin(), a.end(), 0LL);
+
+    bool below = false;        
+    bool adjacentAbove = false; 
+    bool prevAbove = false;    
+    long long s = 0;
+
+    for (int i = 1; i < n; i++) {
+        s += a[i - 1];
+        long long d = s * n - total * i;
+        if (d < 0) {
+            below = true;
+            break;
+        }
+        bool above = d > 0;
+        if (above && prevAbove) adjacentAbove = true;
+        prevAbove = above;
+    }
+    cout << ((below || !adjacentAbove) ? "Yes" : "No") << '\n';
+}
 
 int main() {
 #ifdef LOCAL_FILE
