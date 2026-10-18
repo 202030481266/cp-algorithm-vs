@@ -54,6 +54,9 @@ def newtonsoft():
 
 
 def build(msbuild, instance, deploy):
+    # The VSSDK task keeps an existing intermediate manifest even after source.extension.vsixmanifest
+    # changes (a version bump would not reach the .vsix), so it is regenerated on every build.
+    (HERE / "obj" / "Release" / "extension.vsixmanifest").unlink(missing_ok=True)
     command = [str(msbuild), str(PROJECT), "-restore", "-p:Configuration=Release", "-v:minimal", "-nologo"]
     if deploy:
         command += ["-p:DeployExtension=true", "-p:VSSDKTargetPlatformRegRootSuffix=Exp", f"-p:DeployTargetInstanceId={instance}"]

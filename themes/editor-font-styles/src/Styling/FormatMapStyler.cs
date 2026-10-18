@@ -219,6 +219,14 @@ namespace EditorFontStyles.Styling
     /// </summary>
     internal sealed class FormatMapStyler
     {
+        /// <summary>
+        /// Italic runs are drawn 0.01% larger than the text around them. WPF shapes adjacent runs of the same
+        /// size and "same" font together, and it treats the regular and italic faces of one TrueType collection
+        /// (.ttc, e.g. Sarasa Mono SC) as the same font: the italic run then gets the glyph numbers of the
+        /// regular face and "std" after a keyword is drawn as "OPB". A different size keeps the run separate.
+        /// </summary>
+        private const double ItalicSizeNudge = 1.0001;
+
         private readonly OutputLog log;
         private readonly IReadOnlyList<IClassificationType> topTypes;
         private readonly Dictionary<IClassificationType, Managed> managed = new Dictionary<IClassificationType, Managed>();
@@ -396,9 +404,11 @@ namespace EditorFontStyles.Styling
                 mask |= FontProperty.Typeface;
             }
 
-            if (style.FontScale.HasValue)
+            bool italic = style.Italic == true && style.Oblique != true;
+            if (style.FontScale.HasValue || italic)
             {
-                values.Size = Map.DefaultTextProperties.FontRenderingEmSize * style.FontScale.Value;
+                double scale = (style.FontScale ?? 1.0) * (italic ? ItalicSizeNudge : 1.0);
+                values.Size = Map.DefaultTextProperties.FontRenderingEmSize * scale;
                 mask |= FontProperty.Size;
             }
 

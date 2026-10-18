@@ -40,7 +40,20 @@ namespace EditorFontStyles.Styling
                 .Select(registry.GetClassificationType)
                 .Where(type => type != null)
                 .ToList();
-            configs.ConfigChanged += (sender, e) => Activate(activeDocument, force: true);
+            configs.ConfigChanged += OnConfigChanged;
+        }
+
+        private void OnConfigChanged(object sender, EventArgs e)
+        {
+            // Raised from a dispatcher timer: an exception escaping here would terminate Visual Studio.
+            try
+            {
+                Activate(activeDocument, force: true);
+            }
+            catch (Exception error)
+            {
+                log.WriteLine($"Reloading the configuration failed: {error}");
+            }
         }
 
         public void Attach(IWpfTextView view, IEditorFormatMap editorMap, IClassificationFormatMap classificationMap, Func<string> documentPath)
