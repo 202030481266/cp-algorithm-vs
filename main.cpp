@@ -250,33 +250,51 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
-#define MULTI_CASE_INPUT
-
 void solve() {
-    int n;
-    cin >> n;
-    vector<long long> a(n);
-    for (auto& x : a) cin >> x;
-
-    long long total = accumulate(a.begin(), a.end(), 0LL);
-
-    bool below = false;        
-    bool adjacentAbove = false; 
-    bool prevAbove = false;    
-    long long s = 0;
-
-    for (int i = 1; i < n; i++) {
-        s += a[i - 1];
-        long long d = s * n - total * i;
-        if (d < 0) {
-            below = true;
-            break;
+    int n, k;
+    cin >> n >> k;
+    int mid = (n - 1) / 2;
+    if (k < mid) {
+        cout << "L";
+        for (int i = 0; i < k - 1; ++i) {
+            cout << "DRUL";
         }
-        bool above = d > 0;
-        if (above && prevAbove) adjacentAbove = true;
-        prevAbove = above;
     }
-    cout << ((below || !adjacentAbove) ? "Yes" : "No") << '\n';
+    else {
+        if (k == mid) {
+            cout << "DL";
+        }
+        else {
+            int val = (n - 1) / 2;
+            int odd, even;
+            if (val & 1) {
+                odd = val + 2;
+                even = val + 3;
+            }
+            else {
+                odd = val + 1;
+                even = val + 2;
+            }
+            if (k == val + 1) {
+                for (int i = 0; i < n / 2; ++i) cout << "DRUL";
+            }
+            else {
+                if (k % 2 == 0) {
+                    cout << "DRU";
+                }
+                cout << "L";
+                int cnt = n - 2 - (n + 1) / 2;
+                for (int i = 0; i < (cnt + 1) / 2; ++i) cout << "DLUL";
+                if (k & 1) {
+                    for (int i = odd; i < k; i += 2) cout << "DLUL";
+                }
+                else {
+                    for (int i = even; i < k; i += 2) cout << "DLUL";
+                }
+                cout << "DRDL";
+            }
+        }
+    }
 }
 
 int main() {
