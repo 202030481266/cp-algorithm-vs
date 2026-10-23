@@ -1,6 +1,8 @@
 // Editor Font Styles (themes/editor-font-styles): colors and font styles for every file in this repository.
-// The colors come from the .vssettings file below without importing it into Visual Studio.
+// The colors come from the .vssettings file below without importing it into Visual Studio; the font replaces the one
+// chosen in Fonts and Colors (size in points).
 {
   "$schema": "./themes/editor-font-styles/editor-font-styles.schema.json",
-  "colors": "themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings"
+  "colors": "themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings",
+  "font": { "family": "Maple Mono NF CN", "size": 14 }
 }

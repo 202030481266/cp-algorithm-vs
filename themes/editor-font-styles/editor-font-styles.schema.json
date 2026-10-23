@@ -13,6 +13,15 @@
         { "type": "null" }
       ]
     },
+    "font": {
+      "description": "Font of the code editors, applied without changing Fonts and Colors; null keeps the family or size chosen there.",
+      "type": [ "object", "null" ],
+      "properties": {
+        "family": { "description": "An installed font family, e.g. \"Maple Mono NF CN\".", "type": [ "string", "null" ] },
+        "size": { "description": "Size in points, as in Fonts and Colors.", "type": [ "number", "null" ], "minimum": 6, "maximum": 72 }
+      },
+      "additionalProperties": false
+    },
     "styles": {
       "description": "Fonts and Colors item names (as in .vssettings files, e.g. Comment, Keyword, CppFunctionSemanticTokenFormat, VA Class) or classification names (cppFunction). * and ? match any characters; later entries win.",
       "type": "object",

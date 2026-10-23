@@ -44,7 +44,7 @@
 
 ## 安装
 
-安装了同仓库的 [Editor Font Styles](../editor-font-styles/README.md) 扩展时可以不导入：把仓库根目录 `.editor-font-styles.json` 中的 `colors` 改为本目录的文件，例如 `themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings`，保存后立即生效。下面是不使用扩展时的导入步骤。
+安装了同仓库的 [Editor Font Styles](../editor-font-styles/README.md) 扩展时可以不导入：把仓库根目录 `.editor-font-styles.json` 中的 `colors` 改为本目录的文件，例如 `themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings`，保存后立即生效；字体和字号用同一文件中的 `font` 设置（扩展 1.2.0 起）。下面是不使用扩展时的导入步骤。
 
 导入向导的逐页说明与 [Visual Assist Dark 导入指南](../visual-assist-dark/INSTALL.md) 相同，只是文件换成本目录的文件。
 
@@ -62,7 +62,7 @@
 7. 按下一节调整字体和行距。
 8. 在 C++ 项目中打开 `semantic-gallery.cpp`，等待 IntelliSense 完成解析，对照下方“效果检查”。
 
-这是通过 VS 内置导入向导应用的编辑器配色，不需要安装 VSIX 扩展。应用后，主题下拉框仍显示内置深色主题。文件不修改字体、字号、快捷键、窗口布局和项目配置。
+这是通过 VS 内置导入向导应用的编辑器配色，不需要安装 VSIX 扩展。应用后，主题下拉框仍显示内置深色主题。文件不包含字体、字号、快捷键、窗口布局和项目配置；但 VS 2026 导入只含颜色的文件时会把文本编辑器的字体重置为默认值，导入后需要重新选择字体。使用扩展的 `colors` 和 `font` 不需要导入，没有这个问题。
 
 本主题包含 `visual-assist-dark` 原生版的全部颜色项目，导入后会完整覆盖 VA 配色，无需先恢复默认。切回 VA 配色时重新导入它的文件即可；本主题独有的少数项目（光标、当前行号、查找和定义高亮、`[[nodiscard]]` 等属性、内联提示、`///` 文档注释等）会保留本主题的颜色。
 
@@ -72,6 +72,8 @@
 
 1. **工具 → 选项 → 环境 → 字体和颜色**，“显示其设置”选 **文本编辑器**，字体选 **Consolas**，大小选 **14**。
 2. **行距**保持默认的 **1.0**（可在选项中搜索“行距”确认）。
+
+使用 Editor Font Styles 扩展（1.2.0 起）时，第 1 步改为在 `.editor-font-styles.json` 中写 `"font": { "family": "Consolas", "size": 14 }`，不需要在对话框中选择，导入主题文件后也不会丢失。
 
 VS 按整像素排版：Consolas 14 磅实测字宽 10px、行高 23px，与 VS Code 的 9.9px、24px 最接近。13 磅偏小，15 磅偏大；行距 1.15 会把行高增大到约 26px。
 

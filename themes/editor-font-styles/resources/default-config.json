@@ -6,6 +6,13 @@
   // the folder of the configuration file. Later files override items of earlier ones.
   "colors": [],
 
+  // Font of the code editors, applied like "colors" without changing Fonts and Colors. The size is in points as in
+  // Fonts and Colors; null keeps the family or size chosen there.
+  "font": {
+    "family": null,
+    "size": null
+  },
+
   // Keys are Fonts and Colors item names (as in .vssettings files) or classification names; * and ? match
   // any characters. Later entries win. Styles change fonts only; colors come from Fonts and Colors or "colors".
   "styles": {

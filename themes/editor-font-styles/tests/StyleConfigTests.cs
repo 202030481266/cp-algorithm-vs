@@ -84,6 +84,28 @@ namespace EditorFontStyles.Tests
             Check(problems.Count == 1 && problems[0].Contains("oblique"), "non-boolean oblique reported");
         }
 
+        private static void FontIsParsed()
+        {
+            var problems = new List<string>();
+            string path = "C:\\x\\" + StyleConfig.FileName;
+            var config = StyleConfig.Load(DefaultJson, null, null, problems);
+            Check(config.FontFamily == null && config.FontSize == null, "no editor font by default");
+
+            config = StyleConfig.Load(DefaultJson, "{ \"font\": { \"family\": \" Maple Mono NF CN \", \"size\": 13.5 } }", path, problems);
+            Equal(string.Empty, string.Join("; ", problems), "problems");
+            Check(config.FontFamily == "Maple Mono NF CN" && config.FontSize == 13.5, "family trimmed, size in points");
+
+            config = StyleConfig.Load(DefaultJson, "{ \"font\": { \"size\": 12 } }", path, problems);
+            Check(config.FontFamily == null && config.FontSize == 12, "font merges key by key");
+
+            config = StyleConfig.Load(DefaultJson, "{ \"font\": { \"family\": 3, \"size\": 100, \"weight\": 400 } }", path, problems);
+            Check(problems.Count == 3 && config.FontFamily == null && config.FontSize == null, "bad family, size and unknown property reported");
+
+            problems.Clear();
+            StyleConfig.Load(DefaultJson, "{ \"font\": \"Consolas\" }", path, problems);
+            Check(problems.Count == 1 && problems[0].Contains("must be an object"), "font that is not an object reported");
+        }
+
         private static void InvalidConfigIsReported()
         {
             var problems = new List<string>();

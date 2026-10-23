@@ -5,5 +5,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Font styles for Visual Studio Fonts and Colors items and Visual Assist style C++ symbol styling.")]
 [assembly: AssemblyProduct("Editor Font Styles")]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]

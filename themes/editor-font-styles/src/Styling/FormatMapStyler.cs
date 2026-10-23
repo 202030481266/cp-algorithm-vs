@@ -212,13 +212,16 @@ namespace EditorFontStyles.Styling
     }
 
     /// <summary>
-    /// Applies the "styles" of a configuration to one classification format map (the "text" map shared by
-    /// code editors). Only the explicit properties of matching classifications change; colors stay with Fonts
-    /// and Colors. When Fonts and Colors or a theme switch rewrites an item, the styles are applied again, and
-    /// when a style is removed the value from before is restored.
+    /// Applies the "font" and "styles" of a configuration to one classification format map (the "text" map
+    /// shared by code editors). The font replaces the default text properties; styles change only the explicit
+    /// properties of matching classifications; colors stay with Fonts and Colors. When Fonts and Colors or a
+    /// theme switch rewrites the font or an item, the configuration is applied again, and when the font or a
+    /// style is removed the value from before is restored.
     /// </summary>
     internal sealed class FormatMapStyler
     {
+        private const double DipsPerPoint = 96.0 / 72.0;
+
         /// <summary>
         /// Italic runs are drawn 0.01% larger than the text around them. WPF shapes adjacent runs of the same
         /// size and "same" font together, and it treats the regular and italic faces of one TrueType collection
@@ -230,6 +233,7 @@ namespace EditorFontStyles.Styling
         private readonly OutputLog log;
         private readonly IReadOnlyList<IClassificationType> topTypes;
         private readonly Dictionary<IClassificationType, Managed> managed = new Dictionary<IClassificationType, Managed>();
+        private readonly Managed editorFont = new Managed();
         private StyleConfig config;
         private bool applying;
         private bool listed;
@@ -279,6 +283,7 @@ namespace EditorFontStyles.Styling
 
             try
             {
+                ApplyEditorFont();  // first: style sizes are relative to the editor font
                 foreach (var type in Map.CurrentPriorityOrder)
                 {
                     if (type != null)
@@ -334,6 +339,28 @@ namespace EditorFontStyles.Styling
             }
         }
 
+        private void ApplyEditorFont()
+        {
+            var desired = default(FontValues);
+            var mask = FontProperty.None;
+            if (config.FontFamily != null && FontCatalog.IsInstalled(config.FontFamily, log))
+            {
+                desired.Typeface = new Typeface(new FontFamily(config.FontFamily), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+                mask |= FontProperty.Typeface;
+            }
+
+            if (config.FontSize.HasValue)
+            {
+                desired.Size = config.FontSize.Value * DipsPerPoint;
+                mask |= FontProperty.Size;
+            }
+
+            if (mask != FontProperty.None || editorFont.Mask != FontProperty.None)
+            {
+                Update(editorFont, desired, mask, Map.DefaultTextProperties, p => Map.DefaultTextProperties = p);
+            }
+        }
+
         private void Restyle(IClassificationType type)
         {
             var style = config.ResolveStyle(Map.GetEditorFormatMapKey(type), type.Classification);
@@ -343,30 +370,9 @@ namespace EditorFontStyles.Styling
                 return;
             }
 
-            var properties = Map.GetExplicitTextProperties(type);
-            var current = FontValues.Read(properties);
             var desired = Desired(style, out var mask);
-            if (state == null)
-            {
-                state = new Managed();
-            }
-            else
-            {
-                // Values someone else changed after we wrote them (Fonts and Colors, a theme) become the originals.
-                state.Original = state.Original.With(current, FontValues.Differences(current, state.Applied, state.Mask));
-            }
-
-            state.Original = state.Original.With(current, mask & ~state.Mask);
-            var released = state.Mask & ~mask;
-            var target = desired.With(state.Original, released);
-            var write = mask | released;
-            if (FontValues.Differences(current, target, write) != FontProperty.None)
-            {
-                Map.SetExplicitTextProperties(type, target.WriteTo(properties, write));
-            }
-
-            state.Applied = desired;
-            state.Mask = mask;
+            state = state ?? new Managed();
+            Update(state, desired, mask, Map.GetExplicitTextProperties(type), p => Map.SetExplicitTextProperties(type, p));
             if (mask == FontProperty.None)
             {
                 managed.Remove(type);
@@ -375,6 +381,26 @@ namespace EditorFontStyles.Styling
             {
                 managed[type] = state;
             }
+        }
+
+        /// <summary>Writes the <paramref name="mask"/> properties of <paramref name="desired"/> and restores the ones no longer set.</summary>
+        private static void Update(Managed state, FontValues desired, FontProperty mask, TextFormattingRunProperties properties, Action<TextFormattingRunProperties> write)
+        {
+            var current = FontValues.Read(properties);
+
+            // Values someone else changed after we wrote them (Fonts and Colors, a theme) become the originals.
+            state.Original = state.Original.With(current, FontValues.Differences(current, state.Applied, state.Mask));
+            state.Original = state.Original.With(current, mask & ~state.Mask);
+            var released = state.Mask & ~mask;
+            var target = desired.With(state.Original, released);
+            var changed = mask | released;
+            if (FontValues.Differences(current, target, changed) != FontProperty.None)
+            {
+                write(target.WriteTo(properties, changed));
+            }
+
+            state.Applied = desired;
+            state.Mask = mask;
         }
 
         private FontValues Desired(TextStyle style, out FontProperty mask)

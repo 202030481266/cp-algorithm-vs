@@ -79,7 +79,7 @@ namespace EditorFontStyles.Configuration
     {
         public const string FileName = ".editor-font-styles.json";
 
-        private static readonly string[] Sections = { "colors", "styles", "systemSymbols", "localSymbols", "commentTags", "includeDirectories", "listClassifications", "$schema" };
+        private static readonly string[] Sections = { "colors", "font", "styles", "systemSymbols", "localSymbols", "commentTags", "includeDirectories", "listClassifications", "$schema" };
 
         private ISet<string> systemNames;
 
@@ -92,6 +92,12 @@ namespace EditorFontStyles.Configuration
 
         /// <summary>Absolute paths of the .vssettings files whose Text Editor colors are applied, in order.</summary>
         public IReadOnlyList<string> ColorFiles { get; private set; } = Array.Empty<string>();
+
+        /// <summary>Editor font family, or null to keep the font chosen in Fonts and Colors.</summary>
+        public string FontFamily { get; private set; }
+
+        /// <summary>Editor font size in points as in Fonts and Colors, or null to keep that size.</summary>
+        public double? FontSize { get; private set; }
 
         public IReadOnlyList<StyleRule> Rules { get; private set; } = Array.Empty<StyleRule>();
         public bool SystemSymbols { get; private set; }
@@ -232,6 +238,7 @@ namespace EditorFontStyles.Configuration
 
             config.Rules = rules;
             config.ColorFiles = ResolveColorFiles(json["colors"], sourcePath, origin, problems);
+            ReadFont(json["font"], config, $"{origin}: font", problems);
             var system = json["systemSymbols"] as JObject;
             config.SystemSymbols = ReadBool(system, "enabled", true, origin, problems);
             config.ExtraSystemNames = ReadStrings(system, "extraNames", origin, problems);
@@ -266,15 +273,7 @@ namespace EditorFontStyles.Configuration
                         style.Strikethrough = Bool(value, origin, property.Name, problems);
                         break;
                     case "fontFamily":
-                        if (value.Type == JTokenType.String && ((string)value).Trim().Length > 0)
-                        {
-                            style.FontFamily = ((string)value).Trim();
-                        }
-                        else if (value.Type != JTokenType.Null)
-                        {
-                            problems.Add($"{origin}.fontFamily must be a font name such as \"Cascadia Code\".");
-                        }
-
+                        style.FontFamily = FontName(value, origin, property.Name, problems);
                         break;
                     case "fontScale":
                         style.FontScale = Number(value, 0.25, 4, origin, property.Name, problems);
@@ -292,6 +291,51 @@ namespace EditorFontStyles.Configuration
             }
 
             return style;
+        }
+
+        private static void ReadFont(JToken value, StyleConfig config, string origin, ICollection<string> problems)
+        {
+            if (value == null || value.Type == JTokenType.Null)
+            {
+                return;
+            }
+
+            if (!(value is JObject font))
+            {
+                problems.Add($"{origin} must be an object such as {{ \"family\": \"Consolas\", \"size\": 14 }}.");
+                return;
+            }
+
+            foreach (var property in font.Properties())
+            {
+                switch (property.Name)
+                {
+                    case "family":
+                        config.FontFamily = FontName(property.Value, origin, property.Name, problems);
+                        break;
+                    case "size":
+                        config.FontSize = Number(property.Value, 6, 72, origin, property.Name, problems);
+                        break;
+                    default:
+                        problems.Add($"{origin}: unknown property \"{property.Name}\" (use family or size).");
+                        break;
+                }
+            }
+        }
+
+        private static string FontName(JToken value, string origin, string name, ICollection<string> problems)
+        {
+            if (value.Type == JTokenType.String && ((string)value).Trim().Length > 0)
+            {
+                return ((string)value).Trim();
+            }
+
+            if (value.Type != JTokenType.Null)
+            {
+                problems.Add($"{origin}.{name} must be a font name such as \"Cascadia Code\".");
+            }
+
+            return null;
         }
 
         private static bool? Bool(JToken value, string origin, string name, ICollection<string> problems)

@@ -2,7 +2,8 @@
 
 这个 Visual Studio 2022 / 2026 编辑器扩展（VSIX）让配色和字形都跟着仓库走：
 
-- 直接按 `.vssettings` 主题文件给编辑器着色，不需要导入；仓库根目录的配置已指定 [Visual Assist Dark](../visual-assist-dark/README.md)，主题文件修改后立即生效；
+- 直接按 `.vssettings` 主题文件给编辑器着色，不需要导入；仓库根目录的配置已指定 [VS Code Dark Modern 鲜艳版](../vscode-dark-modern/README.md)，主题文件修改后立即生效；
+- 按配置设置代码编辑器的字体和字号，不需要在“字体和颜色”中手动选择；
 - 给任意“字体和颜色”项目设置斜体、倾斜、粗体、单独的字体、字号、下划线、删除线和不透明度，这些是 `.vssettings` 做不到的；
 - 在 C/C++ 中按 Visual Assist 的方式，把标准库符号显示为斜体（System symbols in italics），把当前文件中声明的符号显示为粗体（Local symbols in bold）；
 - 把注释中的 TODO、FIXME 等标记显示为橙色粗体。
@@ -37,10 +38,10 @@
 
 ## 配色
 
-仓库根目录的 [.editor-font-styles.json](../../.editor-font-styles.json) 中只有一项主要设置：
+仓库根目录的 [.editor-font-styles.json](../../.editor-font-styles.json) 中指定配色文件：
 
 ```jsonc
-"colors": "themes/visual-assist-dark/Visual-Assist-Dark.vssettings"
+"colors": "themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings"
 ```
 
 扩展读取这个文件中“文本编辑器”类别的全部项目（前景色、背景色、粗体），直接应用到编辑器，效果与导入该文件相同：
@@ -49,10 +50,25 @@
 - 主题文件中出现的项目以主题文件为准，在对话框中修改这些项目不会生效；
 - 修改或重新生成主题文件（例如运行 `generate.py`）后立即生效；删除 `colors` 后恢复为 VS 保存的颜色；
 - 换主题只需改路径，例如 `themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings`。也可以写成列表，后面的文件覆盖前面文件中的同名项目，用于在现成主题上做个人调整；
-- 只使用“文本编辑器”类别，`.vssettings` 中的字体名称和字号不使用，IDE 外观（深色 / 浅色主题）不受影响；
+- 只使用“文本编辑器”类别，`.vssettings` 中的字体名称和字号不使用（字体用下一节的 `font` 设置），IDE 外观（深色 / 浅色主题）不受影响；
 - 当前 VS 中不存在的项目会在输出窗口列出，例如 VS 2026 已删除的 `CurrentLineInactiveFormat`，以及未安装 VA 时的 `VA Class` 等项目。
 
 用 Go To Definition 等方式打开仓库以外、没有配置文件的文件（如标准库头文件）时，继续沿用仓库的配色和字形，不会切换回默认值。
+
+## 字体
+
+从 1.2.0 起，`font` 设置代码编辑器的字体和字号，作用与“字体和颜色”中“文本编辑器”的字体相同：
+
+```jsonc
+"font": { "family": "Maple Mono NF CN", "size": 14 }
+```
+
+- `size` 的单位与“字体和颜色”中的“大小”相同（磅）；只写其中一项时，另一项沿用“字体和颜色”中的设置；
+- 与 `colors` 一样只在内存中生效，不改动 VS 保存的字体，对话框中显示的仍是原来的字体；删除 `font` 或写 `null` 后恢复；
+- `styles` 中的 `fontScale` 和斜体项的字号按这里的字号计算；
+- 字体未安装时在输出窗口提示，继续使用“字体和颜色”中的字体。
+
+用“导入和导出设置”导入只含颜色的 `.vssettings`（例如本仓库的主题文件）时，VS 2026 会把文本编辑器的字体重置为默认值，需要重新选择；VS 的设置日志 `%LOCALAPPDATA%\Microsoft\VisualStudio\SettingsLogs` 中记为 `profile normal import`。用 `colors` 和 `font` 换配色和字体不需要导入，也就没有这个问题；即使导入过，编辑器中仍显示 `font` 指定的字体。
 
 ## 自行构建
 
@@ -75,7 +91,7 @@ python build.py --exp     # 另外部署到实验实例，用 devenv /rootSuffix
 
 配置文件只需写要改的部分。`styles` 中与默认值同名的项目按属性合并，写 `null` 删除该项目；其他部分按键合并，列表整体替换。保存后立即生效，不需要重启；新建配置文件后切换一次编辑器标签页即可生效。
 
-“字体和颜色”由所有编辑器共用，所以同一时间只有一份配置的 `colors` 和 `styles` 生效：以最近获得焦点、且找到了配置文件的文档为准。没有配置文件的文档不会替换已生效的仓库配置。
+“字体和颜色”由所有编辑器共用，所以同一时间只有一份配置的 `colors`、`font` 和 `styles` 生效：以最近获得焦点、且找到了配置文件的文档为准。没有配置文件的文档不会替换已生效的仓库配置。
 
 ```jsonc
 {
@@ -117,6 +133,8 @@ python build.py --exp     # 另外部署到实验实例，用 devenv /rootSuffix
 | 设置 | 默认值 | 说明 |
 | --- | --- | --- |
 | `colors` | `[]` | 用于着色的 `.vssettings` 文件，一个路径或路径列表，相对路径以配置文件所在目录为起点 |
+| `font.family` | `null` | 代码编辑器的字体，见“字体”一节；`null` 使用“字体和颜色”中的字体 |
+| `font.size` | `null` | 代码编辑器的字号（磅，6～72）；`null` 使用“字体和颜色”中的字号 |
 | `systemSymbols.enabled` | `true` | 标准库符号使用 System Symbol 样式 |
 | `systemSymbols.extraNames` | `[]` | 另外视为系统符号的名称，例如 GCC 的 `__gnu_pbds` 容器名 |
 | `systemSymbols.excludeNames` | `[]` | 不视为系统符号的名称 |

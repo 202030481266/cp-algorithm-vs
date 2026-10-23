@@ -45,6 +45,7 @@ namespace EditorFontStyles.Tests
                 Run(StyleRulesMatchNamesAndWildcards);
                 Run(InvalidConfigIsReported);
                 Run(ObliqueIsParsed);
+                Run(FontIsParsed);
                 Run(DecodesVsSettingsColors);
                 Run(ParsesRepositoryThemes);
                 Run(ParsesOtherCategoriesAndErrors);
