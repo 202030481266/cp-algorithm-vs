@@ -1,6 +1,18 @@
 # VS Code Dark Modern · Visual Studio 配色复刻
 
-按本机 VS Code 1.142.0 自带的 **Dark Modern** 主题源文件取色，并用 VS Code 实际截图逐像素校准，面向 Visual Studio 2022 / 2026 的 C++ 编辑器。目录中保留两个版本：语法颜色更鲜明的鲜艳版，以及在本机显示器上与 VS Code 显示一致的 VX2762 校准版。
+按本机 VS Code 1.142.0 自带的 **Dark Modern** 主题源文件取色，并用 VS Code 实际截图逐像素校准，面向 Visual Studio 2022 / 2026 的 C++ 编辑器。目录中保留两个版本：参考 One Dark Pro、Gruvbox、Monokai 重新配色的鲜艳版，以及在本机显示器上与 VS Code 显示一致的 VX2762 校准版。
+
+## 2026-10-23 鲜艳版重新配色
+
+鲜艳版不再是“Dark Modern 提高彩度”，改为参考 One Dark Pro、Gruvbox、Monokai 重新设计的语法配色，见“鲜艳版”一节。
+
+- 旧鲜艳版的变量、关键字、宏、枚举成员和类型都在蓝到青绿之间，提高彩度后整屏偏蓝；新配色把各类 token 分到不同色相。
+- 变量和参数改为暖白色，运算符和标点为暖灰色，代码整体更安静，关键字、函数、类型更醒目。
+- `cin >>`、`cout <<`、`vector` 的 `[]` 等重载运算符不再显示为函数色，与内置运算符同色。
+- 背景、选区、行号、查找和引用高亮等界面颜色不变；校准版不受影响，重新生成的结果与之前完全相同。
+- `generate.py` 改为按调色板生成：`--palette` 选择 `dark-modern` 或 `vivid`，原来的 `--vivid` 倍数改名为 `--chroma`。
+
+已导入旧版的用户重新导入即可；使用 Editor Font Styles 扩展并指向鲜艳版文件时，重新生成后立即生效。
 
 ## 2026-10-16 精简
 
@@ -8,7 +20,7 @@
 
 ## 2026-10-16 鲜艳版
 
-新增 `VSCode-Dark-Modern-Vivid.vssettings`，不追求与 VS Code 一致，而是让语法颜色更鲜明，见“鲜艳版”一节。
+新增 `VSCode-Dark-Modern-Vivid.vssettings`，不追求与 VS Code 一致，而是让语法颜色更鲜明。当时的做法是把 Dark Modern 语法颜色的彩度乘以 1.4，2026-10-23 已重新配色。
 
 ## 2026-10-16 截图校准
 
@@ -25,10 +37,10 @@
 
 | 使用情况 | 选择的文件 |
 | --- | --- |
-| 想要更鲜明的颜色，不要求与 VS Code 一致 | **[VSCode-Dark-Modern-Vivid.vssettings](VSCode-Dark-Modern-Vivid.vssettings)** |
+| 想要更鲜明、各类 token 区分更清楚的配色，不要求与 VS Code 一致 | **[VSCode-Dark-Modern-Vivid.vssettings](VSCode-Dark-Modern-Vivid.vssettings)** |
 | 在 ViewSonic VX2762-2K 显示器上与 VS Code 显示一致 | [VSCode-Dark-Modern-VX2762.vssettings](VSCode-Dark-Modern-VX2762.vssettings) |
 
-两个文件的项目完全相同，只是颜色值不同，只导入其中一个。鲜艳版与校准版、Dark Modern 原色及 ×1.7 的效果对比见 [vivid-compare.png](vivid-compare.png)；对比图是按 VS 着色规则绘制的示意图。
+两个文件的项目完全相同，只是颜色值不同，只导入其中一个。鲜艳版、旧鲜艳版（Dark Modern 彩度 ×1.4）与 Dark Modern 原色的效果对比见 [vivid-compare.png](vivid-compare.png)；对比图是按 VS 着色规则绘制的示意图。
 
 ## 安装
 
@@ -67,34 +79,39 @@ Fira Code 会把 `>>`、`==`、`++` 等显示为连字，这是两边观感差�
 
 ## 鲜艳版
 
-Dark Modern 本身是低彩度的柔和配色。以 OKLCH 彩度衡量，各语法色只有 0.06～0.135，而纯红、纯绿、纯蓝为 0.26～0.31。代码里最多的变量浅蓝 `#9CDCFE`、函数黄 `#DCDCAA` 亮度很高、彩度很低，再加上运算符和标点本来就是灰色，整体容易显得发灰。校准版为贴合 VS Code 又把蓝、青色的彩度降低了约 11%，所以看起来更灰。
+鲜艳版是参考 One Dark Pro、Gruvbox、Monokai 重新设计的语法配色。背景、选区、行号、查找和引用高亮等界面颜色与 Dark Modern 相同，只有当前行号和非活动代码随普通文本改为暖白色。
 
-鲜艳版把语法颜色的 OKLCH 彩度乘以 1.4，保持色相和亮度不变，因此与背景的对比度基本不变。变量浅蓝、枚举蓝原本已经处在 sRGB 色域边缘，只能把亮度最多降低 0.06 来换取彩度。背景、普通文本、运算符、标点、行号、选区等灰色和界面颜色都不变。
+- **各类 token 分到不同色相**。沿用 One Dark Pro 的分工：关键字紫、函数蓝、类型黄、字符串绿、数字橙；控制流和预处理指令用 Monokai 的粉红，宏和转义字符用青色，成员字段用浅鲑红。旧鲜艳版的变量、关键字、宏、枚举成员和类型都在蓝到青绿之间，这是它整体发蓝、不易区分的主要原因。
+- **变量用暖白色**。变量和参数是代码里最多的 token，用 Gruvbox 式的暖白色而不是彩色，代码整体更安静，其他颜色才醒目。运算符和标点再暗一级。
+- **重载运算符与内置运算符同色**。`cin >> n >> m` 中的 `>>`、`cnt[i]` 中的 `[]` 与 `+`、`=` 一样是暖灰色。VS 把 `;`、`,`、`.` 也归为运算符，所以运算符只能用不显眼的灰色。
+- **注释用暖灰色**，与三个参考主题一致；Editor Font Styles 扩展默认还会把注释显示为斜体。
+- **亮度和彩度控制在同一范围**。以 OKLCH 衡量，彩色的亮度在 0.70～0.82、彩度在 0.075～0.17，没有特别跳的颜色；所有颜色与背景的对比度都不低于 4.5:1。
 
-| 元素 | 原色 | 鲜艳版 |
-| --- | --- | --- |
-| 变量、参数、成员字段 | `#9CDCFE` | `#70CFFF` |
-| 函数、重载运算符 | `#DCDCAA` | `#DEDD96` |
-| 类型、命名空间 | `#4EC9B0` | `#00CEB0` |
-| 关键字、宏 | `#569CD6` | `#289CEF` |
-| 控制流、预处理指令 | `#C586C0` | `#D279CD` |
-| 字符串 | `#CE9178` | `#DE8965` |
-| 转义字符 | `#D7BA7D` | `#E1B85C` |
-| 数字 | `#B5CEA8` | `#AED19C` |
-| 注释 | `#6A9955` | `#5A9E38` |
-| 枚举成员 | `#4FC1FF` | `#00B6FF` |
+| 元素 | 颜色 | OKLCH（L C h） | 参考 |
+| --- | --- | --- | --- |
+| 变量、参数、普通文本、标签 | `#D8D0BF` | 0.86 0.025 85 | Gruvbox 前景色 |
+| 运算符、标点、重载运算符 | `#A29E96` | 0.70 0.012 80 | — |
+| 关键字（`int`、`const`、`class`、`using`、`static_cast` 等） | `#B484E8` | 0.70 0.150 305 | One Dark Pro 紫 |
+| 控制流、预处理指令、`new` / `delete` | `#F26A90` | 0.70 0.170 5 | Monokai 粉红 |
+| 类型、命名空间、属性 | `#E6BE68` | 0.82 0.115 85 | One Dark Pro、Gruvbox 黄 |
+| 函数 | `#61B2F4` | 0.74 0.125 245 | One Dark Pro 蓝 |
+| 成员字段 | `#EAACA1` | 0.80 0.075 30 | One Dark Pro 的属性红，降低彩度 |
+| 宏、转义字符 | `#56C4CA` | 0.76 0.100 200 | One Dark Pro 青 |
+| 数字、枚举成员 | `#EE9B5F` | 0.76 0.125 55 | One Dark Pro 橙 |
+| 字符串 | `#93CA73` | 0.78 0.130 135 | One Dark Pro 绿 |
+| 注释 | `#8C8579` | 0.62 0.020 85 | Gruvbox 灰 |
+| 非活动代码 | `#858077` | 普通文本按 55% 混合 | — |
+| 彩色括号 1 / 2 / 3 层 | `#F2CE59` / `#E176C1` / `#6CCDEA` | 0.86 0.14 92 / 0.71 0.16 340 / 0.80 0.10 220 | VS Code 的金 → 紫 → 蓝，色相与关键字、函数错开 |
 
-类型色在青色方向已接近色域上限，只能提高到约 1.2 倍；其余颜色都达到 1.4 倍。
-
-想要更淡或更艳，可以改变倍数重新生成，例如 1.2 或 1.6：
+想整体更艳或更淡，用 `--chroma` 把语法颜色的彩度乘以一个倍数重新生成，例如 1.15 或 0.85：
 
 ```text
-python generate.py --vivid 1.6 -o VSCode-Dark-Modern-Vivid.vssettings
+python generate.py --palette vivid --chroma 1.15 -o VSCode-Dark-Modern-Vivid.vssettings
 ```
 
-要长期改用其他倍数，同时修改 `generate.py` 中 `VARIANTS` 的 `vivid` 值，否则不带参数重新生成时会恢复为 1.4。
+要长期使用其他倍数，同时在 `generate.py` 的 `VARIANTS` 中给鲜艳版加上 `"chroma": 1.15`，否则不带参数重新生成时会恢复。单个颜色在 `generate.py` 的 `VIVID` 中修改。
 
-本机显示器在蓝、绿方向的色域比 sRGB 宽，VS 不做色彩管理，所以实际显示会比对比图更鲜明一些。
+本机显示器的色域比 sRGB 宽，VS 不做色彩管理，所以实际显示会比对比图更鲜明一些。
 
 ## 显示器色彩管理
 
@@ -102,7 +119,7 @@ VS Code（Chromium）会按显示器的 ICC 配置文件转换颜色，Visual St
 
 `VSCode-Dark-Modern-VX2762.vssettings` 按 VS Code 的方式预先转换了全部颜色：用配置文件的原色转换色域，亮度曲线保持 sRGB。以 VS Code 截图实测，这一模型对 12 种取样颜色（变量、关键字、类型、字符串、函数、注释、紫色、数字、两种括号色和两种灰色）的误差都不超过 1。灰色在转换后不变，因此背景、行号等与 Dark Modern 原色相同。
 
-校准版只适用于启用了该配置文件的显示器。换用其他显示器时，改用鲜艳版，或用那台显示器的配置文件重新生成：
+校准版只适用于启用了该配置文件的显示器。换用其他显示器时，用那台显示器的配置文件重新生成（不加 `--palette` 时使用 Dark Modern 原色）：
 
 ```text
 python generate.py --profile C:\Windows\System32\spool\drivers\color\<配置文件>.icm -o VSCode-Dark-Modern-<显示器>.vssettings
@@ -121,7 +138,7 @@ python generate.py --profile C:\Windows\System32\spool\drivers\color\<配置文�
 
 ### 语法颜色
 
-下表为 Dark Modern 原色，是两个版本的共同基础；鲜艳版和校准版的实际值由 `generate.py` 在此基础上转换，鲜艳版的结果见“鲜艳版”一节。
+下表为 Dark Modern 原色，是校准版的基础，校准版的实际值由 `generate.py` 按显示器配置文件转换。鲜艳版使用另一套语法颜色，见“鲜艳版”一节；颜色项目的对应关系相同，只是成员字段、宏、重载运算符在鲜艳版中各有单独的颜色。
 
 | 元素 | RGB | VS Code 来源 | VS 颜色项目 |
 | --- | --- | --- | --- |
@@ -176,6 +193,8 @@ RGB 转换为 `.vssettings` 所需的 `0x00BBGGRR`；例如函数黄 `#DCDCAA` �
 
 ## 与 VS Code 的已知差异
 
+以下针对校准版；鲜艳版本来就不追求与 VS Code 一致。
+
 - **`using` 和 `operator` 关键字**：Dark+ 把它们着为紫色 `#C586C0`。VS 的 C++ 关键字只分“普通关键字”和固定的控制关键字两类，这两个词在 VS 中显示为蓝色。
 - **`vector`、`string` 的 `[]`**：VS Code 的彩色括号会覆盖语义颜色，所以 `a[i]` 的方括号按层级显示金 / 紫 / 蓝。VS 把它们识别为成员运算符，且该颜色优先于括号对着色，所以显示为重载运算符的函数黄。重载运算符只能共用一个颜色，为了让 `cin >>`、`cout <<` 与 VS Code 一致，这里保留黄色。
 - **标点**：`;`、`,`、`.` 和模板的 `<>` 在 VS Code 中是普通文本色 `#CCCCCC`，VS 把它们归为 Operator，显示为 `#D4D4D4`，相差很小。
@@ -185,7 +204,7 @@ RGB 转换为 `.vssettings` 所需的 `0x00BBGGRR`；例如函数黄 `#DCDCAA` �
 - **缩进参考线**：VS Code 为 1px 的 `#404040`，VS 为 2px 的 `#303030`，整体亮度相近，保持 VS 默认。选中文本的同名高亮和滚动条概览在 `.vssettings` 中没有对应项目。
 - **IDE 外壳**：侧边栏 `#181818`、标题栏、标签页等属于整体主题，`.vssettings` 无法设置；本主题只覆盖编辑器。
 
-非活动代码：VS Code 以 55% 不透明度保留原有语法颜色。VS 的 C/C++ 选项 **对非活动代码块使用不透明度百分比** 开启、**非活动代码不透明度百分比** 设为 55 时效果相同；若关闭了透明度方式，VS 改用 Excluded Code 颜色，本主题已设为 `#CCCCCC` 的 55% 混合值。
+非活动代码：VS Code 以 55% 不透明度保留原有语法颜色。VS 的 C/C++ 选项 **对非活动代码块使用不透明度百分比** 开启、**非活动代码不透明度百分比** 设为 55 时效果相同；若关闭了透明度方式，VS 改用 Excluded Code 颜色，本主题已设为普通文本色的 55% 混合值。
 
 ## 效果检查
 
@@ -196,7 +215,7 @@ acc.total() = 8000
 alpha: 251, instances: 1
 ```
 
-优先检查以下细节：
+校准版优先检查以下细节：
 
 - `Accumulator`、`Point`、`Level`、`modern`、`std` 呈青绿色。
 - `add`、`total`、`instances`、`operator_color_demo` 呈淡黄色。
@@ -206,13 +225,22 @@ alpha: 251, instances: 1
 - `DM_TRACE` 呈蓝色；`'\t'`、`'\n'` 中的转义部分为黄褐色。
 - `#if 0` 区块半透明；开启括号对着色后，嵌套括号按金 → 紫 → 蓝循环。
 
+鲜艳版：
+
+- `Accumulator`、`Point`、`Level`、`modern`、`std` 和 `[[nodiscard]]` 呈黄色；`add`、`total`、`instances`、`operator_color_demo` 呈蓝色。
+- `total_`、`count_`、`created_` 和 `Point` 的 `x`、`y` 等成员字段呈浅鲑红色；`value`、`cells`、`a` 等局部变量和参数为暖白色；`Level::high` 等枚举成员和数字为橙色。
+- `#include`、`if`、`for`、`switch`、`return`、`new`、`delete` 呈粉红色；`int`、`const`、`class`、`static_cast` 呈紫色。
+- `DM_TRACE` 和 `'\t'`、`'\n'` 中的转义部分呈青色。
+- 在 `operator_color_demo()` 中，`>>`、`[]`、`Point` 的 `+`、流的 `<<` 与 `1 << a` 的移位、`|` 一样为暖灰色。
+- 开启括号对着色后，嵌套括号按金 → 品红 → 天蓝循环。
+
 如果变量和函数仍然全是同一种颜色，检查文件是否属于已加载的 C++ 项目，以及 C/C++ 的 IntelliSense 和语义着色是否启用。
 
 如果切换主题后颜色被覆盖，选择内置深色主题，再重新导入本配色。恢复时使用向导保存的设置；“字体和颜色 → 使用默认值”也可重置颜色，但会一起重置该类别的其他自定义项。
 
 ## 保真范围与验证
 
-两个主题文件各包含 97 个项目，由 `generate.py` 按上述来源颜色生成；鲜艳版相对 Dark Modern 原色只改动了 66 个语法颜色项。已验证 XML 结构、无重复项目和 RGB/COLORREF 转换，且不设置字体或字号。
+两个主题文件各包含 97 个项目，由 `generate.py` 按上述来源颜色生成；鲜艳版相对 Dark Modern 原色改动了 76 个项目，包括语法颜色、彩色括号，以及跟随普通文本的当前行号和非活动代码。已验证 XML 结构、无重复项目和 RGB/COLORREF 转换，且不设置字体或字号。
 
 所有项目名称均已对照 VS 2026 程序集中的格式定义和内置深色主题数据核对。其中 `CurrentLineInactiveFormat`（编辑器失去焦点时的当前行）在 VS 2026 中已没有对应项目，导入时会被忽略，不影响其他颜色。
 

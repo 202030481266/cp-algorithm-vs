@@ -50,8 +50,8 @@ constexpr long long operator""_k(unsigned long long value) { return value * 1000
 static void legacy_path() {}
 #endif
 
-// Overloaded operators (>>, [], +, <<) use the function yellow, as in VS Code.
-// Built-in operators such as 1 << a and | keep the light gray operator color.
+// Overloaded operators (>>, [], +, <<) use the function yellow in VX2762, as in VS Code,
+// and the operator gray in Vivid. Built-in operators such as 1 << a and | are always gray.
 bool operator_color_demo() {
     std::istringstream input("3 4");
     int a = 0, b = 0;
