@@ -3,6 +3,6 @@
 // chosen in Fonts and Colors (size in points).
 {
   "$schema": "./themes/editor-font-styles/editor-font-styles.schema.json",
-  "colors": "themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings",
+  "colors": "themes/visual-assist-dark/Visual-Assist-Dark.vssettings",
   "font": { "family": "Maple Mono NF CN", "size": 14 }
 }
