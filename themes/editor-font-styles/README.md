@@ -53,7 +53,8 @@
 - 修改或重新生成主题文件（例如运行 `generate.py`）后立即生效；删除 `colors` 后恢复为 VS 保存的颜色；
 - 换主题只需改路径，例如 `themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings`。也可以写成列表，后面的文件覆盖前面文件中的同名项目，用于在现成主题上做个人调整；
 - 只使用“文本编辑器”类别，`.vssettings` 中的字体名称和字号不使用（字体用下一节的 `font` 设置），IDE 外观（深色 / 浅色主题）不受影响；
-- 当前 VS 中不存在的项目会在输出窗口列出，例如 VS 2026 已删除的 `CurrentLineInactiveFormat`，以及未安装 VA 时的 `VA Class` 等项目。
+- 当前 VS 中不存在的项目会在输出窗口列出，例如 VS 2026 已删除的 `CurrentLineInactiveFormat`，以及未安装 VA 时的 `VA Class` 等项目；
+- 编辑器底色写在 `TextView Background` 中，`Plain Text` 的背景保持“自动”（`0x02000000`）。给 `Plain Text` 设背景色时，VS 会把它画在每段文字下面并盖住选区，选中时只有行尾显示选区颜色。仓库中的主题文件都已这样设置，测试也会检查。
 
 用 Go To Definition 等方式打开仓库以外、没有配置文件的文件（如标准库头文件）时，继续沿用仓库的配色和字形，不会切换回默认值。
 

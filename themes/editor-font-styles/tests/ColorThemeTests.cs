@@ -23,9 +23,10 @@ namespace EditorFontStyles.Tests
             var problems = new List<string>();
             var native = ColorTheme.Load(new[] { Path.Combine(themes, "visual-assist-dark", "Visual-Assist-Dark.vssettings") }, problems);
             Equal(string.Empty, string.Join("; ", problems), "problems");
-            Equal(70, native.Items.Count, "Visual Assist Dark items");
+            Equal(71, native.Items.Count, "Visual Assist Dark items");
             var plain = native.Items["plain text"];
-            Check(plain.Foreground == 0xDCDCDC && plain.Background == 0x1E1E1E && plain.Bold == false, "Plain Text DCDCDC on 1E1E1E");
+            Check(plain.Foreground == 0xDCDCDC && plain.HasBackground && plain.Background == null && plain.Bold == false, "Plain Text DCDCDC, automatic background");
+            Equal(0x1E1E1EU, native.Items["TextView Background"].Background, "editor background");
             var comment = native.Items["Comment"];
             Check(comment.Foreground == 0x57A64A && comment.HasBackground && comment.Background == null, "Comment 57A64A, automatic background");
             Equal(true, native.Items["CppLocalVariableSemanticTokenFormat"].Bold, "local variables bold");
@@ -37,12 +38,12 @@ namespace EditorFontStyles.Tests
             }, problems);
             Equal(string.Empty, string.Join("; ", problems), "problems of two files");
             Check(layered.Items.Count >= 97, $"union of both files ({layered.Items.Count} items)");
-            Equal(0x1F1F1FU, layered.Items["Plain Text"].Background, "later file wins");
+            Equal(0x1F1F1FU, layered.Items["TextView Background"].Background, "later file wins");
 
             var expected = new Dictionary<string, int>
             {
-                ["Visual-Assist-Dark.vssettings"] = 70,
-                ["Visual-Assist-Dark-with-VA.vssettings"] = 81,
+                ["Visual-Assist-Dark.vssettings"] = 71,
+                ["Visual-Assist-Dark-with-VA.vssettings"] = 82,
                 ["VSCode-Dark-Modern-Vivid.vssettings"] = 97,
                 ["VSCode-Dark-Modern-VX2762.vssettings"] = 97,
             };
@@ -51,6 +52,9 @@ namespace EditorFontStyles.Tests
                 var theme = ColorTheme.Load(new[] { file }, problems);
                 string name = Path.GetFileName(file);
                 Check(problems.Count == 0 && theme.OtherCategoryItems == 0, $"{name} parses cleanly");
+
+                // VS paints a Plain Text background under every piece of text, on top of the selection.
+                Check(!theme.Items.TryGetValue("Plain Text", out var text) || text.Background == null, $"{name}: Plain Text has no background");
                 if (expected.TryGetValue(name, out int count))
                 {
                     Equal(count, theme.Items.Count, $"{name} items");

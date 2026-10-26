@@ -105,11 +105,23 @@ WS        = blend("E3E4E2", 0x29 / 255)   # editorWhitespace.foreground
 UNMATCHED = blend("FF1212", 0.8)          # editorBracketHighlight.unexpectedBracket.foreground
 INLAY_BG  = blend("616161", 0.1)          # editorInlayHint.background = badge.background @ 10%
 
+# VS paints the selection at 40% opacity (measured: #264F78 over #1E1E1E shows as #213242), so these
+# items get the color that shows as the VS Code one at that opacity.
+SELECTION_OPACITY = 0.4
+SELECTIONS = ("Selected Text", "Inactive Selected Text")
+
+
+def see_through(target, under):
+    """The color that VS, painting it at SELECTION_OPACITY over `under`, shows as `target`."""
+    return "".join(f"{min(255, max(0, round((t - u * (1 - SELECTION_OPACITY)) / SELECTION_OPACITY))):02X}"
+                   for t, u in zip(rgb(target), rgb(under)))
+
 
 def items(p):
     return [
-        # Editor surface
-        ("Plain Text", p.text, BG),
+        # Editor surface. A Plain Text background would be painted under every piece of text, on top
+        # of the selection, so that only line ends showed it; the background is the TextView's alone.
+        ("Plain Text", p.text, AUTO),
         ("TextView Background", AUTO, BG),
         ("Indicator Margin", AUTO, BG),
         ("Line Number", "6E7681", BG),
@@ -364,6 +376,8 @@ def render(palette, convert=lambda h: h):
     for name, fg, bg in rows:
         fg = None if fg is None else convert(fg)
         bg = None if bg is None else convert(bg)
+        if name in SELECTIONS:
+            bg = see_through(bg, convert(BG))
         lines.append(f'              <Item Name="{name}" Foreground="{colorref(fg)}" Background="{colorref(bg)}" BoldFont="No" />')
     lines += [
         "            </Items>",

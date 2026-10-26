@@ -9,7 +9,8 @@
         <Categories>
           <Category GUID="{A27B4E24-A735-4D1D-B8E7-9716E1E3D8E0}">
             <Items>
-              <Item Name="Plain Text" Foreground="0x00DCDCDC" Background="0x001E1E1E" BoldFont="No" />
+              <Item Name="Plain Text" Foreground="0x00DCDCDC" Background="0x02000000" BoldFont="No" />
+              <Item Name="TextView Background" Foreground="0x02000000" Background="0x001E1E1E" BoldFont="No" />
               <Item Name="Identifier" Foreground="0x00DCDCDC" Background="0x02000000" BoldFont="No" />
               <Item Name="Comment" Foreground="0x004AA657" Background="0x02000000" BoldFont="No" />
               <Item Name="Keyword" Foreground="0x00D69C56" Background="0x02000000" BoldFont="No" />
@@ -71,8 +72,8 @@
               <Item Name="xml doc comment - text" Foreground="0x004AA657" Background="0x02000000" BoldFont="No" />
               <Item Name="xml doc comment - delimiter" Foreground="0x004AA657" Background="0x02000000" BoldFont="No" />
               <Item Name="xml doc comment - name" Foreground="0x004AA657" Background="0x02000000" BoldFont="No" />
-              <Item Name="Selected Text" Foreground="0x02000000" Background="0x00784F26" BoldFont="No" />
-              <Item Name="Inactive Selected Text" Foreground="0x02000000" Background="0x00413D3A" BoldFont="No" />
+              <Item Name="Selected Text" Foreground="0x02000000" Background="0x00FF9832" BoldFont="No" />
+              <Item Name="Inactive Selected Text" Foreground="0x02000000" Background="0x00766C64" BoldFont="No" />
               <Item Name="Indicator Margin" Foreground="0x02000000" Background="0x001E1E1E" BoldFont="No" />
               <Item Name="CurrentLineActiveFormat" Foreground="0x02000000" Background="0x00282828" BoldFont="No" />
               <Item Name="CurrentLineInactiveFormat" Foreground="0x02000000" Background="0x001E1E1E" BoldFont="No" />

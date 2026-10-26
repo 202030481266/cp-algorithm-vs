@@ -2,6 +2,15 @@
 
 按本机 VS Code 1.142.0 自带的 **Dark Modern** 主题源文件取色，并用 VS Code 实际截图逐像素校准，面向 Visual Studio 2022 / 2026 的 C++ 编辑器。目录中保留两个版本：参考 One Dark Pro、Gruvbox、Monokai 重新配色的鲜艳版，以及在本机显示器上与 VS Code 显示一致的 VX2762 校准版。
 
+## 2026-10-26 选中区域
+
+两个文件都改了，选中多行时与 VS Code 一样是一整块蓝色：
+
+- **`Plain Text` 不再设背景色**，编辑器背景只由 `TextView Background` 设置，仍为 `#1F1F1F`。VS 会把 Plain Text 的背景以约 80% 的不透明度画在每段文字下面，而且画在选区之上：有文字的地方几乎看不出选区，只有行尾露出一小块，行间和单词交界处还有细纹。
+- **选区颜色按 VS 的绘制方式换算**。VS 以 40% 的不透明度绘制选区（实测 `#264F78` 在 `#1E1E1E` 上显示为 `#213242`），所以文件中填的是叠加后等于 VS Code 颜色的值：鲜艳版 `Selected Text` 为 `#3097FE`、`Inactive Selected Text` 为 `#636A74`，在 `#1F1F1F` 上显示为 `#264F78`、`#3A3D41`；校准版同样换算，显示为转换后的 `#325077`、`#3B3D41`。换算在 `generate.py` 的 `see_through` 中完成。
+
+已导入旧版的用户重新导入即可；使用 Editor Font Styles 扩展时，重新生成后立即生效。
+
 ## 2026-10-23 鲜艳版重新配色
 
 鲜艳版不再是“Dark Modern 提高彩度”，改为参考 One Dark Pro、Gruvbox、Monokai 重新设计的语法配色，见“鲜艳版”一节。
@@ -144,7 +153,7 @@ python generate.py --profile C:\Windows\System32\spool\drivers\color\<配置文�
 
 | 元素 | RGB | VS Code 来源 | VS 颜色项目 |
 | --- | --- | --- | --- |
-| 编辑器背景 | `#1F1F1F` | `editor.background` | Plain Text 背景 |
+| 编辑器背景 | `#1F1F1F` | `editor.background` | TextView Background（Plain Text 背景为自动，见“2026-10-26 选中区域”） |
 | 普通文本、标点 | `#CCCCCC` | `editor.foreground` | Plain Text、punctuation |
 | 运算符 | `#D4D4D4` | `keyword.operator` | Operator |
 | 关键字 | `#569CD6` | `keyword`、`storage.type`、`storage.modifier` | Keyword |
@@ -173,8 +182,8 @@ python generate.py --profile C:\Windows\System32\spool\drivers\color\<配置文�
 | --- | --- | --- | --- |
 | 行号 | `#6E7681` | `editorLineNumber.foreground` | Line Number |
 | 当前行号 | `#CCCCCC` | `editorLineNumber.activeForeground` | Selected Line Number |
-| 选区 | `#264F78` | `editor.selectionBackground` | Selected Text |
-| 非活动选区 | `#3A3D41` | `editor.inactiveSelectionBackground` | Inactive Selected Text |
+| 选区 | `#264F78` | `editor.selectionBackground` | Selected Text（填 `#3097FE`，VS 以 40% 不透明度绘制后显示为 `#264F78`） |
+| 非活动选区 | `#3A3D41` | `editor.inactiveSelectionBackground` | Inactive Selected Text（填 `#636A74`，同上） |
 | 当前行 | 边框 `#282828`，无填充 | `editor.lineHighlightBorder` | CurrentLineActiveFormat |
 | 光标 | `#AEAFAD` | `editorCursor.foreground` | Caret (Primary) |
 | 彩色括号 1 / 2 / 3 层 | `#FFD700` / `#DA70D6` / `#179FFF` | `editorBracketHighlight.foreground1`–`3` | brace pair level one / **three** / **two**（界面显示为“大括号匹配 - 级别 1/3/2”；VS 第 2 层使用 level three） |
@@ -187,7 +196,7 @@ python generate.py --profile C:\Windows\System32\spool\drivers\color\<配置文�
 | 非活动代码 | `#7E7E7E` | `C_Cpp.inactiveRegionOpacity` 0.55 | Excluded Code |
 | 内联提示 | 前景 `#969696`，背景 `#262626` | `editorInlayHint.*` | CppInlineHintsFormat |
 
-VS 的颜色没有透明度。VS Code 中带透明度的颜色按 `#1F1F1F` 背景预先混合。例如引用高亮 `#575757B8` 混合后为 `#474747`，括号匹配填充 `#0064001A` 为 `#1C261C`；VS Code 截图中引用高亮实测为 `#484848`。
+VS 的颜色没有透明度。VS Code 中带透明度的颜色按 `#1F1F1F` 背景预先混合。反过来，VS 自己以 40% 的不透明度绘制选区，所以选区项目填的是更亮的颜色，叠加后才是表中的值。例如引用高亮 `#575757B8` 混合后为 `#474747`，括号匹配填充 `#0064001A` 为 `#1C261C`；VS Code 截图中引用高亮实测为 `#484848`。
 
 括号匹配、当前行和引用高亮属于标记类项目：VS 用前景色画边框，用背景色填充。因此当前行只设边框，引用高亮的边框与填充同色，与 VS Code 的无边框效果一致。
 

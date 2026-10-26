@@ -9,13 +9,13 @@
         <Categories>
           <Category GUID="{A27B4E24-A735-4D1D-B8E7-9716E1E3D8E0}">
             <Items>
-              <Item Name="Plain Text" Foreground="0x00CCCCCC" Background="0x001F1F1F" BoldFont="No" />
+              <Item Name="Plain Text" Foreground="0x00CCCCCC" Background="0x02000000" BoldFont="No" />
               <Item Name="TextView Background" Foreground="0x02000000" Background="0x001F1F1F" BoldFont="No" />
               <Item Name="Indicator Margin" Foreground="0x02000000" Background="0x001F1F1F" BoldFont="No" />
               <Item Name="Line Number" Foreground="0x00817670" Background="0x001F1F1F" BoldFont="No" />
               <Item Name="Selected Line Number" Foreground="0x00CCCCCC" Background="0x001F1F1F" BoldFont="No" />
-              <Item Name="Selected Text" Foreground="0x02000000" Background="0x00775032" BoldFont="No" />
-              <Item Name="Inactive Selected Text" Foreground="0x02000000" Background="0x00413D3B" BoldFont="No" />
+              <Item Name="Selected Text" Foreground="0x02000000" Background="0x00FB9A4E" BoldFont="No" />
+              <Item Name="Inactive Selected Text" Foreground="0x02000000" Background="0x00746A65" BoldFont="No" />
               <Item Name="CurrentLineActiveFormat" Foreground="0x00282828" Background="0x001F1F1F" BoldFont="No" />
               <Item Name="CurrentLineInactiveFormat" Foreground="0x00282828" Background="0x001F1F1F" BoldFont="No" />
               <Item Name="Caret (Primary)" Foreground="0x00ADAFAE" Background="0x02000000" BoldFont="No" />
