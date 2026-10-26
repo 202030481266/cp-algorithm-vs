@@ -19,7 +19,8 @@
     "*comment*": { "italic": true },
     "EditorFontStyles.SystemSymbol": { "italic": true },
     "EditorFontStyles.LocalSymbol": { "bold": true },
-    "EditorFontStyles.CommentTag": { "bold": true }
+    "EditorFontStyles.CommentTag": { "bold": true },
+    "EditorFontStyles.MatchedBrace": { "bold": true, "underline": true }
   },
 
   // C/C++: names declared by the standard library headers (Visual Assist "System symbols in italics").
@@ -38,6 +39,11 @@
   "commentTags": {
     "enabled": true,
     "words": [ "TODO", "FIXME", "HACK", "NOTE", "XXX", "BUG" ]
+  },
+
+  // C/C++: the bracket pair next to the caret, on either side of the bracket.
+  "matchedBraces": {
+    "enabled": true
   },
 
   // Extra folders for #include "..." besides the document's folder and the .vcxproj include directories;

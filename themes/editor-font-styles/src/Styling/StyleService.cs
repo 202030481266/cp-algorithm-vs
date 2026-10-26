@@ -36,7 +36,7 @@ namespace EditorFontStyles.Styling
         {
             this.configs = configs;
             this.log = log;
-            topTypes = new[] { StyleClassificationNames.SystemSymbol, StyleClassificationNames.LocalSymbol, StyleClassificationNames.CommentTag }
+            topTypes = new[] { StyleClassificationNames.SystemSymbol, StyleClassificationNames.LocalSymbol, StyleClassificationNames.CommentTag, StyleClassificationNames.MatchedBrace }
                 .Select(registry.GetClassificationType)
                 .Where(type => type != null)
                 .ToList();

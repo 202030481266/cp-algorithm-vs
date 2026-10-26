@@ -76,7 +76,7 @@
               <Item Name="Indicator Margin" Foreground="0x02000000" Background="0x001E1E1E" BoldFont="No" />
               <Item Name="CurrentLineActiveFormat" Foreground="0x02000000" Background="0x00282828" BoldFont="No" />
               <Item Name="CurrentLineInactiveFormat" Foreground="0x02000000" Background="0x001E1E1E" BoldFont="No" />
-              <Item Name="Brace Matching (Rectangle)" Foreground="0x00DCDCDC" Background="0x003B3B3B" BoldFont="No" />
+              <Item Name="Brace Matching (Rectangle)" Foreground="0x00DCDCDC" Background="0x005A5A1F" BoldFont="No" />
               <Item Name="MarkerFormatDefinition/HighlightedReference" Foreground="0x02000000" Background="0x00004141" BoldFont="No" />
               <Item Name="MarkerFormatDefinition/HighlightedWrittenReference" Foreground="0x02000000" Background="0x00004141" BoldFont="No" />
               <Item Name="VA Class" Foreground="0x0000D7FF" Background="0x02000000" BoldFont="No" />

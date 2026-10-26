@@ -6,7 +6,8 @@
 - 按配置设置代码编辑器的字体和字号，不需要在“字体和颜色”中手动选择；
 - 给任意“字体和颜色”项目设置斜体、倾斜、粗体、单独的字体、字号、下划线、删除线和不透明度，这些是 `.vssettings` 做不到的；
 - 在 C/C++ 中按 Visual Assist 的方式，把标准库符号显示为斜体（System symbols in italics），把当前文件中声明的符号显示为粗体（Local symbols in bold）；
-- 把注释中的 TODO、FIXME 等标记显示为橙色粗体。
+- 把注释中的 TODO、FIXME 等标记显示为橙色粗体；
+- 在 C/C++ 中把光标旁的一对括号显示为青色粗体并加下划线，光标在括号内侧也有效（VS 自带的括号高亮只画一个方框，而且光标必须在括号外侧）。
 
 不需要购买或安装 Visual Assist。
 
@@ -22,6 +23,7 @@
 | C/C++ 标准库符号：`std`、`vector`、`cin`、`sort`、`push_back`、`size_t`、`INT_MAX` 等 | 斜体，颜色不变 | System symbols in italics |
 | C/C++ 当前文件中声明的符号：类型、函数、变量、参数、成员、宏、枚举值、别名等 | 粗体，颜色不变 | Local symbols in bold |
 | 注释中的 `TODO`、`FIXME`、`HACK`、`NOTE`、`XXX`、`BUG` | 橙色 `#FF8C00` 粗体 | — |
+| C/C++ 光标旁的一对括号 `()`、`[]`、`{}` | 青色 `#40E0D0` 粗体加下划线 | — |
 
 原来使用的 VA 设置中这两个选项都是开启的（注册表值 `LocalSymbolsInBold`、`StableSymbolsInItalics`），所以默认开启；不需要时可在配置中关闭。
 
@@ -69,6 +71,22 @@
 - 字体未安装时在输出窗口提示，继续使用“字体和颜色”中的字体。
 
 用“导入和导出设置”导入只含颜色的 `.vssettings`（例如本仓库的主题文件）时，VS 2026 会把文本编辑器的字体重置为默认值，需要重新选择；VS 的设置日志 `%LOCALAPPDATA%\Microsoft\VisualStudio\SettingsLogs` 中记为 `profile normal import`。用 `colors` 和 `font` 换配色和字体不需要导入，也就没有这个问题；即使导入过，编辑器中仍显示 `font` 指定的字体。
+
+## 匹配括号
+
+从 1.3.0 起，在 C/C++ 中，光标紧挨着一个括号时，这个括号和与它配对的括号都显示为青色 `#40E0D0` 粗体加下划线：
+
+- `()`、`[]`、`{}` 参与配对，`<>` 不参与。光标在括号左边或右边都可以；同时挨着两个括号时（例如 `)|(`），先看左边的闭括号和右边的开括号，与 VS 自己的高亮一致；
+- 注释、字符串、字符常量和 `#if 0` 中的括号不参与配对。预处理指令中的括号只在同一条指令内配对，所以 `#define BEGIN {` 不会打乱代码中的大括号；
+- 没有闭合的括号不影响外层：正在输入的 `if (a[i` 在一个块中时，块的 `{` 仍与它的 `}` 配对；
+- VS 自带的括号高亮（“字体和颜色”中的 Brace Matching (Rectangle) 方框）照常显示，但只在光标位于开括号左边或闭括号右边时出现；本扩展的样式叠加在方框上；
+- 超过 2 MB 的文件不处理。
+
+修改效果：
+
+- 颜色：在 `colors` 指定的主题文件或“字体和颜色”中设置 `EditorFontStyles.MatchedBrace` 的前景色；设置背景色后括号还会带底色，例如 `<Item Name="EditorFontStyles.MatchedBrace" Foreground="0x00D0E040" Background="0x005A5A1F" BoldFont="Yes" />`（`.vssettings` 中颜色按 `0x00BBGGRR` 书写）；
+- 字形：在 `styles` 中修改，例如去掉下划线：`"EditorFontStyles.MatchedBrace": { "underline": false }`；
+- 关闭：`"matchedBraces": { "enabled": false }`。
 
 ## 自行构建
 
@@ -126,7 +144,7 @@ python build.py --exp     # 另外部署到实验实例，用 devenv /rootSuffix
 
 `styles` 只改字形，不改颜色；颜色来自 `colors` 指定的主题文件，未指定时来自“字体和颜色”。
 
-扩展新增的三个项目在“字体和颜色”中显示为 **Editor Font Styles: System Symbol / Local Symbol / Comment Tag**，名称分别为 `EditorFontStyles.SystemSymbol`、`EditorFontStyles.LocalSymbol`、`EditorFontStyles.CommentTag`。前两项默认没有颜色，保留符号本来的颜色；也可以在对话框或 `.vssettings` 中给它们设置颜色。扩展会让这三项保持最高优先级，否则 C++ 形参等分类自带的“非粗体”会盖过它们的粗体。
+扩展新增的四个项目在“字体和颜色”中显示为 **Editor Font Styles: System Symbol / Local Symbol / Comment Tag / Matched Brace**，名称分别为 `EditorFontStyles.SystemSymbol`、`EditorFontStyles.LocalSymbol`、`EditorFontStyles.CommentTag`、`EditorFontStyles.MatchedBrace`。前两项默认没有颜色，保留符号本来的颜色；也可以在对话框或 `.vssettings` 中给它们设置颜色。扩展会让这四项保持最高优先级，否则 C++ 形参等分类自带的“非粗体”会盖过它们的粗体。
 
 ### 其他设置
 
@@ -141,6 +159,7 @@ python build.py --exp     # 另外部署到实验实例，用 devenv /rootSuffix
 | `localSymbols.enabled` | `true` | 当前文件中声明的符号使用 Local Symbol 样式 |
 | `commentTags.enabled` | `true` | 注释中的标记使用 Comment Tag 样式 |
 | `commentTags.words` | `TODO` 等 6 个 | 区分大小写，按整词匹配 |
+| `matchedBraces.enabled` | `true` | 光标旁的一对括号使用 Matched Brace 样式，见“匹配括号”一节 |
 | `includeDirectories` | `[]` | 查找 `#include "..."` 的额外目录，相对路径以配置文件所在目录为起点 |
 | `listClassifications` | `false` | 在输出窗口按优先级列出全部分类 |
 
@@ -207,14 +226,15 @@ best = 15, edges = 2, seen = 5
 - `std`、`vector`、`iota`、`begin`、`sort`、`map`、`to_string`、`accumulate`、`ios::sync_with_stdio`、`chrono::steady_clock::now` 为斜体，颜色与主题中的类型或函数颜色相同。
 - `REP`、`ll`、`gallery`、`Edge`、`count`、`max`、`build`、`values`，以及形参 `a`、`b`、`n` 为粗体。
 - 第 26、28 行声明了 `count` 和 `max`，所以 `gallery::max` 为粗体，`std::max` 仍为斜体。
+- 光标放在第 38 行 `main` 函数体的 `{` 左边或右边时，这个 `{` 和第 55 行的 `}` 为青色粗体加下划线；光标放在第 46 行 `{{1, 7}` 的两个 `{` 之间时，内层的 `{1, 7}` 配对。
 
 ## 文件
 
 | 文件 | 内容 |
 | --- | --- |
-| `src/Cpp/` | 词法分析、声明收集和样式判断，不依赖 Visual Studio |
+| `src/Cpp/` | 词法分析、声明收集、样式判断和括号配对，不依赖 Visual Studio |
 | `src/Styling/` | 把 `colors` 和 `styles` 应用到编辑器，并在“字体和颜色”变化后重新应用 |
-| `src/Tagging/` | 三个新增分类及 C/C++ 标记器 |
+| `src/Tagging/` | 四个新增分类，以及 C/C++ 的符号样式和匹配括号标记器 |
 | `src/Configuration/` | 配置查找、合并、检查和文件监视，读取 `.vssettings` 配色 |
 | `tests/` | 单元测试，`python build.py` 自动运行 |
 | `resources/` | 内置默认配置和系统符号表 |

@@ -16,11 +16,13 @@ namespace EditorFontStyles.Tests
             var problems = new List<string>();
             var config = StyleConfig.Load(DefaultJson, null, null, problems);
             Equal(string.Empty, string.Join("; ", problems), "problems in the built-in defaults");
-            Check(config.SystemSymbols && config.LocalSymbols && config.CommentTags, "symbol features on by default");
+            Check(config.SystemSymbols && config.LocalSymbols && config.CommentTags && config.MatchedBraces, "C/C++ features on by default");
             Equal(true, config.ResolveStyle("Comment", "comment")?.Italic, "comments italic");
             Equal(true, config.ResolveStyle("xml doc comment - text", "xml doc comment - text")?.Italic, "doc comments italic");
             Equal(true, config.ResolveStyle("EditorFontStyles.SystemSymbol", "EditorFontStyles.SystemSymbol")?.Italic, "system symbols italic");
             Equal(true, config.ResolveStyle("EditorFontStyles.LocalSymbol", "EditorFontStyles.LocalSymbol")?.Bold, "local symbols bold");
+            var brace = config.ResolveStyle("EditorFontStyles.MatchedBrace", "EditorFontStyles.MatchedBrace");
+            Check(brace?.Bold == true && brace.Underline == true, "matched braces bold and underlined");
             Check(config.ResolveStyle("Keyword", "keyword") == null, "keywords untouched");
             Check(config.CommentTagWords.Contains("TODO"), "TODO tag");
             Check(ReferenceEquals(config.SystemNames, Cpp.SystemSymbolTable.Default), "no extra names: shared table");
@@ -42,6 +44,7 @@ namespace EditorFontStyles.Tests
   ""localSymbols"": { ""enabled"": false },
   ""systemSymbols"": { ""extraNames"": [ ""gp_hash_table"" ], ""excludeNames"": [ ""count"" ] },
   ""commentTags"": { ""words"": [ ""TODO"", ""PERF"" ] },
+  ""matchedBraces"": { ""enabled"": false },
   ""includeDirectories"": [ ""cp-stl"" ]
 }";
                 var problems = new List<string>();
@@ -54,6 +57,7 @@ namespace EditorFontStyles.Tests
                 var control = config.ResolveStyle("CppControlKeywordSyntacticTokenFormat", "cppControlKeyword");
                 Check(control.Italic == true && Math.Abs(control.Opacity.Value - 0.8) < 1e-9, "new entry");
                 Check(!config.LocalSymbols && config.SystemSymbols && config.CommentTags, "sections merge key by key");
+                Check(!config.MatchedBraces, "matched braces turned off");
                 Check(config.SystemNames.Contains("gp_hash_table") && !config.SystemNames.Contains("count") && config.SystemNames.Contains("vector"), "extra and excluded names");
                 Equal("TODO|PERF", string.Join("|", config.CommentTagWords), "arrays replace");
                 Equal(Path.Combine(directory, "cp-stl"), config.IncludeDirectories.SingleOrDefault(), "include directory relative to the file");

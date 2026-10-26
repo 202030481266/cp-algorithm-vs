@@ -53,7 +53,7 @@ namespace EditorFontStyles.Tagging
     /// </summary>
     internal sealed class SymbolStyleTagger : ITagger<IClassificationTag>, IDisposable
     {
-        private const int MaxDocumentLength = 2 * 1024 * 1024;
+        internal const int MaxDocumentLength = 2 * 1024 * 1024;
         private static readonly TimeSpan ConfigRecheck = TimeSpan.FromSeconds(1);
         private static readonly List<StyledSpan> NoSpans = new List<StyledSpan>();
 
@@ -199,9 +199,9 @@ namespace EditorFontStyles.Tagging
 
             try
             {
-                string text = snapshot.GetText();
+                var lexed = LexedSnapshot.Of(snapshot);
                 var names = config.SystemNames;
-                var analysis = CppFileAnalysis.Analyze(text, names);
+                var analysis = CppFileAnalysis.Analyze(lexed.Lex, names);
                 string path = configDocument;
                 var included = HeaderIndex.Shared.CollectDeclaredNames(
                     analysis.Lex.QuotedIncludes, path == null ? null : Path.GetDirectoryName(path), includeDirectories, names);
@@ -213,7 +213,7 @@ namespace EditorFontStyles.Tagging
                     SystemNames = names,
                     CommentTagWords = config.CommentTagWords,
                 };
-                return SymbolStyler.Style(text, analysis, included, options);
+                return SymbolStyler.Style(lexed.Text, analysis, included, options);
             }
             catch (Exception e)
             {

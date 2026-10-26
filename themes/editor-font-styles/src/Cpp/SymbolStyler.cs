@@ -57,9 +57,10 @@ namespace EditorFontStyles.Cpp
         public HashSet<string> DeclaredNames { get; }
         public HashSet<int> DeclarationSites { get; }
 
-        public static CppFileAnalysis Analyze(string text, ISet<string> systemNames)
+        public static CppFileAnalysis Analyze(string text, ISet<string> systemNames) => Analyze(CppLexer.Lex(text), systemNames);
+
+        public static CppFileAnalysis Analyze(CppLexResult lex, ISet<string> systemNames)
         {
-            var lex = CppLexer.Lex(text);
             var declared = new HashSet<string>(StringComparer.Ordinal);
             var sites = new HashSet<int>();
             CppDeclarationScanner.Scan(lex, systemNames, declared, sites);

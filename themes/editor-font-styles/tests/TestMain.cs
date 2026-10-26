@@ -40,6 +40,10 @@ namespace EditorFontStyles.Tests
                 Run(ChangedRangeOfEdits);
                 Run(ProjectIncludeDirectoriesParse);
                 Run(SurvivesRandomInput);
+                Run(BracePairsAtTheCaret);
+                Run(BracePairsSkipLiteralsAndDirectives);
+                Run(BracePairsRecoverFromMismatches);
+                Run(BracePairsSurviveRandomInput);
                 Run(DefaultConfigIsValid);
                 Run(UserConfigOverlaysDefaults);
                 Run(StyleRulesMatchNamesAndWildcards);

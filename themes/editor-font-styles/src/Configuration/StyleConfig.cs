@@ -79,7 +79,7 @@ namespace EditorFontStyles.Configuration
     {
         public const string FileName = ".editor-font-styles.json";
 
-        private static readonly string[] Sections = { "colors", "font", "styles", "systemSymbols", "localSymbols", "commentTags", "includeDirectories", "listClassifications", "$schema" };
+        private static readonly string[] Sections = { "colors", "font", "styles", "systemSymbols", "localSymbols", "commentTags", "matchedBraces", "includeDirectories", "listClassifications", "$schema" };
 
         private ISet<string> systemNames;
 
@@ -106,6 +106,7 @@ namespace EditorFontStyles.Configuration
         public bool LocalSymbols { get; private set; }
         public bool CommentTags { get; private set; }
         public IReadOnlyList<string> CommentTagWords { get; private set; } = Array.Empty<string>();
+        public bool MatchedBraces { get; private set; }
 
         /// <summary>Absolute directories searched for quoted includes after the document's own directory.</summary>
         public IReadOnlyList<string> IncludeDirectories { get; private set; } = Array.Empty<string>();
@@ -247,6 +248,7 @@ namespace EditorFontStyles.Configuration
             var tags = json["commentTags"] as JObject;
             config.CommentTags = ReadBool(tags, "enabled", true, origin, problems);
             config.CommentTagWords = ReadStrings(tags, "words", origin, problems);
+            config.MatchedBraces = ReadBool(json["matchedBraces"] as JObject, "enabled", true, origin, problems);
             config.ListClassifications = ReadBool(json, "listClassifications", false, origin, problems);
             config.IncludeDirectories = ResolveDirectories(ReadStrings(json, "includeDirectories", origin, problems), sourcePath, origin, problems);
             return config;

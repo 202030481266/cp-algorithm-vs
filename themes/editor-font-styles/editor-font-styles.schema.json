@@ -54,6 +54,12 @@
       },
       "additionalProperties": false
     },
+    "matchedBraces": {
+      "description": "C/C++: the bracket pair next to the caret, on either side of the bracket, is styled as EditorFontStyles.MatchedBrace (turquoise, bold and underlined by default).",
+      "type": "object",
+      "properties": { "enabled": { "type": "boolean", "default": true } },
+      "additionalProperties": false
+    },
     "includeDirectories": {
       "description": "Extra folders searched for #include \"...\" after the document's folder and the .vcxproj include directories; relative to this file.",
       "type": "array",
