@@ -250,48 +250,138 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
+#define MULTI_CASE_INPUT
+
 void solve() {
-    int n, k;
-    cin >> n >> k;
-    int mid = (n - 1) / 2;
-    if (k < mid) {
-        cout << "L";
-        for (int i = 0; i < k - 1; ++i) {
-            cout << "DRUL";
+    int n;
+    cin >> n;
+    vp edge(n - 1);
+    for (auto& [u, v] : edge) cin >> u >> v;
+    string s;
+    cin >> s;
+    int cnt = 0;
+    for (char c : s) {
+        if (c == 'W') {
+            ++cnt;
+            if (cnt > 2) {
+                cout << "White" << '\n';
+                return;
+            }
+        }
+    }
+    vi b(n + 1);
+    vii g(n + 1);
+    for (auto [u, v] : edge) {
+        ++b[u];
+        ++b[v];
+        g[u].pb(v);
+        g[v].pb(u);
+    }
+    vi c(n + 1), d(n + 1);
+    rep(i, 1, n + 1) {
+        int x = 0, y = 0;
+        for (int v : g[i]) {
+            if (b[v] > x) {
+                y = x;
+                x = b[v];
+            }
+            else if (b[v] > y) y = b[v];
+        }
+        c[i] = x;
+        d[i] = y;
+    }
+    int mx = *max_element(all(b));
+    if (mx > 3) {
+        cout << "White" << '\n';
+        return;
+    }
+    vi dep(n + 1);
+    auto dfs = [&](auto&& self, int u, int fa) -> void {
+        dep[u] = dep[fa] ^ 1;
+        for (int v : g[u]) {
+            if (v != fa) {
+                self(self, v, u);
+            }
+        }
+    };
+    dfs(dfs, 1, 0);
+    if (cnt == 0) {
+        if (mx == 3) {
+            vi tmp;
+            rep(i, 1, n + 1) {
+                if (b[i] == 3) {
+                    tmp.pb(i);
+                    if (d[i] > 1) {
+                        cout << "White" << '\n';
+                        return;
+                    }
+                }
+            }
+            assert(sz(tmp) <= 2);
+            if (sz(tmp) == 2) {
+                if (dep[tmp[0]] == dep[tmp[1]]) {
+                    cout << "White" << '\n';
+                    return;
+                }
+            }
+            cout << "Draw" << '\n';
+        }
+        else {
+            cout << "Draw" << '\n';
+        }
+        return;
+    }
+    if (cnt == 1) {
+        int x = 0;
+        rep(i, 0, n) {
+            if (s[i] == 'W') {
+                x = i + 1;
+                break;
+            }
+        }
+        if (b[x] > 1) {
+            if (n > 3) {
+                cout << "White" << '\n';
+            }
+            else cout << "Draw" << '\n';
+        }
+        else { // b[x] == 1
+            rep(i, 1, n + 1) {
+                if (b[i] == 3) {
+                    if (dep[x] ^ dep[i]) {
+                        cout << "White" << '\n';
+                        return;
+                    }
+                    else {
+                        if (d[i] > 1) {
+                            cout << "White" << '\n';
+                            return;
+                        }
+                    }
+                }
+            }
+            cout << "Draw" << '\n';
         }
     }
     else {
-        if (k == mid) {
-            cout << "DL";
+        int x = 0, y = 0;
+        rep(i, 0, n) {
+            if (s[i] == 'W') {
+                if (!x) x = i + 1;
+                else if (!y) y = i + 1;
+                else break;
+            }
+        }
+        if (b[x] > 1 || b[y] > 1) {
+            if (n >= 3) cout << "White" << '\n';
+            else cout << "Draw" << '\n';
         }
         else {
-            int val = (n - 1) / 2;
-            int odd, even;
-            if (val & 1) {
-                odd = val + 2;
-                even = val + 3;
+            if (dep[x] == dep[y] || mx == 3) {
+                cout << "White" << '\n';
             }
             else {
-                odd = val + 1;
-                even = val + 2;
-            }
-            if (k == val + 1) {
-                for (int i = 0; i < n / 2; ++i) cout << "DRUL";
-            }
-            else {
-                if (k % 2 == 0) {
-                    cout << "DRU";
-                }
-                cout << "L";
-                int cnt = n - 2 - (n + 1) / 2;
-                for (int i = 0; i < (cnt + 1) / 2; ++i) cout << "DLUL";
-                if (k & 1) {
-                    for (int i = odd; i < k; i += 2) cout << "DLUL";
-                }
-                else {
-                    for (int i = even; i < k; i += 2) cout << "DLUL";
-                }
-                cout << "DRDL";
+                cout << "Draw" << '\n';
             }
         }
     }
