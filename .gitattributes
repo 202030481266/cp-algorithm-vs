@@ -1,0 +1,9 @@
+# 统一 LF，不受各机器 core.autocrlf 影响；VS 项目文件保持 VS 自己写出的 CRLF
+* text=auto eol=lf
+
+*.sln              text eol=crlf
+*.vcxproj          text eol=crlf
+*.vcxproj.filters  text eol=crlf
+
+*.png   binary
+*.vsix  binary
