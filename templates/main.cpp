@@ -68,10 +68,6 @@ using minpq = priority_queue<T, vec<T>, greater<T>>;
 #define all(x) std::begin(x), std::end(x)
 #define rall(x) std::rbegin(x), std::rend(x)
 #define sz(x) static_cast<int>(std::size(x))
-#define pb push_back
-#define eb emplace_back
-#define fi first
-#define se second
 // Integer index loops over [l, r); both bounds are evaluated once.
 #define rep(i, l, r) for (int i = static_cast<int>(l), i##_end = static_cast<int>(r); i < i##_end; ++i)
 #define per(i, l, r) for (int i = static_cast<int>(r), i##_begin = static_cast<int>(l); i-- > i##_begin; )
