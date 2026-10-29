@@ -250,141 +250,78 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
-#define MULTI_CASE_INPUT
+//#define MULTI_CASE_INPUT
+//#define DEBUG
 
 void solve() {
     int n;
     cin >> n;
-    vp edge(n - 1);
-    for (auto& [u, v] : edge) cin >> u >> v;
-    string s;
-    cin >> s;
-    int cnt = 0;
-    for (char c : s) {
-        if (c == 'W') {
-            ++cnt;
-            if (cnt > 2) {
-                cout << "White" << '\n';
-                return;
-            }
+    vi arr(n);
+    for (int& v : arr) {
+        cin >> v;
+        --v;
+    }
+#ifdef DEBUG
+    vp b(n);
+    rep(i, 0, n) b[i].fi = arr[i] + 1, b[i].se = 0;
+#endif
+    vii cycles;
+    vi vis(n);
+    rep(i, 0, n) {
+        if (vis[i]) continue;
+        vi cyc;
+        for (int j = i; !vis[j]; j = arr[j]) {
+            vis[j] = 1;
+            cyc.pb(j);
         }
+        if (sz(cyc) > 1) cycles.pb(cyc);
     }
-    vi b(n + 1);
-    vii g(n + 1);
-    for (auto [u, v] : edge) {
-        ++b[u];
-        ++b[v];
-        g[u].pb(v);
-        g[v].pb(u);
+    vp ans;
+    for (int i = 0; i + 1 < sz(cycles); i += 2) {
+        // merge the cycle
+        auto& c1 = cycles[i];
+        auto& c2 = cycles[i + 1];
+        int x = c1.back(), y = c2.back();
+        ans.eb(x, y);
+        rep(j, 0, sz(c1) - 1) ans.eb(y, c1[j]);
+        rep(j, 0, sz(c2) - 1) ans.eb(x, c2[j]);
+        ans.eb(x, y);
+        for (int c : c1) arr[c] = c;
+        for (int c : c2) arr[c] = c;
     }
-    vi c(n + 1), d(n + 1);
-    rep(i, 1, n + 1) {
-        int x = 0, y = 0;
-        for (int v : g[i]) {
-            if (b[v] > x) {
-                y = x;
-                x = b[v];
-            }
-            else if (b[v] > y) y = b[v];
-        }
-        c[i] = x;
-        d[i] = y;
-    }
-    int mx = *max_element(all(b));
-    if (mx > 3) {
-        cout << "White" << '\n';
-        return;
-    }
-    vi dep(n + 1);
-    auto dfs = [&](auto&& self, int u, int fa) -> void {
-        dep[u] = dep[fa] ^ 1;
-        for (int v : g[u]) {
-            if (v != fa) {
-                self(self, v, u);
-            }
-        }
-    };
-    dfs(dfs, 1, 0);
-    if (cnt == 0) {
-        if (mx == 3) {
-            vi tmp;
-            rep(i, 1, n + 1) {
-                if (b[i] == 3) {
-                    tmp.pb(i);
-                    if (d[i] > 1) {
-                        cout << "White" << '\n';
-                        return;
-                    }
+    if (sz(cycles) & 1) {
+        auto c = cycles.back();
+        if (sz(c) == 2) {
+            // no solution, need add a self-loop            
+            rep(j, 0, n) {
+                if (arr[j] == j) {
+                    ans.eb(c[1], j);
+                    ans.eb(j, c[0]);
+                    ans.eb(j, c[1]);
+                    break;
                 }
             }
-            assert(sz(tmp) <= 2);
-            if (sz(tmp) == 2) {
-                if (dep[tmp[0]] == dep[tmp[1]]) {
-                    cout << "White" << '\n';
-                    return;
-                }
-            }
-            cout << "Draw" << '\n';
         }
         else {
-            cout << "Draw" << '\n';
-        }
-        return;
-    }
-    if (cnt == 1) {
-        int x = 0;
-        rep(i, 0, n) {
-            if (s[i] == 'W') {
-                x = i + 1;
-                break;
-            }
-        }
-        if (b[x] > 1) {
-            if (n > 3) {
-                cout << "White" << '\n';
-            }
-            else cout << "Draw" << '\n';
-        }
-        else { // b[x] == 1
-            rep(i, 1, n + 1) {
-                if (b[i] == 3) {
-                    if (dep[x] ^ dep[i]) {
-                        cout << "White" << '\n';
-                        return;
-                    }
-                    else {
-                        if (d[i] > 1) {
-                            cout << "White" << '\n';
-                            return;
-                        }
-                    }
-                }
-            }
-            cout << "Draw" << '\n';
+            // {0.. 1} {2....n-1}
+            ans.eb(c[1], c[sz(c) - 1]);
+            ans.eb(c[0], c[sz(c) - 1]);
+            swap(c[0], c[1]);
+            rep(j, 1, sz(c)) ans.eb(c[0], c[j]);
         }
     }
-    else {
-        int x = 0, y = 0;
-        rep(i, 0, n) {
-            if (s[i] == 'W') {
-                if (!x) x = i + 1;
-                else if (!y) y = i + 1;
-                else break;
-            }
-        }
-        if (b[x] > 1 || b[y] > 1) {
-            if (n >= 3) cout << "White" << '\n';
-            else cout << "Draw" << '\n';
-        }
-        else {
-            if (dep[x] == dep[y] || mx == 3) {
-                cout << "White" << '\n';
-            }
-            else {
-                cout << "Draw" << '\n';
-            }
-        }
+    cout << ans.size() << '\n';
+    for (auto [u, v] : ans) cout << u + 1 << ' ' << v + 1 << '\n';
+
+#ifdef DEBUG
+    debug(b);
+    for (auto [u, v] : ans) {
+        swap(b[u], b[v]);
+        b[u].second ^= 1;
+        b[v].second ^= 1;
     }
+    debug(b);
+#endif
 }
 
 int main() {
