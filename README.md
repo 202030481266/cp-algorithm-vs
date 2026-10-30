@@ -5,6 +5,7 @@ ICPC 训练用的 Visual Studio C++ 工作区：在根目录的 main.cpp 写当�
 - [样例抓取](docs/FETCH.md)：支持 Codeforces、AtCoder、LeetCode
 - [工作流教程](docs/WORKFLOW.md)：VS 设置、F5 读文件、对拍、模板宏
 - [CP-STL 模板库](docs/CP_STL.md)：[模板索引](cp-stl/docs/usage/README.md) · [左程云课程对照表](cp-stl/docs/course-map.md)
+- [编辑器主题](themes/README.md)：Visual Studio 深色配色（Visual Assist Dark、VS Code Dark Modern）和字形扩展 Editor Font Styles
 
 ## 环境
 
@@ -61,4 +62,5 @@ python tools/cp.py stress --solution examples/stress/solution.cpp --brute exampl
 | cp-stl/ | 算法模板库，已适配 MSVC |
 | examples/stress/ | 对拍示例（最大非空子段和） |
 | tools/ | cp.py 及其测试 |
+| themes/ | Visual Studio 配色和编辑器扩展，仓库的配色和字体由根目录的 .editor-font-styles.json 指定 |
 | build/、backups/ | 编译产物和自动备份，不进 Git |

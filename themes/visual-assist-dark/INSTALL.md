@@ -2,9 +2,7 @@
 
 适用于 Visual Studio 2022 / 2026。通过 VS 的“导入和导出设置”向导应用本目录的 `.vssettings` 文件。
 
-**安装了同仓库的 [Editor Font Styles](../editor-font-styles/README.md) 扩展时可以跳过导入**：仓库根目录的 `.editor-font-styles.json` 已指定本目录的原生版，打开仓库中的文件时扩展直接按它着色，修改主题文件后立即生效。不安装扩展，或想让仓库以外的文件也使用本配色时，再按下文导入。
-
-**如果你已经使用内置的“深色 / Dark”主题，可以直接开始下面的导入流程。** 备份是可选的，也可以在导入向导中完成，无需提前单独导出。
+使用 [Editor Font Styles](../editor-font-styles/README.md) 扩展时可以跳过导入，在 `.editor-font-styles.json` 的 `colors` 中指定主题文件即可。
 
 ## 选择要导入的文件
 
@@ -14,14 +12,6 @@
 | 仍在使用 Visual Assist 的增强语法着色 | [Visual-Assist-Dark-with-VA.vssettings](Visual-Assist-Dark-with-VA.vssettings) |
 
 通常选择第一份，两个版本任选其一。
-
-本机的主题目录是：
-
-```text
-D:\项目\dev\cpp\cp-algorithm\themes\visual-assist-dark
-```
-
-如果工作区以后移动到其他位置，使用新位置下的同名文件。
 
 ## 导入流程
 
@@ -46,25 +36,13 @@ D:\项目\dev\cpp\cp-algorithm\themes\visual-assist-dark
 - 想保留当前配色以便恢复：选择 **是，保存我的当前设置**，指定保存位置和文件名，例如 `VS-导入VA配色前.vssettings`。
 - 已经备份过，或者不需要备份：选择 **否，仅导入新设置，覆盖我的当前设置**。
 
-然后点击 **下一步**。本次导入会应用文件中的配色和指定字重；主题文件没有设置字体名称、字号、快捷键或项目配置。
+然后点击 **下一步**。导入只应用文件中的配色和字重，不包含字体、字号、快捷键或项目配置。
 
 ### 4. 选择主题文件
 
 在 **选择要导入的设置集合** 页面，点击左下角的 **浏览**。
 
-在文件选择窗口的“文件名”栏粘贴完整路径：
-
-```text
-D:\项目\dev\cpp\cp-algorithm\themes\visual-assist-dark\Visual-Assist-Dark.vssettings
-```
-
-使用 VA 兼容版时，将文件名改为：
-
-```text
-Visual-Assist-Dark-with-VA.vssettings
-```
-
-点击 **打开**，回到向导后确认选中了对应文件，再点击底部的 **下一步**。
+在文件选择窗口中找到本目录的 `Visual-Assist-Dark.vssettings`（VA 兼容版为 `Visual-Assist-Dark-with-VA.vssettings`），点击 **打开**，回到向导后确认选中了对应文件，再点击底部的 **下一步**。
 
 **这一页看不到“环境”是正常的。** 如果左侧显示“默认设置”“我的设置”“最近的文件”，你仍在选择设置文件。“环境 → 字体和颜色”在下一页。
 
@@ -82,7 +60,7 @@ Visual-Assist-Dark-with-VA.vssettings
 
 ### 7. 打开 C++ 文件检查效果
 
-打开项目中的 `main.cpp`，或者按 **Ctrl+O** 打开本目录的 [semantic-gallery.cpp](semantic-gallery.cpp)，等待 IntelliSense 解析完成。
+打开 C++ 项目中的文件，或者本目录的 [semantic-gallery.cpp](semantic-gallery.cpp)，等待 IntelliSense 解析完成。
 
 原生版当前预期效果如下：
 
@@ -134,4 +112,4 @@ Visual-Assist-Dark-with-VA.vssettings
 | 使用 VA 兼容版后字重与原生版不同 | 兼容版把符号字重交给 VA；具体选项见 [粗体与斜体说明](README.md#粗体与斜体)。 |
 | 系统库函数没有斜体 | 主题文件本身不能区分系统库函数；安装 [Editor Font Styles](../editor-font-styles/README.md) 扩展后为斜体，详见 [粗体与斜体说明](README.md#粗体与斜体)。 |
 
-更多颜色、版本变化及实现范围见 [主题说明](README.md)。
+完整配色和已知限制见 [主题说明](README.md)。
