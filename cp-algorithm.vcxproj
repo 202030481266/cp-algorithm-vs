@@ -100,6 +100,15 @@
     <None Include="solutions\cf\1110\g\README.md" />
     <None Include="solutions\cf\1110\g\samples\1.ans" />
     <None Include="solutions\cf\1110\g\samples\1.in" />
+    <None Include="solutions\cf\1427\f\expected.txt" />
+    <None Include="solutions\cf\1427\f\input.txt" />
+    <None Include="solutions\cf\1427\f\main.cpp" />
+    <None Include="solutions\cf\1427\f\problem.json" />
+    <None Include="solutions\cf\1427\f\README.md" />
+    <None Include="solutions\cf\1427\f\samples\1.ans" />
+    <None Include="solutions\cf\1427\f\samples\1.in" />
+    <None Include="solutions\cf\1427\f\samples\2.ans" />
+    <None Include="solutions\cf\1427\f\samples\2.in" />
     <None Include="solutions\cf\1446\d1\expected.txt" />
     <None Include="solutions\cf\1446\d1\input.txt" />
     <None Include="solutions\cf\1446\d1\main.cpp" />

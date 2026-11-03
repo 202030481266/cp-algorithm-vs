@@ -42,11 +42,6 @@
 #include <utility>
 #include <variant>
 #include <vector>
-#ifdef _WIN32
-#include <io.h> // _isatty
-#else
-#include <unistd.h> // isatty
-#endif
 
 using namespace std;
 using ll = long long;
@@ -54,8 +49,10 @@ using ull = unsigned long long;
 using uint = unsigned int;
 using ld = long double;
 
-template <typename T, typename U = T> using pr = pair<T, U>;
-template <typename T> using vec = vector<T>;
+template<typename T, typename U = T>
+using pr = pair<T, U>;
+template<typename T>
+using vec = vector<T>;
 using pii = pr<int>;
 using pll = pr<ll>;
 using vi = vec<int>;
@@ -64,45 +61,35 @@ using vii = vec<vi>;
 using vll = vec<vl>;
 using vp = vec<pii>;
 using vpp = vec<vp>;
-template <typename T> using minpq = priority_queue<T, vec<T>, greater<T>>;
+template<typename T>
+using minpq = priority_queue<T, vec<T>, greater<T>>;
 
 // Pass ordinary container variables to all/rall; each expands to two iterators.
 #define all(x) std::begin(x), std::end(x)
 #define rall(x) std::rbegin(x), std::rend(x)
 #define sz(x) static_cast<int>(std::size(x))
-#define pb push_back
-#define eb emplace_back
-#define fi first
-#define se second
 // Integer index loops over [l, r); both bounds are evaluated once.
-#define rep(i, l, r)                                                                               \
-    for (int i = static_cast<int>(l), i##_end = static_cast<int>(r); i < i##_end; ++i)
-#define per(i, l, r)                                                                               \
-    for (int i = static_cast<int>(r), i##_begin = static_cast<int>(l); i-- > i##_begin;)
+#define rep(i, l, r) for (int i = static_cast<int>(l), i##_end = static_cast<int>(r); i < i##_end; ++i)
+#define per(i, l, r) for (int i = static_cast<int>(r), i##_begin = static_cast<int>(l); i-- > i##_begin; )
 
-template <typename T, typename U> bool chmin(T& a, const U& b) {
-    if (b < a) {
-        a = b;
-        return true;
-    }
+template<typename T, typename U>
+bool chmin(T& a, const U& b) {
+    if (b < a) { a = b; return true; }
     return false;
 }
-template <typename T, typename U> bool chmax(T& a, const U& b) {
-    if (a < b) {
-        a = b;
-        return true;
-    }
+template<typename T, typename U>
+bool chmax(T& a, const U& b) {
+    if (a < b) { a = b; return true; }
     return false;
 }
 
 // Answer output: print(a); print(a, ','); prints a flat range without brackets.
-template <ranges::input_range R>
+template<ranges::input_range R>
     requires requires(ranges::range_reference_t<R> x) { cout << x; }
 void print(R&& a, char separator = ' ', char ending = '\n') {
     bool first = true;
     for (auto&& x : a) {
-        if (!first)
-            cout << separator;
+        if (!first) cout << separator;
         cout << x;
         first = false;
     }
@@ -110,178 +97,130 @@ void print(R&& a, char separator = ' ', char ending = '\n') {
 }
 
 namespace cp_debug {
-    template <typename T> struct IsOptional : false_type {};
-    template <typename T> struct IsOptional<optional<T>> : true_type {};
-    template <typename T> struct IsVariant : false_type {};
-    template <typename... T> struct IsVariant<variant<T...>> : true_type {};
+template<typename T>
+struct IsOptional : false_type {};
+template<typename T>
+struct IsOptional<optional<T>> : true_type {};
+template<typename T>
+struct IsVariant : false_type {};
+template<typename... T>
+struct IsVariant<variant<T...>> : true_type {};
 
-    template <typename T>
-    concept PairLike = requires(T x) {
-        x.first;
-        x.second;
-    };
-    template <typename T>
-    concept StackLike = requires(T x) {
-        x.top();
-        x.pop();
-        x.empty();
-    };
-    template <typename T>
-    concept QueueLike = requires(T x) {
-        x.front();
-        x.pop();
-        x.empty();
-    };
+template<typename T>
+concept PairLike = requires(T x) { x.first; x.second; };
+template<typename T>
+concept StackLike = requires(T x) { x.top(); x.pop(); x.empty(); };
+template<typename T>
+concept QueueLike = requires(T x) { x.front(); x.pop(); x.empty(); };
 
-    inline void text(string_view value, char quote = '"') {
-        cerr << quote;
-        for (char c : value) {
-            switch (c) {
-            case '\\':
-                cerr << "\\\\";
-                break;
-            case '\n':
-                cerr << "\\n";
-                break;
-            case '\r':
-                cerr << "\\r";
-                break;
-            case '\t':
-                cerr << "\\t";
-                break;
-            case '\0':
-                cerr << "\\0";
-                break;
-            default:
-                if (c == quote)
-                    cerr << '\\';
-                cerr << c;
-            }
+inline void text(string_view value, char quote = '"') {
+    cerr << quote;
+    for (char c : value) {
+        switch (c) {
+        case '\\': cerr << "\\\\"; break;
+        case '\n': cerr << "\\n"; break;
+        case '\r': cerr << "\\r"; break;
+        case '\t': cerr << "\\t"; break;
+        case '\0': cerr << "\\0"; break;
+        default:
+            if (c == quote) cerr << '\\';
+            cerr << c;
         }
-        cerr << quote;
     }
+    cerr << quote;
+}
 
-    // One recursive entry point avoids overload-order problems with nested types.
-    template <typename T> void write(T&& value) {
-        using U = remove_cvref_t<T>;
-        if constexpr (is_same_v<U, bool> || is_same_v<U, vector<bool>::reference>) {
-            cerr << (value ? "true" : "false");
-        }
-        else if constexpr (is_same_v<U, char>) {
-            text(string_view(&value, 1), '\'');
-        }
-        else if constexpr (is_array_v<U> && is_same_v<remove_cv_t<remove_extent_t<U>>, char>) {
-            const auto last = find(begin(value), end(value), '\0');
-            text(string_view(value, static_cast<size_t>(last - begin(value))));
-        }
-        else if constexpr (is_same_v<U, string> || is_same_v<U, string_view>) {
-            text(value);
-        }
-        else if constexpr (is_same_v<U, char*> || is_same_v<U, const char*>) {
-            if (value)
-                text(value);
-            else
-                cerr << "nullptr";
-        }
-        else if constexpr (IsOptional<U>::value) {
-            if (value) {
-                cerr << "Some(";
-                write(*value);
-                cerr << ')';
-            }
-            else
-                cerr << "None";
-        }
-        else if constexpr (IsVariant<U>::value) {
-            if (value.valueless_by_exception())
-                cerr << "Variant(valueless)";
-            else {
-                cerr << "Variant(";
-                visit([](auto&& x) { write(std::forward<decltype(x)>(x)); }, value);
-                cerr << ')';
-            }
-        }
-        else if constexpr (is_same_v<U, monostate>) {
-            cerr << "monostate";
-        }
-        else if constexpr (PairLike<T>) {
-            cerr << '{';
-            write(value.first);
-            cerr << ", ";
-            write(value.second);
-            cerr << '}';
-        }
-        else if constexpr (StackLike<U> || QueueLike<U>) {
-            // Show pop order using a copy; the original adaptor is unchanged.
-            auto copy = value;
-            cerr << '{';
-            bool first = true;
-            while (!copy.empty()) {
-                if (!first)
-                    cerr << ", ";
-                if constexpr (StackLike<U>)
-                    write(copy.top());
-                else
-                    write(copy.front());
-                copy.pop();
-                first = false;
-            }
-            cerr << '}';
-        }
-        else if constexpr (ranges::input_range<T>) {
-            cerr << '{';
-            bool first = true;
-            for (auto&& x : value) {
-                if (!first)
-                    cerr << ", ";
-                write(std::forward<decltype(x)>(x));
-                first = false;
-            }
-            cerr << '}';
-        }
-        else if constexpr (requires { typename tuple_size<U>::type; }) {
-            cerr << '(';
-            apply(
-                [](auto &&...x) {
-                [[maybe_unused]] size_t index = 0;
-                ((cerr << (index++ ? ", " : ""), write(std::forward<decltype(x)>(x))), ...);
-            },
-                value);
+// One recursive entry point avoids overload-order problems with nested types.
+template<typename T>
+void write(T&& value) {
+    using U = remove_cvref_t<T>;
+    if constexpr (is_same_v<U, bool> || is_same_v<U, vector<bool>::reference>) {
+        cerr << (value ? "true" : "false");
+    } else if constexpr (is_same_v<U, char>) {
+        text(string_view(&value, 1), '\'');
+    } else if constexpr (is_array_v<U> && is_same_v<remove_cv_t<remove_extent_t<U>>, char>) {
+        const auto last = find(begin(value), end(value), '\0');
+        text(string_view(value, static_cast<size_t>(last - begin(value))));
+    } else if constexpr (is_same_v<U, string> || is_same_v<U, string_view>) {
+        text(value);
+    } else if constexpr (is_same_v<U, char*> || is_same_v<U, const char*>) {
+        if (value) text(value);
+        else cerr << "nullptr";
+    } else if constexpr (IsOptional<U>::value) {
+        if (value) { cerr << "Some("; write(*value); cerr << ')'; }
+        else cerr << "None";
+    } else if constexpr (IsVariant<U>::value) {
+        if (value.valueless_by_exception()) cerr << "Variant(valueless)";
+        else {
+            cerr << "Variant(";
+            visit([](auto&& x) { write(std::forward<decltype(x)>(x)); }, value);
             cerr << ')';
         }
-        else if constexpr (requires { cerr << value; }) {
-            cerr << value; // Numbers, bitset, complex, and custom operator<<.
+    } else if constexpr (is_same_v<U, monostate>) {
+        cerr << "monostate";
+    } else if constexpr (PairLike<T>) {
+        cerr << '{'; write(value.first); cerr << ", "; write(value.second); cerr << '}';
+    } else if constexpr (StackLike<U> || QueueLike<U>) {
+        // Show pop order using a copy; the original adaptor is unchanged.
+        auto copy = value;
+        cerr << '{';
+        bool first = true;
+        while (!copy.empty()) {
+            if (!first) cerr << ", ";
+            if constexpr (StackLike<U>) write(copy.top());
+            else write(copy.front());
+            copy.pop();
+            first = false;
         }
-        else {
-            static_assert(is_void_v<U>, "debug: provide operator<<(ostream&, const T&) for this type");
+        cerr << '}';
+    } else if constexpr (ranges::input_range<T>) {
+        cerr << '{';
+        bool first = true;
+        for (auto&& x : value) {
+            if (!first) cerr << ", ";
+            write(std::forward<decltype(x)>(x));
+            first = false;
         }
+        cerr << '}';
+    } else if constexpr (requires { typename tuple_size<U>::type; }) {
+        cerr << '(';
+        apply([](auto&&... x) {
+            [[maybe_unused]] size_t index = 0;
+            ((cerr << (index++ ? ", " : ""), write(std::forward<decltype(x)>(x))), ...);
+        }, value);
+        cerr << ')';
+    } else if constexpr (requires { cerr << value; }) {
+        cerr << value;  // Numbers, bitset, complex, and custom operator<<.
+    } else {
+        static_assert(is_void_v<U>, "debug: provide operator<<(ostream&, const T&) for this type");
     }
+}
 
-    inline void header(const char* file, int line, const char* names) {
-        string_view filename(file);
-        const auto slash = filename.find_last_of("/\\");
-        if (slash != string_view::npos)
-            filename.remove_prefix(slash + 1);
-        cerr << '[' << filename << ':' << line << "] [" << names << "] = [";
-    }
+inline void header(const char* file, int line, const char* names) {
+    string_view filename(file);
+    const auto slash = filename.find_last_of("/\\");
+    if (slash != string_view::npos) filename.remove_prefix(slash + 1);
+    cerr << '[' << filename << ':' << line << "] [" << names << "] = [";
+}
 
-    template <typename... T> void values(T &&...value) {
-        [[maybe_unused]] size_t index = 0;
-        ((cerr << (index++ ? ", " : ""), write(std::forward<T>(value))), ...);
-    }
+template<typename... T>
+void values(T&&... value) {
+    [[maybe_unused]] size_t index = 0;
+    ((cerr << (index++ ? ", " : ""), write(std::forward<T>(value))), ...);
+}
 
-    template <ranges::input_range R>
-    void matrix(const char* file, int line, const char* name, R&& rows) {
-        header(file, line, name);
+template<ranges::input_range R>
+void matrix(const char* file, int line, const char* name, R&& rows) {
+    header(file, line, name);
+    cerr << '\n';
+    for (auto&& row : rows) {
+        cerr << "  ";
+        write(std::forward<decltype(row)>(row));
         cerr << '\n';
-        for (auto&& row : rows) {
-            cerr << "  ";
-            write(std::forward<decltype(row)>(row));
-            cerr << '\n';
-        }
-        cerr << "]\n";
     }
-} // namespace cp_debug
+    cerr << "]\n";
+}
+}  // namespace cp_debug
 
 // Uncomment before the macro definitions below when needed.
 // #define MULTI_CASE_INPUT
@@ -289,16 +228,12 @@ namespace cp_debug {
 // LOCAL_FILE is set in VS project properties for local file debugging.
 
 #if !defined(ONLINE_JUDGE) && !defined(NO_DEBUG)
-#define debug(...)                                                                                 \
-    do {                                                                                           \
-        cp_debug::header(__FILE__, __LINE__, "" #__VA_ARGS__);                                     \
-        cp_debug::values(__VA_ARGS__);                                                             \
-        std::cerr << "]\n";                                                                        \
-    } while (false)
-#define debug_matrix(...)                                                                          \
-    do {                                                                                           \
-        cp_debug::matrix(__FILE__, __LINE__, "" #__VA_ARGS__, (__VA_ARGS__));                      \
-    } while (false)
+#define debug(...) do { \
+    cp_debug::header(__FILE__, __LINE__, "" #__VA_ARGS__); \
+    cp_debug::values(__VA_ARGS__); \
+    std::cerr << "]\n"; \
+} while (false)
+#define debug_matrix(...) do { cp_debug::matrix(__FILE__, __LINE__, "" #__VA_ARGS__, (__VA_ARGS__)); } while (false)
 #else
 #define debug(...) ((void)0)
 #define debug_matrix(...) ((void)0)
@@ -311,49 +246,63 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
-#define MULTI_CASE_INPUT
-// Every cell is a triple (row, col, value). R/L/D/U shift one coordinate by +-1;
-// I swaps col with value, C swaps row with value. So the whole state is a
-// coordinate permutation plus per-coordinate offsets, applied O(1) per op.
-void solve() {
-    int n, m;
-    cin >> n >> m;
-    vii a(n, vi(n));
-    for (auto& row : a)
-        for (int& v : row) cin >> v;
-    string ops;
-    cin >> ops;
+struct Node {
+    int cnt;
+    int cards[3];
+    int father;
+    int deg;
+    int player;
+    bool used;
+};
 
-    array<int, 3> p{0, 1, 2}; // slot k (row, col, value) takes original coordinate p[k]
-    array<int, 3> d{0, 0, 0}; // then adds offset d[k] mod n
-    for (char op : ops) {
-        switch (op) {
-        case 'R': d[1]++; break;
-        case 'L': d[1]--; break;
-        case 'D': d[0]++; break;
-        case 'U': d[0]--; break;
-        case 'I': swap(p[1], p[2]), swap(d[1], d[2]); break;
-        case 'C': swap(p[0], p[2]), swap(d[0], d[2]); break;
+void solve() {
+    int N;
+    cin >> N;
+    vector<int> player(6 * N + 1, 0);
+    for (int i = 0; i < 3 * N; i++) {
+        int x;
+        cin >> x;
+        player[x] = true;
+    }
+    Node root;
+    root.cnt = 0, root.deg = 0, root.player = -1, root.used = true;
+    vector<Node> nodes;
+    nodes.push_back(root);
+    stack<int> S;
+    S.push(0);
+    for (int i = 1; i <= 6 * N; i++) {
+        if (nodes[S.top()].player == player[i]) {
+            int it = S.top();
+            nodes[it].cards[nodes[it].cnt++] = i;
+            if (nodes[it].cnt == 3) S.pop();
+        }
+        else {
+            Node X;
+            X.cnt = 1;
+            X.cards[0] = i;
+            X.father = S.top();
+            X.player = player[i];
+            X.deg = 0;
+            X.used = false;
+            nodes[S.top()].deg++;
+            S.push(nodes.size());
+            nodes.push_back(X);
         }
     }
-    rep(k, 0, 3) d[k] = (d[k] % n + n) % n;
-
-    vii b(n, vi(n));
-    rep(i, 0, n) rep(j, 0, n) {
-        const array<int, 3> t{i, j, a[i][j] - 1};
-        array<int, 3> c{};
-        rep(k, 0, 3) c[k] = (t[p[k]] + d[k]) % n;
-        b[c[0]][c[1]] = c[2] + 1;
+    assert(S.size() == 1);
+    for (int i = 1; i <= 2 * N; i++) {
+        int choice = -1;
+        for (int j = 1; j <= 2 * N; j++) {
+            if (nodes[j].used or nodes[j].player != i % 2 or nodes[j].deg > 0) continue;
+            choice = j;
+            if (i % 2 or nodes[j].father != 0) break;
+        }
+        assert(choice != -1);
+        Node& X = nodes[choice];
+        cout << X.cards[0] << " " << X.cards[1] << " " << X.cards[2] << "\n";
+        X.used = true;
+        nodes[X.father].deg--;
     }
-    for (const auto& row : b) print(row);
-}
-
-inline bool stdin_is_terminal() {
-#ifdef _WIN32
-    return _isatty(_fileno(stdin));
-#else
-    return isatty(fileno(stdin));
-#endif
 }
 
 int main() {
@@ -368,17 +317,12 @@ int main() {
     }
 #endif
     ios_base::sync_with_stdio(false);
-    // Typing into a console: stay tied so each answer shows before the next read.
-    // Files, pipes and judges never are terminals, so they keep the fast untied I/O.
-    if (!stdin_is_terminal())
-        cin.tie(nullptr);
+    cin.tie(nullptr);
 
     int t = 1;
 #ifdef MULTI_CASE_INPUT
-    if (!(cin >> t) || t < 0)
-        return 0;
+    if (!(cin >> t) || t < 0) return 0;
 #endif
-    while (t--)
-        solve();
+    while (t--) solve();
     return 0;
 }
