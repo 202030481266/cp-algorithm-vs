@@ -147,6 +147,17 @@
     <None Include="solutions\cf\1500\C\input.txt" />
     <None Include="solutions\cf\1500\C\main.cpp" />
     <None Include="solutions\cf\1500\C\README.md" />
+    <None Include="solutions\cf\1601\d\expected.txt" />
+    <None Include="solutions\cf\1601\d\input.txt" />
+    <None Include="solutions\cf\1601\d\main.cpp" />
+    <None Include="solutions\cf\1601\d\problem.json" />
+    <None Include="solutions\cf\1601\d\README.md" />
+    <None Include="solutions\cf\1601\d\samples\1.ans" />
+    <None Include="solutions\cf\1601\d\samples\1.in" />
+    <None Include="solutions\cf\1601\d\samples\2.ans" />
+    <None Include="solutions\cf\1601\d\samples\2.in" />
+    <None Include="solutions\cf\1601\d\samples\3.ans" />
+    <None Include="solutions\cf\1601\d\samples\3.in" />
     <None Include="solutions\cf\1610\F\expected.txt" />
     <None Include="solutions\cf\1610\F\input.txt" />
     <None Include="solutions\cf\1610\F\main.cpp" />

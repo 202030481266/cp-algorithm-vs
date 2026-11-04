@@ -246,63 +246,23 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
-struct Node {
-    int cnt;
-    int cards[3];
-    int father;
-    int deg;
-    int player;
-    bool used;
-};
-
 void solve() {
-    int N;
-    cin >> N;
-    vector<int> player(6 * N + 1, 0);
-    for (int i = 0; i < 3 * N; i++) {
-        int x;
-        cin >> x;
-        player[x] = true;
-    }
-    Node root;
-    root.cnt = 0, root.deg = 0, root.player = -1, root.used = true;
-    vector<Node> nodes;
-    nodes.push_back(root);
-    stack<int> S;
-    S.push(0);
-    for (int i = 1; i <= 6 * N; i++) {
-        if (nodes[S.top()].player == player[i]) {
-            int it = S.top();
-            nodes[it].cards[nodes[it].cnt++] = i;
-            if (nodes[it].cnt == 3) S.pop();
-        }
-        else {
-            Node X;
-            X.cnt = 1;
-            X.cards[0] = i;
-            X.father = S.top();
-            X.player = player[i];
-            X.deg = 0;
-            X.used = false;
-            nodes[S.top()].deg++;
-            S.push(nodes.size());
-            nodes.push_back(X);
+    int n, d;
+    cin >> n >> d;
+    vp arr(n);
+    for (auto& [u, v] : arr) cin >> u >> v;
+    ranges::sort(arr, [&](auto& x, auto& y) {
+        int mx = max(x.first, x.second), my = max(y.first, y.second);
+        return mx != my ? mx < my : x.first < y.first;
+    });
+    int ans = 0;
+    for (auto& [u, v] : arr) {
+        if (u >= d) {
+            ++ans;
+            d = max(d, v);
         }
     }
-    assert(S.size() == 1);
-    for (int i = 1; i <= 2 * N; i++) {
-        int choice = -1;
-        for (int j = 1; j <= 2 * N; j++) {
-            if (nodes[j].used or nodes[j].player != i % 2 or nodes[j].deg > 0) continue;
-            choice = j;
-            if (i % 2 or nodes[j].father != 0) break;
-        }
-        assert(choice != -1);
-        Node& X = nodes[choice];
-        cout << X.cards[0] << " " << X.cards[1] << " " << X.cards[2] << "\n";
-        X.used = true;
-        nodes[X.father].deg--;
-    }
+    cout << ans << '\n';
 }
 
 int main() {
