@@ -246,23 +246,76 @@ inline constexpr int MOD_197 = 1'000'000'007;
 inline constexpr int MOD_998 = 998'244'353;
 inline constexpr int MAXB = 30;
 
+#define MULTI_CASE_INPUT
+
 void solve() {
-    int n, d;
-    cin >> n >> d;
-    vp arr(n);
-    for (auto& [u, v] : arr) cin >> u >> v;
-    ranges::sort(arr, [&](auto& x, auto& y) {
-        int mx = max(x.first, x.second), my = max(y.first, y.second);
-        return mx != my ? mx < my : x.first < y.first;
-    });
-    int ans = 0;
-    for (auto& [u, v] : arr) {
-        if (u >= d) {
-            ++ans;
-            d = max(d, v);
-        }
+    int n;
+    cin >> n;
+    vp edges(n - 1);
+    vii g(n + 1);
+    for (auto& [u, v] : edges) {
+        cin >> u >> v;
+        g[u].push_back(v);
+        g[v].push_back(u);
     }
-    cout << ans << '\n';
+    vp ans;
+    bool flag = true;
+    auto dfs = [&](auto&& self, int u, int fa) -> pii {
+        if (!flag) return { -1, -1 }; // 无解
+        vp one, two;
+        int d = sz(g[u]) & 1;
+        for (int v : g[u]) {
+            if (v == fa) continue;
+            auto [val, gson] = self(self, v, u);
+            if (!flag) return { -1, -1 }; // 无解
+            if (val) one.emplace_back(v, v);
+            else two.emplace_back(v, gson);
+        }
+        int N = min(sz(one), sz(two));
+        rep(i, 0, N) {
+            int x = one[i].first, y = two[i].first, z = two[i].second;
+            if (d) {
+                ans.emplace_back(u, x);
+                ans.emplace_back(u, y);
+            }
+            else {
+                ans.emplace_back(u, y);
+                ans.emplace_back(u, x);
+            }
+            ans.emplace_back(y, z);
+        }
+        int ds = abs(sz(one) - sz(two));
+        if (ds) {
+            if (sz(one) > sz(two)) {
+                if (ds >= 3 || ds == 2 && !fa) {
+                    flag = false;
+                    return { -1, -1 };
+                }
+                if (ds == 1) {
+                    if (!fa) ans.emplace_back(u, one[N].first);
+                    return { 0, one[N].first };
+                }
+                // ds == 1
+                ans.emplace_back(u, one[N].first);
+                return { 0, one[N + 1].first };
+            }
+            // sz(two) > sz(one)
+            if (ds > 1 || !fa) {
+                flag = false;
+                return { -1, -1 };
+            }
+            ans.emplace_back(u, two[N].first);
+            ans.emplace_back(two[N].first, two[N].second);
+        }
+        return { 1, u };
+    };
+    dfs(dfs, 1, 0);
+    if (!flag) {
+        cout << "NO" << '\n';
+        return;
+    }
+    cout << "YES" << '\n';
+    for (auto& [u, v] : ans) cout << u << ' ' << v << '\n';
 }
 
 int main() {
