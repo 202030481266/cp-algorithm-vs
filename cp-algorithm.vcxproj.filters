@@ -26,6 +26,9 @@
     <Filter Include="03 题解归档\cf\1491\g\samples" />
     <Filter Include="03 题解归档\cf\1500" />
     <Filter Include="03 题解归档\cf\1500\C" />
+    <Filter Include="03 题解归档\cf\1545" />
+    <Filter Include="03 题解归档\cf\1545\c" />
+    <Filter Include="03 题解归档\cf\1545\c\samples" />
     <Filter Include="03 题解归档\cf\1601" />
     <Filter Include="03 题解归档\cf\1601\d" />
     <Filter Include="03 题解归档\cf\1601\d\samples" />
@@ -280,6 +283,27 @@
     </None>
     <None Include="solutions\cf\1500\C\README.md">
       <Filter>03 题解归档\cf\1500\C</Filter>
+    </None>
+    <None Include="solutions\cf\1545\c\expected.txt">
+      <Filter>03 题解归档\cf\1545\c</Filter>
+    </None>
+    <None Include="solutions\cf\1545\c\input.txt">
+      <Filter>03 题解归档\cf\1545\c</Filter>
+    </None>
+    <None Include="solutions\cf\1545\c\main.cpp">
+      <Filter>03 题解归档\cf\1545\c</Filter>
+    </None>
+    <None Include="solutions\cf\1545\c\problem.json">
+      <Filter>03 题解归档\cf\1545\c</Filter>
+    </None>
+    <None Include="solutions\cf\1545\c\README.md">
+      <Filter>03 题解归档\cf\1545\c</Filter>
+    </None>
+    <None Include="solutions\cf\1545\c\samples\1.ans">
+      <Filter>03 题解归档\cf\1545\c\samples</Filter>
+    </None>
+    <None Include="solutions\cf\1545\c\samples\1.in">
+      <Filter>03 题解归档\cf\1545\c\samples</Filter>
     </None>
     <None Include="solutions\cf\1601\d\expected.txt">
       <Filter>03 题解归档\cf\1601\d</Filter>
