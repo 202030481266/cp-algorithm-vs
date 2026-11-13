@@ -13,7 +13,7 @@ from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 import cp
-from fetch_problem import Problem, Sample
+from fetch_problem import BrowserCheck, Problem, Sample
 
 REAL_ROOT = cp.ROOT
 
@@ -21,6 +21,11 @@ REAL_ROOT = cp.ROOT
 def fake_fetch(target, code=None):
     return Problem(target, title="A. Sum", time_limit="1 second", code=code,
                    samples=[Sample("1 2\n", "3\n"), Sample("5 5\n", None)])
+
+
+def browser(payloads):
+    """Stand-in for fetch_problem.companion_payloads: a generator, like the real listener."""
+    return lambda port, wait: (payload for payload in payloads)
 
 
 class WorkspaceTests(unittest.TestCase):
@@ -190,6 +195,70 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual(self.info()["id"], "leetcode/two-sum")
         with self.assertRaisesRegex(ValueError, "--name"):
             cp.new_problem(None, "cf/1/A")
+
+    def companion(self, url, name="A. Sum"):
+        return {"name": name, "url": url, "timeLimit": 2000,
+                "tests": [{"input": "1 2\n", "output": "3\n"}, {"input": "5 5\n", "output": "10\n"}]}
+
+    def test_browser_check_falls_back_to_the_extension(self):
+        sent = [self.companion("https://codeforces.com/contest/1/problem/A", "other"),
+                self.companion("https://codeforces.com/problemset/problem/1610/F")]
+        with patch("fetch_problem.fetch", side_effect=BrowserCheck("https://codeforces.com/x")), \
+                patch("fetch_problem.companion_payloads", side_effect=browser(sent)) as listener:
+            self.assertEqual(cp.new_problem("1610F", None, 4321, 9), 0)
+        listener.assert_called_once_with(4321, 9)
+        self.assertIn("Ignored https://codeforces.com/contest/1/problem/A", self.stdout.getvalue())
+        self.assertEqual((self.root / "main.cpp").read_bytes(), (self.root / "templates/main.cpp").read_bytes())
+        self.assertEqual(self.files("data/samples"), ["1.ans", "1.in", "2.ans", "2.in"])
+        self.assertEqual(self.info(), {"id": "cf/1610/F", "platform": "codeforces",
+                                       "url": "https://codeforces.com/contest/1610/problem/F",
+                                       "title": "A. Sum", "time_limit": "2 seconds"})
+        with patch("fetch_problem.fetch", side_effect=BrowserCheck("https://codeforces.com/x")), \
+                patch("fetch_problem.companion_payloads", side_effect=browser(sent[1:])):
+            cp.fetch_samples("1610F", "training/F")
+        self.assertEqual(self.info()["id"], "training/F")
+
+    def test_browser_check_without_fallback_changes_nothing(self):
+        def nothing(port, wait):
+            raise ValueError("Nothing arrived")
+            yield
+
+        with patch("fetch_problem.fetch", side_effect=BrowserCheck("https://codeforces.com/x")), \
+                patch("fetch_problem.companion_payloads", side_effect=nothing), \
+                self.assertRaisesRegex(ValueError, "Nothing arrived"):
+            cp.new_problem("1610F", None)
+        with patch("fetch_problem.fetch", side_effect=BrowserCheck("https://leetcode.cn/x")), \
+                patch("fetch_problem.companion_payloads", side_effect=AssertionError("LeetCode needs its code")), \
+                self.assertRaisesRegex(ValueError, "browser check"):
+            cp.new_problem("leetcode/two-sum", None)
+        self.assertFalse((self.root / "backups").exists())
+        self.assertEqual((self.root / "main.cpp").read_bytes(), self.original)
+
+    def test_listen_starts_or_updates_whatever_the_browser_sends(self):
+        luogu = self.companion("https://www.luogu.com.cn/problem/P1001", "P1001 A+B")
+        with patch("fetch_problem.companion_payloads", side_effect=browser([luogu])) as listener:
+            self.assertEqual(cp.listen_problem(None), 0)
+        listener.assert_called_once_with(10043, 300.0)
+        self.assertEqual((self.root / "main.cpp").read_bytes(), (self.root / "templates/main.cpp").read_bytes())
+        self.assertEqual(self.info()["url"], "https://www.luogu.com.cn/problem/P1001")
+        self.assertIn("'save' needs one", self.stdout.getvalue())
+        with self.assertRaisesRegex(ValueError, "archive name"):
+            cp.save_problem()  # Unknown sites have no default name.
+        cp.save_problem("luogu/P1001")
+        self.assertEqual(self.files("solutions/luogu/P1001/samples"), ["1.ans", "1.in", "2.ans", "2.in"])
+
+        (self.root / "main.cpp").write_bytes(self.original)
+        atcoder = self.companion("https://atcoder.jp/contests/abc400/tasks/abc400_e")
+        with patch("fetch_problem.companion_payloads", side_effect=browser([atcoder])):
+            cp.listen_problem("training/E", keep_code=True)
+        self.assertEqual((self.root / "main.cpp").read_bytes(), self.original)
+        self.assertEqual((self.info()["id"], self.info()["platform"]), ("training/E", "atcoder"))
+        with patch("fetch_problem.companion_payloads", side_effect=browser([atcoder])):
+            cp.listen_problem(None, keep_code=True)
+        self.assertEqual(self.info()["id"], "atcoder/abc400/E")
+        with patch("fetch_problem.companion_payloads", side_effect=AssertionError("name is checked first")), \
+                self.assertRaisesRegex(ValueError, "cf/2100/A"):
+            cp.listen_problem("../escape")
 
     def test_save_without_name_and_round_trip_with_samples(self):
         with self.assertRaisesRegex(ValueError, "archive name"):

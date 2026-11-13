@@ -1,13 +1,22 @@
-"""Offline checks for sample fetching and the LeetCode driver. CP_LEETCODE_CXX=cl uses MSVC."""
+"""Offline checks for sample fetching, the browser listener and the LeetCode driver.
+
+CP_LEETCODE_CXX=cl uses MSVC."""
 from argparse import Namespace
 from contextlib import redirect_stdout
+import email.message
+import http.client
 import io
 import json
 import os
 from pathlib import Path
 import shutil
+import socket
 import tempfile
+import threading
+import time
 import unittest
+from unittest.mock import patch
+import urllib.error
 
 import cp
 import fetch_problem as fp
@@ -251,6 +260,166 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(fp.cpp_type("list<list<integer>>"), "vector<vector<int>>")
         self.assertEqual(fp.cpp_type("character[][]"), "vector<vector<char>>")
         self.assertIsNone(fp.cpp_type("Node[]"))
+
+
+COMPANION = {
+    "name": "G.  Castle Defense", "group": "Codeforces - Educational Round 40",
+    "url": "https://codeforces.com/problemset/problem/954/G", "interactive": False,
+    "memoryLimit": 256, "timeLimit": 1500, "testType": "single",
+    "tests": [{"input": "5 0 6\r\n5 4 3 4 9\r\n", "output": "5\n"}, {"input": "4 2 0\n1 2 3 4", "output": "6"}],
+    "input": {"type": "stdin"}, "output": {"type": "stdout"}, "batch": {"id": "x", "size": 1},
+}
+
+
+def free_port():
+    with socket.socket() as probe:
+        probe.bind(("127.0.0.1", 0))
+        return probe.getsockname()[1]
+
+
+def post(port, body, host="127.0.0.1"):
+    """POST like the extension does; retries until the listener is up."""
+    for _ in range(100):
+        try:
+            connection = http.client.HTTPConnection(host, port, timeout=5)
+            connection.request("POST", "/", body=body, headers={"Content-Type": "application/json"})
+            status = connection.getresponse().status
+            connection.close()
+            return status
+        except OSError:
+            time.sleep(0.05)
+    raise AssertionError("listener never came up")
+
+
+class CompanionTests(unittest.TestCase):
+    def test_payload_becomes_a_problem(self):
+        problem = fp.companion_problem(COMPANION)
+        self.assertEqual((problem.target.platform, problem.target.id), ("codeforces", "cf/954/G"))
+        self.assertEqual(problem.target.url, fp.parse_target("954G").url)  # Same page as 'new 954G'.
+        self.assertEqual((problem.title, problem.time_limit), ("G. Castle Defense", "1.5 seconds"))
+        self.assertEqual([(s.input, s.output) for s in problem.samples],
+                         [("5 0 6\n5 4 3 4 9\n", "5\n"), ("4 2 0\n1 2 3 4\n", "6\n")])
+        self.assertEqual((problem.notes, problem.code), ([], None))
+
+    def test_other_sites_notes_and_bad_payloads(self):
+        other = fp.companion_problem({
+            "name": "P1001 A+B", "url": "https://www.luogu.com.cn/problem/P1001", "timeLimit": 1000,
+            "interactive": True, "tests": [{"input": "1 2\n"}, "junk"],
+            "input": {"type": "file", "fileName": "a.in"}, "output": {"type": "stdout"}})
+        self.assertEqual((other.target.platform, other.target.id), ("www.luogu.com.cn", ""))
+        self.assertEqual(other.time_limit, "1 second")
+        self.assertEqual([(s.input, s.output) for s in other.samples], [("1 2\n", None)])
+        self.assertIn("Interactive", other.notes[0])
+        self.assertIn("a.in for input", other.notes[1])
+        with self.assertRaisesRegex(ValueError, "no samples"):
+            fp.companion_problem({**COMPANION, "tests": []})
+        for payload in ({}, {"url": 1, "tests": []}, {"url": "https://codeforces.com/", "tests": None}):
+            with self.subTest(payload=payload), self.assertRaisesRegex(ValueError, "not a Competitive Companion"):
+                fp.companion_problem(payload)
+
+    def test_listener_receives_posts_and_rejects_junk(self):
+        port = free_port()
+        statuses = []
+        bodies = (b"not json", b"[1, 2]", json.dumps(COMPANION).encode(),
+                  json.dumps({**COMPANION, "name": "second"}).encode())
+        sender = threading.Thread(target=lambda: statuses.extend(post(port, body) for body in bodies))
+        sender.start()
+        self.addCleanup(sender.join)
+        payloads = fp.companion_payloads(port, wait=20)
+        self.assertEqual(next(payloads), COMPANION)
+        self.assertEqual(next(payloads)["name"], "second")
+        sender.join()
+        self.assertEqual(statuses, [400, 400, 200, 200])
+        payloads.close()
+        with socket.socket() as probe:  # The port is released.
+            probe.bind(("127.0.0.1", port))
+
+    def test_listener_answers_within_the_extension_time_limit_despite_idle_connections(self):
+        # The extension aborts after 500 ms and says nothing, so a connection that sends no
+        # data (browsers open spares) must not hold up the request behind it.
+        port = free_port()
+        result = {}
+
+        def extension():
+            idle = []
+            for family, host in ((socket.AF_INET, "127.0.0.1"), (socket.AF_INET6, "::1")):
+                for _ in range(100):
+                    try:
+                        spare = socket.socket(family)
+                        spare.connect((host, port))
+                        idle.append(spare)
+                        break
+                    except OSError:
+                        spare.close()
+                        if family == socket.AF_INET6:
+                            break  # No IPv6 loopback here.
+                        time.sleep(0.05)
+            started = time.monotonic()
+            result["status"] = post(port, json.dumps(COMPANION).encode())
+            result["seconds"] = time.monotonic() - started
+            for spare in idle:
+                spare.close()
+
+        sender = threading.Thread(target=extension)
+        sender.start()
+        self.addCleanup(sender.join)
+        payloads = fp.companion_payloads(port, wait=20)
+        self.assertEqual(next(payloads), COMPANION)
+        sender.join()
+        payloads.close()
+        self.assertEqual(result["status"], 200)
+        self.assertLess(result["seconds"], 0.4)
+
+    def test_listener_times_out_and_reports_a_busy_port(self):
+        port = free_port()
+        with self.assertRaisesRegex(ValueError, f"Nothing arrived.*Nothing connected to port {port}"):
+            next(fp.companion_payloads(port, wait=0.2))
+
+        def visit():  # Someone checking the port in the address bar.
+            for _ in range(100):
+                try:
+                    connection = http.client.HTTPConnection("127.0.0.1", port, timeout=5)
+                    connection.request("GET", "/")
+                    reply = connection.getresponse()
+                    visited.append((reply.status, reply.read().decode()))
+                    connection.close()
+                    return
+                except OSError:
+                    time.sleep(0.05)
+
+        visited = []
+        visitor = threading.Thread(target=visit)
+        visitor.start()
+        self.addCleanup(visitor.join)
+        with self.assertRaisesRegex(ValueError, "Nothing arrived.*1 connection.*page view"):
+            next(fp.companion_payloads(port, wait=1.5))
+        visitor.join()
+        self.assertEqual(visited[0][0], 200)
+        self.assertIn("waiting here for Competitive Companion", visited[0][1])
+        with socket.socket() as busy:
+            busy.bind(("127.0.0.1", port))
+            busy.listen()
+            with self.assertRaisesRegex(ValueError, f"Cannot listen on port {port}.*--port"):
+                next(fp.companion_payloads(port, wait=0.2))
+
+    def test_cloudflare_challenge_is_told_apart_from_other_errors(self):
+        def reply(code, headers, body=b""):
+            message = email.message.Message()
+            for key, value in headers.items():
+                message[key] = value
+            return urllib.error.HTTPError("https://codeforces.com/x", code, "Forbidden", message, io.BytesIO(body))
+
+        cases = ((reply(403, {"cf-mitigated": "challenge"}), True),
+                 (reply(403, {}, b"<html><head><title>Just a moment...</title>"), True),
+                 (reply(403, {}, b"<html>Forbidden</html>"), False),
+                 (reply(404, {"cf-mitigated": "challenge"}), False))
+        for error, challenged in cases:
+            with self.subTest(code=error.code, challenged=challenged), \
+                    patch("urllib.request.urlopen", side_effect=error), \
+                    self.assertRaises(ValueError) as caught:
+                fp.http_request("https://codeforces.com/x")
+            self.assertEqual(isinstance(caught.exception, fp.BrowserCheck), challenged)
+        self.assertIn("codeforces.com answered with a browser check", str(fp.BrowserCheck("https://codeforces.com/x")))
 
 
 @unittest.skipUnless(shutil.which(os.environ.get("CP_LEETCODE_CXX", "g++")), "C++ compiler not on PATH")

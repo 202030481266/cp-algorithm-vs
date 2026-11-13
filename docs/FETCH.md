@@ -2,6 +2,7 @@
 
 `tools/cp.py` 可以从 Codeforces、AtCoder、LeetCode 抓取题目样例，省去逐个复制粘贴；
 `test` 命令只编译一次，就把全部样例跑完并逐个判定。只用 Python 标准库，不需要额外安装。
+网站要求浏览器验证时（Codeforces 的 403），改为[从浏览器接收题目](#从浏览器接收题目competitive-companion)。
 
 ## 快速开始
 
@@ -75,6 +76,53 @@ ABC 页面里的任务编号是 `arc0xx_a`），按简写推算会找不到题�
 - 简写与归档名格式相同：`cf/1610/F`、`atcoder/abc400/E`、`leetcode/two-sum` 既能用于 new/fetch，也是 save/load 使用的名字。
 - 无法识别的写法会直接报错并列出可用格式，不会抓取别的题目。例如只写 `two-sum` 时，需要改成 `leetcode/two-sum`。
 - 想换一个归档名，加 `--name`，例如 `python tools/cp.py new 1610F --name cf/1610/F-v2`。
+
+## 从浏览器接收题目（Competitive Companion）
+
+Codeforces 的题目页有时会开启 Cloudflare 浏览器验证，脚本直接请求只会得到 403，只有真正的浏览器能通过。
+这时改由浏览器把题目交给工具：浏览器扩展 [Competitive Companion](https://github.com/jmerle/competitive-companion)
+在页面里解析出样例，发到本机端口，`cp.py` 在那里接收。
+
+准备工作只做一次：在 Chrome/Edge 或 Firefox 的扩展商店安装 Competitive Companion。
+工具监听的 10043 是扩展默认就会推送的端口，装好后不用设置。
+
+**用法一：命令不变。** `new`/`fetch` 遇到浏览器验证时自动转为等待浏览器：
+
+```text
+> python tools/cp.py new 1545C
+Fetching https://codeforces.com/contest/1545/problem/C
+codeforces.com answered with a browser check (Cloudflare), which a script cannot pass. Taking the problem from your browser instead.
+Waiting for the browser on port 10043 (Ctrl+C cancels, gives up after 300s).
+Open https://codeforces.com/contest/1545/problem/C and click the Competitive Companion button (green plus).
+```
+
+**命令等待期间**，在浏览器里打开这道题，点扩展的图标（绿色加号；Chrome/Edge 默认把它收在工具栏的拼图菜单里，
+可以固定到工具栏），命令就会继续，结果和直接抓取相同。只装扩展不点图标，命令收不到任何东西。
+点了别的题目会被忽略并继续等待，不会把样例写错。
+
+扩展点击后页面顶部会闪过一条蓝色细进度条；它发送成功或失败都没有提示（每个端口只等 0.5 秒）。
+所以等到超时的时候，工具会说明它看到了什么：
+
+| 超时信息 | 含义 |
+| --- | --- |
+| `Nothing connected to port 10043` | 等待期间浏览器没有连过来：没有点图标，或者点的那个浏览器没装扩展。在同一个浏览器的地址栏打开 `http://localhost:10043/`，能看到 `cp.py is waiting here…` 说明浏览器连得上本工具 |
+| `… connection(s) reached port 10043, but the last one …` | 有连接但不是题目，例如只是在地址栏打开了上面的地址 |
+| 页面弹出 `Something went wrong while running Competitive Companion's …` | 扩展解析页面失败（例如页面还停在验证页），与本工具无关 |
+
+**用法二：不写题号。** `listen` 接收浏览器发来的任意一道题：
+
+```powershell
+python tools/cp.py listen               # 相当于 new：备份 → 载入模板 → 写入样例
+python tools/cp.py listen --keep-code   # 相当于 fetch：只更新样例，不改 main.cpp
+```
+
+- `listen` 对扩展支持的所有网站都有效（洛谷、牛客、CSES 等）。Codeforces、AtCoder 的归档名照常自动生成；
+  其他网站没有默认归档名，用 `--name luogu/P1001` 指定，或在 `save luogu/P1001` 时写出。
+- 每次只接收一道题，收到后监听就结束；扩展的“解析整场比赛”只会取到第一道。
+- 等待 300 秒没有收到就放弃，可用 `--wait 600` 调整；和抓取一样，收到并解析成功之前不会改动任何文件。
+- 端口被其他工具占用时会报错。用 `--port 12345` 换一个，并在扩展的选项页 Custom ports 中加上同一个端口。
+- LeetCode 需要题目的代码框架才能生成本地驱动，扩展不提供，所以 LeetCode 不走这条路，仍然直接抓取。
+- 监听只绑定本机回环地址（127.0.0.1 和 ::1），局域网内的其他机器访问不到。
 
 ## 会写入哪些文件
 
@@ -176,7 +224,8 @@ int main() {
 
 - 会员题、需要登录或正在进行的比赛可能抓不到（工具不保存账号信息）。这时把样例手动粘贴到
   data/input.txt 和 data/expected.txt，`test` 会使用它们。
-- Codeforces 偶尔返回浏览器验证页（Cloudflare），稍等片刻重试即可。
+- Codeforces 返回浏览器验证页（Cloudflare）时，工具会转为等待浏览器扩展，见[从浏览器接收题目](#从浏览器接收题目competitive-companion)。
+  没装扩展时按 Ctrl+C 取消，手动粘贴样例。
 - 只有 PDF 题面的题目（常见于 Gym）没有可抓取的样例。
 - 交互题的样例是交互过程，工具会给出提示；不能直接用 run/test 判定。
 - 网络请求使用系统代理：优先读取 HTTP_PROXY/HTTPS_PROXY 环境变量，未设置时使用 Windows 的代理设置。

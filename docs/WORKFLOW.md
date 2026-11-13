@@ -87,6 +87,7 @@ solutions/
 | python tools/cp.py new 题目链接或简写 | 备份当前工作，载入模板（LeetCode 生成带本地驱动的代码），抓取全部样例 |
 | python tools/cp.py new | 备份当前工作，载入模板，清空当前样例与输出 |
 | python tools/cp.py fetch 题目链接或简写 | 备份后只更新样例和题目信息，不改 main.cpp |
+| python tools/cp.py listen [--keep-code] | 等待浏览器扩展 Competitive Companion 发来题目，之后同 new；加 --keep-code 时同 fetch |
 | python tools/cp.py test | 编译一次，检查 data/samples 中的全部样例 |
 | python tools/cp.py save [cf/2100/A] | 保存代码、输入、期望输出和样例；省略名字时用抓取或载入的题目；已有目录先确认覆盖；刷新 VS 分类 |
 | python tools/cp.py load cf/2100/A | 先备份当前工作，再载入已归档的代码和样例 |
@@ -316,7 +317,8 @@ python -m unittest discover -s tools -p "test_*.py"
 测试使用 build/ 下的隔离临时目录，验证归档/切题备份、覆盖确认与取消、笔记保留、路径边界、
 VS 编译列表、输出比较与子进程超时；也会实际编译模板，检查容器打印、宏开关和文件 I/O。
 样例抓取部分用离线保存的页面片段检查三个平台的解析、save/load/fetch 对样例的处理和 test 的判定，
-并实际编译 LeetCode 驱动，核对各种参数类型的输出格式；测试不访问网络。
+并实际编译 LeetCode 驱动，核对各种参数类型的输出格式；浏览器扩展的接收部分在本机回环地址的临时端口上收发；
+测试不访问网络。
 不会对当前 main.cpp 执行 new/load。
 单独检查模板可运行 python -m unittest discover -s tools -p test_template.py -v；
 在 VS Developer PowerShell 中先设置 $env:CP_TEMPLATE_CXX = "cl"，即可用 MSVC 跑同一组模板测试；

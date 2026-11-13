@@ -1,10 +1,16 @@
-"""Fetch problem samples from Codeforces, AtCoder and LeetCode (standard library only)."""
+"""Fetch problem samples from Codeforces, AtCoder and LeetCode, or receive them from the
+Competitive Companion browser extension (standard library only)."""
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import os
+import queue
 import re
+import socket
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -13,6 +19,9 @@ import urllib.request
 USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/130.0 Safari/537.36")
 LEETCODE_DEFAULT_HOST = "leetcode.cn"
+COMPANION_PORT = 10043  # Competitive Companion posts to this port without any setup.
+COMPANION_WAIT = 300.0  # Seconds to wait for the browser.
+COMPANION_MAX_BYTES = 16 * 1024 * 1024
 VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta",
              "source", "track", "wbr"}
 
@@ -43,6 +52,15 @@ class Problem:
     def metadata(self) -> dict:
         return {"id": self.target.id, "platform": self.target.platform, "url": self.target.url,
                 "title": self.title, "time_limit": self.time_limit}
+
+
+class BrowserCheck(ValueError):
+    """The site answered with a Cloudflare challenge, which only a real browser can pass."""
+
+    def __init__(self, url: str):
+        host = urllib.parse.urlsplit(url).hostname or url
+        super().__init__(f"{host} answered with a browser check (Cloudflare), "
+                         "which a script cannot pass.")
 
 
 # ---------------------------------------------------------------- problem names
@@ -127,6 +145,10 @@ def http_request(url: str, data: bytes | None = None, headers: dict | None = Non
             if error.code >= 500 and attempt + 1 < attempts:
                 time.sleep(1)
                 continue
+            if error.code in {403, 503} and (
+                    error.headers.get("cf-mitigated") == "challenge"
+                    or b"Just a moment" in error.read(4096)):
+                raise BrowserCheck(url) from None
             hint = {403: " (blocked; try again later or open the page in a browser first)",
                     404: " (not found; check the problem id, or the contest may require login)",
                     429: " (rate limited; wait a little and retry)"}.get(error.code, "")
@@ -238,8 +260,7 @@ def parse_codeforces(page: str, target: Target) -> Problem:
     holder = parse_html(page).find("div", "problemindexholder")
     statement = holder.find("div", "problem-statement") if holder else None
     if statement is None and re.search(r"<title>\s*Just a moment", page):
-        raise ValueError("Codeforces answered with a browser check (Cloudflare). Retry in a "
-                         "minute, or copy the samples by hand this time.")
+        raise BrowserCheck(target.url)
     if statement is None:
         raise ValueError(f"No problem statement at {target.url}. The problem may not exist, "
                          "the contest may not have started, or it may need login.")
@@ -448,6 +469,150 @@ def parse_leetcode(body: bytes, target: Target) -> Problem:
     else:
         problem.code = leetcode_main(problem, snippet, meta)
     return problem
+
+
+# ---------------------------------------------------------------- Competitive Companion
+
+def companion_problem(payload: dict) -> Problem:
+    """Convert the JSON that the Competitive Companion browser extension posts for a problem.
+
+    Sites this tool cannot name (anything but Codeforces, AtCoder, LeetCode) get an empty id.
+    """
+    url, tests = payload.get("url"), payload.get("tests")
+    if not isinstance(url, str) or not isinstance(tests, list):
+        raise ValueError("The browser sent data that is not a Competitive Companion problem.")
+    try:
+        target = parse_target(url)
+    except ValueError:
+        target = Target(urllib.parse.urlsplit(url).hostname or "", "", url)
+    name = payload.get("name")
+    problem = Problem(target, title=" ".join(name.split()) if isinstance(name, str) else "")
+    limit = payload.get("timeLimit")  # Milliseconds.
+    if isinstance(limit, (int, float)) and not isinstance(limit, bool) and limit > 0:
+        problem.time_limit = "1 second" if limit == 1000 else f"{limit / 1000:g} seconds"
+
+    def text(value) -> str:
+        value = value.replace("\r\n", "\n").replace("\r", "\n")
+        return value if value.endswith("\n") or not value else value + "\n"
+
+    for test in tests:
+        if isinstance(test, dict) and isinstance(test.get("input"), str):
+            output = test.get("output")
+            problem.samples.append(Sample(text(test["input"]),
+                                          text(output) if isinstance(output, str) else None))
+    if not problem.samples:
+        raise ValueError(f"The browser found no samples at {url} (PDF-only statements have none).")
+    if payload.get("interactive") is True:
+        problem.notes.append("Interactive problem: samples show the dialogue and cannot be checked by run/test.")
+    for role in ("input", "output"):
+        channel = payload.get(role)
+        if isinstance(channel, dict) and channel.get("type") == "file" and channel.get("fileName"):
+            problem.notes.append(f"The judge uses the file {channel['fileName']} for {role}, "
+                                 "not the console.")
+    return problem
+
+
+class _Receiver(ThreadingHTTPServer):
+    # The extension gives up on a port after 500 ms and reports nothing, so every connection
+    # gets its own thread: one that sends no data (browsers open such spares) must not delay
+    # the request behind it.
+    daemon_threads = True
+    block_on_close = False
+    # On Windows SO_REUSEADDR lets two programs share a port, which would hide a conflict
+    # with another tool; elsewhere it only allows restarting right after the last run.
+    allow_reuse_address = os.name != "nt"
+
+    def handle_error(self, request, client_address):
+        pass  # A client that hangs up early is not worth a traceback.
+
+
+class _Receiver6(_Receiver):
+    address_family = socket.AF_INET6
+
+
+def companion_payloads(port: int = COMPANION_PORT, wait: float = COMPANION_WAIT):
+    """Yield the problems (decoded JSON objects) that Competitive Companion posts to localhost.
+
+    The extension sends each parsed problem as a POST to http://localhost:<port>/. Stops with
+    ValueError when nothing more arrives within `wait` seconds.
+    """
+    inbox: queue.SimpleQueue[dict] = queue.SimpleQueue()
+    connections: list[str] = []  # What each connection turned out to be, for the timeout message.
+
+    class Handler(BaseHTTPRequestHandler):
+        timeout = 5  # Seconds of silence before a connection is dropped.
+
+        def setup(self):
+            super().setup()
+            self.slot = len(connections)
+            connections.append("sent no request")
+
+        def answer(self, status: int, text: str = "") -> None:
+            body = text.encode()
+            self.send_response(status)
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def do_POST(self):
+            payload = None
+            try:
+                size = int(self.headers.get("Content-Length") or 0)
+                if 0 < size <= COMPANION_MAX_BYTES:
+                    payload = json.loads(self.rfile.read(size))
+            except (ValueError, OSError):
+                pass
+            if isinstance(payload, dict):
+                connections[self.slot] = "problem"
+                inbox.put(payload)
+                self.answer(200)
+            else:
+                connections[self.slot] = "sent something that is not a problem"
+                self.answer(400)
+
+        def do_GET(self):  # Lets a person check the port from the browser's address bar.
+            connections[self.slot] = "was a page view, not the extension"
+            self.answer(200, "cp.py is waiting here for Competitive Companion. Open the problem "
+                             "page and click the extension's button (green plus).")
+
+        def log_message(self, *args):
+            pass
+
+    try:
+        servers = [_Receiver(("127.0.0.1", port), Handler)]
+    except (OSError, OverflowError) as error:
+        raise ValueError(f"Cannot listen on port {port}: {error}. Another tool may be using it; "
+                         "pick another with --port and add it under 'Custom ports' in the "
+                         "extension's options.") from None
+    try:  # Browsers may resolve localhost to IPv6 first.
+        servers.append(_Receiver6(("::1", port), Handler))
+    except OSError:
+        pass
+    for server in servers:
+        threading.Thread(target=server.serve_forever, args=(0.05,), daemon=True).start()
+    deadline = time.monotonic() + wait
+    try:
+        while True:
+            try:  # Short waits keep Ctrl+C responsive on Windows.
+                payload = inbox.get(timeout=0.1)
+            except queue.Empty:
+                if time.monotonic() < deadline:
+                    continue
+                others = [kind for kind in connections if kind != "problem"]
+                seen = (f"{len(others)} connection(s) reached port {port}, but the last one "
+                        f"{others[-1]}." if others else
+                        f"Nothing connected to port {port}: click the extension's button while "
+                        f"this command is waiting. If you did, open http://localhost:{port}/ in "
+                        "that browser to check that it can reach this tool.")
+                raise ValueError(f"Nothing arrived from the browser within {wait:g} seconds. "
+                                 + seen) from None
+            yield payload
+            deadline = time.monotonic() + wait
+    finally:
+        for server in servers:
+            server.shutdown()
+            server.server_close()
 
 
 # ---------------------------------------------------------------- entry point

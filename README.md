@@ -2,7 +2,7 @@
 
 ICPC 训练用的 Visual Studio C++ 工作区：在根目录的 main.cpp 写当前题目，用 `tools/cp.py` 抓样例、测样例、归档、对拍和导出提交代码。
 
-- [样例抓取](docs/FETCH.md)：支持 Codeforces、AtCoder、LeetCode
+- [样例抓取](docs/FETCH.md)：支持 Codeforces、AtCoder、LeetCode，也能接收浏览器扩展 Competitive Companion 发来的题目
 - [工作流教程](docs/WORKFLOW.md)：VS 设置、F5 读文件、对拍、模板宏
 - [CP-STL 模板库](docs/CP_STL.md)：[模板索引](cp-stl/docs/usage/README.md) · [左程云课程对照表](cp-stl/docs/course-map.md)
 - [编辑器主题](themes/README.md)：Visual Studio 深色配色（Visual Assist Dark、VS Code Dark Modern）和字形扩展 Editor Font Styles
@@ -26,6 +26,7 @@ python tools/cp.py load cf/2100/A   # 载入以前的题目
 
 - 题目可以写链接或简写（`2100A`、`abc400_e`、`lc/two-sum`），见[题目写法](docs/FETCH.md#题目写法)。
 - `fetch <题目>` 只补抓样例，不改 main.cpp；不带参数的 `new` 只换成空白模板，此时 save 要写出归档名。
+- Codeforces 开启浏览器验证（403）时，`new`/`fetch` 会等待浏览器扩展 Competitive Companion 把题目发过来：在题目页点一下扩展按钮即可；`listen` 不写题号直接接收，见[说明](docs/FETCH.md#从浏览器接收题目competitive-companion)。
 - save 覆盖已有归档前会确认，题目下的 README.md 笔记会保留。
 - LeetCode 题会生成代码框架和本地驱动，可以直接 test 和 F5 调试；提交时只复制两条分隔线之间的代码，见[说明](docs/FETCH.md#leetcode)。
 - 手动增删归档或模板后，运行 `sync` 刷新 VS 中的文件分类。

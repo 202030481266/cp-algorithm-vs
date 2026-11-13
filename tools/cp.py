@@ -232,14 +232,51 @@ def switch_problem(name: str | None) -> int:
     return 0
 
 
-def download(spec: str, name: str | None):
+def from_browser(name: str | None, port: int | None, wait: float | None, expected=None):
+    """Wait for the Competitive Companion browser extension to send a problem.
+
+    The browser passes checks that block scripts (Cloudflare on Codeforces) and its extension
+    also parses sites this tool cannot fetch. With `expected`, other problems are ignored.
+    """
+    from contextlib import closing
+    from fetch_problem import COMPANION_PORT, COMPANION_WAIT, companion_payloads, companion_problem
+    port, wait = port or COMPANION_PORT, wait or COMPANION_WAIT
+    page = expected.url if expected is not None else "the problem page"
+    print(f"Waiting for the browser on port {port} (Ctrl+C cancels, gives up after {wait:g}s). "
+          "While this is waiting:\n"
+          f"  1. open {page} in a browser that has the Competitive Companion extension;\n"
+          "  2. click the extension's icon there: a green plus, which Chrome and Edge keep in the "
+          "toolbar's puzzle-piece menu.\n"
+          "A thin blue bar across the top of the page shows that the extension ran.", flush=True)
+    with closing(companion_payloads(port, wait)) as payloads:
+        for payload in payloads:
+            problem = companion_problem(payload)
+            if expected is not None and problem.target.url != expected.url:
+                print(f"Ignored {problem.target.url}; still waiting for {expected.url}", flush=True)
+                continue
+            if name:
+                problem.target.id = name
+            elif not problem.target.id:
+                problem.notes.append("This site has no default archive name: 'save' needs one, "
+                                     "e.g. save luogu/P1001 (or pass --name here).")
+            return problem
+    raise AssertionError("unreachable")
+
+
+def download(spec: str, name: str | None, port: int | None = None, wait: float | None = None):
     """Fetch before touching any file, so a network error changes nothing."""
-    from fetch_problem import fetch, parse_target
+    from fetch_problem import BrowserCheck, fetch, parse_target
     target = parse_target(spec)
     if name:
         target.id = problem_name(name)
     print(f"Fetching {target.url}", flush=True)
-    return fetch(target)
+    try:
+        return fetch(target)
+    except BrowserCheck as error:
+        if target.platform == "leetcode":  # The extension cannot supply the code for the driver.
+            raise
+        print(f"{error} Taking the problem from your browser instead.", flush=True)
+        return from_browser(target.id, port, wait, expected=target)
 
 
 def write_samples(problem) -> None:
@@ -254,15 +291,15 @@ def write_samples(problem) -> None:
     (ROOT / "data/output.txt").write_bytes(b"")
     write_info(problem.metadata())
     limit = f" (time limit: {problem.time_limit})" if problem.time_limit else ""
-    print(f"{problem.target.id}: {problem.title}{limit}")
+    print(f"{problem.target.id or problem.target.url}: {problem.title}{limit}")
     print(f"{len(problem.samples)} sample(s) saved to {SAMPLES}/; sample 1 is also in "
           "data/input.txt and data/expected.txt.")
     for note in problem.notes:
         print(f"Note: {note}")
 
 
-def fetch_samples(spec: str, name: str | None) -> int:
-    problem = download(spec, name)
+def update_samples(problem) -> int:
+    """Store a downloaded problem's samples and keep main.cpp."""
     snapshot()
     write_samples(problem)
     if problem.code is not None:
@@ -271,12 +308,29 @@ def fetch_samples(spec: str, name: str | None) -> int:
     return 0
 
 
-def new_problem(spec: str | None, name: str | None) -> int:
+def fetch_samples(spec: str, name: str | None, port: int | None = None,
+                  wait: float | None = None) -> int:
+    return update_samples(download(spec, name, port, wait))
+
+
+def new_problem(spec: str | None, name: str | None, port: int | None = None,
+                wait: float | None = None) -> int:
     if spec is None:
         if name:
             raise ValueError("--name needs a problem to fetch, e.g. new 1610F --name cf/1610/F")
         return switch_problem(None)
-    problem = download(spec, name)
+    return start_problem(download(spec, name, port, wait))
+
+
+def listen_problem(name: str | None, keep_code: bool = False, port: int | None = None,
+                   wait: float | None = None) -> int:
+    """Like new (or, with keep_code, fetch), for whichever problem the browser sends."""
+    problem = from_browser(problem_name(name) if name else None, port, wait)
+    return update_samples(problem) if keep_code else start_problem(problem)
+
+
+def start_problem(problem) -> int:
+    """Reset main.cpp for a downloaded problem and store its samples."""
     template = ROOT / "templates/main.cpp"
     if problem.code is None and not template.is_file():
         raise ValueError(f"Missing template: {template}")
@@ -288,7 +342,7 @@ def new_problem(spec: str | None, name: str | None) -> int:
     write_samples(problem)
     print("main.cpp " + ("now holds the LeetCode code and local driver." if problem.code
                          else "reset to templates/main.cpp.") + " Reload changed files in Visual Studio.")
-    if problem_path(problem.target.id).exists():
+    if problem.target.id and problem_path(problem.target.id).exists():
         print(f"Note: solutions/{problem.target.id} already exists; "
               f"'load {problem.target.id}' restores that code.")
     return 0
@@ -609,6 +663,13 @@ def positive_int(value: str) -> int:
     return result
 
 
+def port_number(value: str) -> int:
+    result = int(value)
+    if not 1 <= result <= 65535:
+        raise argparse.ArgumentTypeError("Must be between 1 and 65535.")
+    return result
+
+
 def positive_float(value: str) -> float:
     result = float(value)
     if not math.isfinite(result) or result <= 0:
@@ -632,12 +693,21 @@ def main() -> int:
     problem_help = ("problem URL, or shorthand such as 1610F, cf/1610/F, abc400_e, "
                     "atcoder/abc400/E, leetcode/two-sum")
     starter = commands.add_parser("new", help="Back up current work; load templates/main.cpp, "
-                                              "or fetch a problem and start it")
+                                              "or fetch a problem and start it (from the browser "
+                                              "when the site blocks scripts)")
     starter.add_argument("problem", nargs="?", help=problem_help)
     fetcher = commands.add_parser("fetch", help="Download samples into data/ without changing main.cpp")
     fetcher.add_argument("problem", help=problem_help)
-    for child in (starter, fetcher):
+    listener = commands.add_parser("listen", help="Start the problem that the Competitive Companion "
+                                                  "browser extension sends (works on any site it supports)")
+    listener.add_argument("--keep-code", action="store_true",
+                          help="only update the samples, like fetch; main.cpp stays")
+    for child in (starter, fetcher, listener):
         child.add_argument("--name", help="archive name instead of the default, e.g. cf/1610/F")
+        child.add_argument("--port", type=port_number,
+                           help="port for Competitive Companion (default 10043, which the extension "
+                                "already posts to); new/fetch use it when the site demands a browser")
+        child.add_argument("--wait", type=positive_float, help="seconds to wait for the browser (default 300)")
     saver = commands.add_parser("save", help="Archive current code and data; confirm before overwriting")
     saver.add_argument("problem", nargs="?", help="e.g. cf/2100/A; defaults to the fetched/loaded problem")
     loader = commands.add_parser("load", help="Back up current work and load an archived problem")
@@ -684,9 +754,11 @@ def main() -> int:
         if args.command == "load":
             return switch_problem(args.problem)
         if args.command == "new":
-            return new_problem(args.problem, args.name)
+            return new_problem(args.problem, args.name, args.port, args.wait)
         if args.command == "fetch":
-            return fetch_samples(args.problem, args.name)
+            return fetch_samples(args.problem, args.name, args.port, args.wait)
+        if args.command == "listen":
+            return listen_problem(args.name, args.keep_code, args.port, args.wait)
         if args.command == "test":
             return test_samples(args)
         if args.command == "run":
