@@ -1,0 +1,9 @@
+sa[0]=5 height=0 a
+sa[1]=3 height=1 ana
+sa[2]=1 height=3 anana
+sa[3]=0 height=0 banana
+sa[4]=4 height=0 na
+sa[5]=2 height=2 nana
+distinct=15 lcp(1,3)=3 compare(ban,nan)=-1
+ana: count=2 at 3 1
+lcs=abcd

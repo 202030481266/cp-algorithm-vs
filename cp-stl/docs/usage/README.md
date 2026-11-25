@@ -1,11 +1,11 @@
 # 逐个模板的使用手册
 
-这里覆盖全部 **65 个算法/工具头文件**，另有 [起手式 template.cpp](template.md)。每篇说明包含适用场景、接口、完整程序、预期输出和使用限制；文档里的程序与对应 `.cpp` 保持一致。
+这里覆盖全部 **76 个算法/工具头文件**，另有 [起手式 template.cpp](template.md)。每篇说明包含适用场景、接口、完整程序、预期输出和使用限制；文档里的程序与对应 `.cpp` 保持一致。
 
 ## 如何使用
 
 1. 从下面按类别找模板，先读“使用方法”。
-2. 打开同一行的“完整示例”，在 workspace 终端执行文末的 example 命令。这 65 个示例都内置数据，不需要输入；`debug.cpp` 还会向标准错误输出调试信息。
+2. 打开同一行的“完整示例”，在 workspace 终端执行文末的 example 命令。这 76 个示例都内置数据，不需要输入；`debug.cpp` 还会向标准错误输出调试信息。
 3. 按题目修改示例数据或在自己的解答中引用头文件。数组与字符串区间通常为 `[l,r)`，图的点从 `0` 开始；具体约束以对应说明为准。
 4. 提交到 OJ 前执行 `python tools/cp.py export`，展开引用的本地头文件。
 
@@ -26,6 +26,8 @@ python tools/cp.py example "data_structures/fenwick"
 | [basic/sort.hpp](../../basic/sort.hpp) | [计数排序与基数排序](basic/sort.md) | [运行示例](../../examples/basic/sort.cpp) |
 | [basic/prefix_sum.hpp](../../basic/prefix_sum.hpp) | [二维前缀和、二维差分与等差数列差分](basic/prefix_sum.md) | [运行示例](../../examples/basic/prefix_sum.cpp) |
 | [basic/monotonic_stack.hpp](../../basic/monotonic_stack.hpp) | [单调栈与笛卡尔树](basic/monotonic_stack.md) | [运行示例](../../examples/basic/monotonic_stack.cpp) |
+| [basic/parallel_binary_search.hpp](../../basic/parallel_binary_search.hpp) | [整体二分](basic/parallel_binary_search.md) | [运行示例](../../examples/basic/parallel_binary_search.cpp) |
+| [basic/cdq.hpp](../../basic/cdq.hpp) | [CDQ 分治与三维偏序](basic/cdq.md) | [运行示例](../../examples/basic/cdq.cpp) |
 
 ## 数据结构
 
@@ -40,7 +42,7 @@ python tools/cp.py example "data_structures/fenwick"
 | [data_structures/binary_trie.hpp](../../data_structures/binary_trie.hpp) | [01 Trie：单个元素的最大异或](data_structures/binary_trie.md) | [运行示例](../../examples/data_structures/binary_trie.cpp) |
 | [data_structures/range_fenwick.hpp](../../data_structures/range_fenwick.hpp) | [树状数组扩展：区间加区间和、二维树状数组](data_structures/range_fenwick.md) | [运行示例](../../examples/data_structures/range_fenwick.cpp) |
 | [data_structures/segment_tree_beats.hpp](../../data_structures/segment_tree_beats.hpp) | [吉司机线段树：区间取最值与区间加](data_structures/segment_tree_beats.md) | [运行示例](../../examples/data_structures/segment_tree_beats.cpp) |
-| [data_structures/persistent_segment_tree.hpp](../../data_structures/persistent_segment_tree.hpp) | [可持久化线段树（主席树）与区间第 k 小](data_structures/persistent_segment_tree.md) | [运行示例](../../examples/data_structures/persistent_segment_tree.cpp) |
+| [data_structures/persistent_segment_tree.hpp](../../data_structures/persistent_segment_tree.hpp) | [可持久化线段树（主席树）、区间第 k 小与可持久化区间加](data_structures/persistent_segment_tree.md) | [运行示例](../../examples/data_structures/persistent_segment_tree.cpp) |
 | [data_structures/persistent_binary_trie.hpp](../../data_structures/persistent_binary_trie.hpp) | [可持久化 01 Trie：区间内的最大 / 最小异或](data_structures/persistent_binary_trie.md) | [运行示例](../../examples/data_structures/persistent_binary_trie.cpp) |
 | [data_structures/segment_tree_merge.hpp](../../data_structures/segment_tree_merge.hpp) | [线段树合并与分裂](data_structures/segment_tree_merge.md) | [运行示例](../../examples/data_structures/segment_tree_merge.cpp) |
 | [data_structures/dynamic_segment_tree.hpp](../../data_structures/dynamic_segment_tree.hpp) | [动态开点线段树：超大下标的区间加、区间和、区间最大值](data_structures/dynamic_segment_tree.md) | [运行示例](../../examples/data_structures/dynamic_segment_tree.cpp) |
@@ -50,6 +52,9 @@ python tools/cp.py example "data_structures/fenwick"
 | [data_structures/rollback_dsu.hpp](../../data_structures/rollback_dsu.hpp) | [可撤销并查集与线段树分治](data_structures/rollback_dsu.md) | [运行示例](../../examples/data_structures/rollback_dsu.cpp) |
 | [data_structures/link_cut_tree.hpp](../../data_structures/link_cut_tree.hpp) | [Link-Cut Tree：动态树](data_structures/link_cut_tree.md) | [运行示例](../../examples/data_structures/link_cut_tree.cpp) |
 | [data_structures/mos_algorithm.hpp](../../data_structures/mos_algorithm.hpp) | [莫队算法 MosAlgorithm：普通莫队、回滚莫队、带修莫队](data_structures/mos_algorithm.md) | [运行示例](../../examples/data_structures/mos_algorithm.cpp) |
+| [data_structures/persistent_dsu.hpp](../../data_structures/persistent_dsu.hpp) | [可持久化并查集](data_structures/persistent_dsu.md) | [运行示例](../../examples/data_structures/persistent_dsu.cpp) |
+| [data_structures/sqrt_decomposition.hpp](../../data_structures/sqrt_decomposition.hpp) | [分块：SqrtBlocks 与区间加、区间小于 x 的个数](data_structures/sqrt_decomposition.md) | [运行示例](../../examples/data_structures/sqrt_decomposition.cpp) |
+| [data_structures/dynamic_range_kth.hpp](../../data_structures/dynamic_range_kth.hpp) | [树套树：带修改的区间第 k 小](data_structures/dynamic_range_kth.md) | [运行示例](../../examples/data_structures/dynamic_range_kth.cpp) |
 
 ## 图与树
 
@@ -74,6 +79,7 @@ python tools/cp.py example "data_structures/fenwick"
 | [graph/dsu_on_tree.hpp](../../graph/dsu_on_tree.hpp) | [树上启发式合并（DSU on tree）](graph/dsu_on_tree.md) | [运行示例](../../examples/graph/dsu_on_tree.cpp) |
 | [graph/rerooting.hpp](../../graph/rerooting.hpp) | [换根 DP（全方位树 DP）](graph/rerooting.md) | [运行示例](../../examples/graph/rerooting.cpp) |
 | [graph/segment_tree_graph.hpp](../../graph/segment_tree_graph.hpp) | [线段树优化建图](graph/segment_tree_graph.md) | [运行示例](../../examples/graph/segment_tree_graph.cpp) |
+| [graph/residue_shortest_path.hpp](../../graph/residue_shortest_path.hpp) | [同余最短路](graph/residue_shortest_path.md) | [运行示例](../../examples/graph/residue_shortest_path.cpp) |
 
 ## 字符串
 
@@ -85,6 +91,8 @@ python tools/cp.py example "data_structures/fenwick"
 | [string/trie.hpp](../../string/trie.hpp) | [字典树：单词与前缀计数](string/trie.md) | [运行示例](../../examples/string/trie.cpp) |
 | [string/aho_corasick.hpp](../../string/aho_corasick.hpp) | [AC 自动机：多个模式的出现次数](string/aho_corasick.md) | [运行示例](../../examples/string/aho_corasick.cpp) |
 | [string/rolling_hash.hpp](../../string/rolling_hash.hpp) | [双模子串哈希 RollingHash](string/rolling_hash.md) | [运行示例](../../examples/string/rolling_hash.cpp) |
+| [string/suffix_array.hpp](../../string/suffix_array.hpp) | [后缀数组 SuffixArray：SA-IS、height 与 LCP](string/suffix_array.md) | [运行示例](../../examples/string/suffix_array.cpp) |
+| [string/suffix_automaton.hpp](../../string/suffix_automaton.hpp) | [后缀自动机 SuffixAutomaton 与广义 SAM](string/suffix_automaton.md) | [运行示例](../../examples/string/suffix_automaton.cpp) |
 
 ## 数学
 
@@ -92,12 +100,13 @@ python tools/cp.py example "data_structures/fenwick"
 | --- | --- | --- |
 | [math/number_theory.hpp](../../math/number_theory.hpp) | [快速幂、逆元、素数筛与分解](math/number_theory.md) | [运行示例](../../examples/math/number_theory.cpp) |
 | [math/modint.hpp](../../math/modint.hpp) | [模整数 ModInt](math/modint.md) | [运行示例](../../examples/math/modint.cpp) |
-| [math/combinatorics.hpp](../../math/combinatorics.hpp) | [阶乘、组合数与排列数](math/combinatorics.md) | [运行示例](../../examples/math/combinatorics.cpp) |
+| [math/combinatorics.hpp](../../math/combinatorics.hpp) | [阶乘、组合数、排列数与卡特兰数](math/combinatorics.md) | [运行示例](../../examples/math/combinatorics.cpp) |
 | [math/matrix.hpp](../../math/matrix.hpp) | [矩阵乘法与快速幂](math/matrix.md) | [运行示例](../../examples/math/matrix.cpp) |
 | [math/prime.hpp](../../math/prime.hpp) | [Miller-Rabin 与 Pollard-Rho：64 位素性测试和质因数分解](math/prime.md) | [运行示例](../../examples/math/prime.cpp) |
 | [math/crt.hpp](../../math/crt.hpp) | [扩展欧几里得、线性同余与中国剩余定理](math/crt.md) | [运行示例](../../examples/math/crt.cpp) |
 | [math/gauss.hpp](../../math/gauss.hpp) | [高斯消元：实数、模质数与异或方程组](math/gauss.md) | [运行示例](../../examples/math/gauss.cpp) |
-| [math/permutation.hpp](../../math/permutation.hpp) | [康托展开与约瑟夫问题](math/permutation.md) | [运行示例](../../examples/math/permutation.cpp) |
+| [math/permutation.hpp](../../math/permutation.hpp) | [康托展开、约瑟夫问题与完美洗牌](math/permutation.md) | [运行示例](../../examples/math/permutation.cpp) |
+| [math/fractional_programming.hpp](../../math/fractional_programming.hpp) | [01 分数规划：二分与 Dinkelbach](math/fractional_programming.md) | [运行示例](../../examples/math/fractional_programming.cpp) |
 
 ## 动态规划与序列
 
@@ -105,6 +114,8 @@ python tools/cp.py example "data_structures/fenwick"
 | --- | --- | --- |
 | [dp/sequence.hpp](../../dp/sequence.hpp) | [LIS、逆序对与滑动窗口最小值](dp/sequence.md) | [运行示例](../../examples/dp/sequence.cpp) |
 | [dp/knapsack.hpp](../../dp/knapsack.hpp) | [01、完全与多重背包](dp/knapsack.md) | [运行示例](../../examples/dp/knapsack.cpp) |
+| [dp/convex_hull_trick.hpp](../../dp/convex_hull_trick.hpp) | [斜率优化与李超线段树](dp/convex_hull_trick.md) | [运行示例](../../examples/dp/convex_hull_trick.cpp) |
+| [dp/monotone.hpp](../../dp/monotone.hpp) | [决策单调性分治与四边形不等式](dp/monotone.md) | [运行示例](../../examples/dp/monotone.cpp) |
 
 ## 几何
 
@@ -130,4 +141,4 @@ python tools/cp.py example "data_structures/fenwick"
 python tools/test_cp_stl.py
 ```
 
-脚本逐个检查头文件对应的使用说明、示例源码、文档内代码、输出和相对链接，再以 GNU C++17 编译运行全部 68 个示例；额外验证不定义 `LOCAL` 时调试输出关闭。默认使用 PATH 中的 g++；在 VS Developer PowerShell 中设置 `$env:CP_STL_CXX = "cl"` 可改用 MSVC。
+脚本逐个检查头文件对应的使用说明、示例源码、文档内代码、输出和相对链接，再以 GNU C++17 编译运行全部 79 个示例；额外验证不定义 `LOCAL` 时调试输出关闭。默认使用 PATH 中的 g++；在 VS Developer PowerShell 中设置 `$env:CP_STL_CXX = "cl"` 可改用 MSVC。

@@ -190,7 +190,7 @@ Graphviz 工具只输出 DOT，不要求安装 Graphviz；需要渲染时再用 
 
 ## 更复杂的算法：使用现有 ACL
 
-本 workspace 保留原 VS 配置中的外部 ACL 路径；cp-stl 的 65 个头文件本身不依赖 ACL。ACL 的 lazysegtree 已由 cp-stl 的 `LazySegmentTree` 覆盖，提交时不必再展开外部库。
+本 workspace 保留原 VS 配置中的外部 ACL 路径；cp-stl 的 76 个头文件本身不依赖 ACL。ACL 的 lazysegtree 已由 cp-stl 的 `LazySegmentTree` 覆盖，提交时不必再展开外部库。
 
 需要 ACL 时，VS 按已有包含目录查找。命令行运行和导出须显式增加其目录，例如：
 

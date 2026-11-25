@@ -130,4 +130,67 @@ public:
         return tree_.sum(roots_[r], 0, index) - tree_.sum(roots_[l], 0, index);
     }
 };
+
+// 可持久化的区间加、区间和（标记永久化：加法标记留在节点上不下传，查询时沿路累加）。
+// 根 0 是全零数组；add 返回新版本的根，旧版本不变，每次新建 O(log n) 个节点（不超过约 4·log₂ n）。
+template<class T = long long>
+class PersistentRangeAddSum {
+    struct Node { int left = 0, right = 0; T sum = T(), tag = T(); }; // sum 含本节点及子树内的标记，不含祖先的
+    int n_;
+    std::vector<Node> nodes_{Node()};
+    int clone(int p) {
+        Node copy = nodes_[p];
+        nodes_.push_back(copy);
+        return int(nodes_.size()) - 1;
+    }
+    int build(int l, int r, const std::vector<T>& a) {
+        int p = clone(0);
+        if (r - l == 1) { nodes_[p].sum = a[l]; return p; }
+        int m = l + (r - l) / 2;
+        int left = build(l, m, a), right = build(m, r, a);
+        nodes_[p].left = left;
+        nodes_[p].right = right;
+        nodes_[p].sum = nodes_[left].sum + nodes_[right].sum;
+        return p;
+    }
+    int add(int p, int l, int r, int ql, int qr, T delta) {
+        int q = clone(p);
+        nodes_[q].sum += delta * T(std::min(r, qr) - std::max(l, ql));
+        if (ql <= l && r <= qr) { nodes_[q].tag += delta; return q; }
+        int m = l + (r - l) / 2;
+        if (ql < m) { int child = add(nodes_[q].left, l, m, ql, qr, delta); nodes_[q].left = child; }
+        if (m < qr) { int child = add(nodes_[q].right, m, r, ql, qr, delta); nodes_[q].right = child; }
+        return q;
+    }
+    T sum(int p, int l, int r, int ql, int qr) const {
+        if (!p) return T();
+        if (ql <= l && r <= qr) return nodes_[p].sum;
+        int m = l + (r - l) / 2;
+        T result = nodes_[p].tag * T(std::min(r, qr) - std::max(l, ql));
+        if (ql < m) result += sum(nodes_[p].left, l, m, ql, qr);
+        if (m < qr) result += sum(nodes_[p].right, m, r, ql, qr);
+        return result;
+    }
+public:
+    explicit PersistentRangeAddSum(int n, int reserve_nodes = 0) : n_(n) {
+        assert(n > 0);
+        nodes_.reserve(std::max(reserve_nodes, 1));
+    }
+    int size() const { return n_; }
+    int node_count() const { return int(nodes_.size()); }
+    int build(const std::vector<T>& a) {
+        assert(int(a.size()) == n_);
+        return build(0, n_, a);
+    }
+    // 在版本 root 上给 [l,r) 每个位置加 delta，返回新版本的根；空区间返回 root。
+    int add(int root, int l, int r, T delta) {
+        assert(0 <= root && root < node_count() && 0 <= l && l <= r && r <= n_);
+        return l == r ? root : add(root, 0, n_, l, r, delta);
+    }
+    T sum(int root, int l, int r) const {
+        assert(0 <= root && root < node_count() && 0 <= l && l <= r && r <= n_);
+        return l == r ? T() : sum(root, 0, n_, l, r);
+    }
+    T get(int root, int pos) const { return sum(root, pos, pos + 1); }
+};
 } // namespace cp

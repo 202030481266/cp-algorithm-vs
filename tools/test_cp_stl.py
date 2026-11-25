@@ -63,7 +63,7 @@ class CPSTLTests(unittest.TestCase):
         return result
 
     def test_all_headers_are_self_contained(self):
-        self.assertEqual(len(self.headers), 65)
+        self.assertEqual(len(self.headers), 76)
         def check(header):
             relative = header.relative_to(LIB)
             source = self.build / ("header_" + "_".join(relative.parts) + ".cpp")
@@ -75,7 +75,7 @@ class CPSTLTests(unittest.TestCase):
     def test_all_examples_and_debug_switch(self):
         sources = sorted((LIB / "examples").rglob("*.cpp"))
         expected = LIB / "examples/expected"
-        self.assertEqual(len(sources), 68)
+        self.assertEqual(len(sources), 79)
         def check(source):
             relative = source.relative_to(LIB / "examples")
             exe = self.compile(source, "examples/" + relative.as_posix())
@@ -102,7 +102,7 @@ class CPSTLTests(unittest.TestCase):
 
     def test_extension_random_algorithm_checks(self):
         sources = sorted((LIB / "tests").glob("ext_*.cpp"))
-        self.assertEqual([source.stem for source in sources], ["ext_data_structures", "ext_graph", "ext_math", "ext_util"])
+        self.assertEqual([source.stem for source in sources], ["ext_advanced", "ext_data_structures", "ext_graph", "ext_math", "ext_string", "ext_util"])
         def check(source):
             exe = self.compile(source, "extensions/" + source.stem)
             self.assertIn(b"tests passed", self.run_program(exe).stdout, source.name)

@@ -3,6 +3,7 @@
 // 完整示例：cp-stl/examples/math/permutation.cpp
 #include <algorithm>
 #include <cassert>
+#include <utility>
 #include <vector>
 #include "../data_structures/fenwick.hpp"
 
@@ -73,4 +74,27 @@ inline long long josephus(long long n, long long k) {
     }
     return survivor;
 }
+
+// 完美洗牌：把偶数长度的 a[l..r) = [L1..Lk, R1..Rk] 原地重排成 [R1, L1, R2, L2, ..., Rk, Lk]，
+// O(长度) 时间、O(1) 额外空间。位置 i（从 1 开始）的元素要去 2i mod (2k+1)；当长度是 3^t - 1 时，
+// 这个置换的环恰好以 1, 3, 9, ..., 3^(t-1) 为起点，所以每次切下最长的这样一段，剩下的继续处理。
+template<class T>
+void perfect_shuffle(std::vector<T>& a, int l, int r) {
+    assert(0 <= l && l <= r && r <= int(a.size()) && (r - l) % 2 == 0);
+    while (l < r) {
+        int len = r - l, part = 3, cycles = 1; // part = 3^cycles，取满足 part - 1 <= len 的最大值
+        while (part <= (len + 1) / 3) { part *= 3; ++cycles; }
+        int half = (part - 1) / 2, mid = l + len / 2;
+        // 旋转之后，前 part - 1 个元素是 [L1..Lhalf, R1..Rhalf]，其余元素仍是“左半 + 右半”。
+        std::rotate(a.begin() + (l + half), a.begin() + mid, a.begin() + (mid + half));
+        for (int start = 1, c = 0; c < cycles; ++c, start *= 3) {
+            T carried = std::move(a[l + start - 1]);
+            for (int cur = 2 * start % part; cur != start; cur = 2 * cur % part) std::swap(carried, a[l + cur - 1]);
+            a[l + start - 1] = std::move(carried);
+        }
+        l += part - 1;
+    }
+}
+template<class T>
+void perfect_shuffle(std::vector<T>& a) { perfect_shuffle(a, 0, int(a.size())); }
 } // namespace cp

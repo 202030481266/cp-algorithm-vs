@@ -1,9 +1,9 @@
 # CP-STL：Visual Studio workspace 适配版
 
-由本机 D:/CP-Templates-and-Solutions/cp-stl 导入，之后对照左程云《算法讲解》补充了进阶模板。现有 65 个头文件、使用手册、68 个可运行示例及随机对拍；MSVC 与 GCC 均可使用。完整接入说明见 [Visual Studio 使用说明](../docs/CP_STL.md)。
+由本机 D:/CP-Templates-and-Solutions/cp-stl 导入，之后对照左程云《算法讲解》补充了进阶模板。现有 76 个头文件、使用手册、79 个可运行示例及随机对拍；MSVC 与 GCC 均可使用。完整接入说明见 [Visual Studio 使用说明](../docs/CP_STL.md)。
 
 - **开始写题**：执行 `python tools/cp.py new`，使用 workspace 的 [templates/main.cpp](../templates/main.cpp)。
-- **找算法**：[65 个模板的完整使用手册](docs/usage/README.md)；按课程查找见 [左程云课程对照表](docs/course-map.md)。
+- **找算法**：[76 个模板的完整使用手册](docs/usage/README.md)；按课程查找见 [左程云课程对照表](docs/course-map.md)。
 - **运行例子**：`python tools/cp.py example data_structures/fenwick`；[全部示例](examples/README.md)。
 - **组合写法**：[常用写法与进阶入口](docs/recipes.md)。
 - **轻量起手式**：[template.cpp](template.cpp) · [说明](docs/usage/template.md)。
@@ -60,6 +60,8 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | [sort.hpp](basic/sort.hpp) | 整数计数排序 O(n + K)、基数排序 O(ceil(w / 8) · (n + 256))；均支持返回原下标 | [说明](docs/usage/basic/sort.md) | [示例](examples/basic/sort.cpp) |
 | [prefix_sum.hpp](basic/prefix_sum.hpp) | 二维前缀和 O(1) 查询；二维差分、等差数列差分离线 O(1) 修改 | [说明](docs/usage/basic/prefix_sum.md) | [示例](examples/basic/prefix_sum.cpp) |
 | [monotonic_stack.hpp](basic/monotonic_stack.hpp) | 左右第一个更小 / 更大的位置、笛卡尔树，O(n) | [说明](docs/usage/basic/monotonic_stack.md) | [示例](examples/basic/monotonic_stack.cpp) |
+| [parallel_binary_search.hpp](basic/parallel_binary_search.hpp) | 整体二分：所有询问一起二分“最早执行到第几个操作后成立”，O(log m) 轮顺序扫描 | [说明](docs/usage/basic/parallel_binary_search.md) | [示例](examples/basic/parallel_binary_search.cpp) |
+| [cdq.hpp](basic/cdq.hpp) | CDQ 分治骨架 `cdq_divide`；三维偏序 `dominance_count_3d`，O(n log² n) | [说明](docs/usage/basic/cdq.md) | [示例](examples/basic/cdq.cpp) |
 | [dsu.hpp](data_structures/dsu.hpp) | 并查集，均摊 O(α(n)) | [说明](docs/usage/data_structures/dsu.md) | [示例](examples/data_structures/dsu.cpp) |
 | [fenwick.hpp](data_structures/fenwick.hpp) | 树状数组，O(log n)；第 k 小要求所有频次非负 | [说明](docs/usage/data_structures/fenwick.md) | [示例](examples/data_structures/fenwick.cpp) |
 | [segment_tree.hpp](data_structures/segment_tree.hpp) | 泛型线段树，O(log n)；结合律与单位元 | [说明](docs/usage/data_structures/segment_tree.md) | [示例](examples/data_structures/segment_tree.cpp) |
@@ -69,7 +71,7 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | [binary_trie.hpp](data_structures/binary_trie.hpp) | 64 位 01 Trie，多重集合、最大异或，O(64) | [说明](docs/usage/data_structures/binary_trie.md) | [示例](examples/data_structures/binary_trie.cpp) |
 | [range_fenwick.hpp](data_structures/range_fenwick.hpp) | 区间加区间和、二维单点加矩形和、二维矩形加矩形和，O(log n) / O(log² n) | [说明](docs/usage/data_structures/range_fenwick.md) | [示例](examples/data_structures/range_fenwick.cpp) |
 | [segment_tree_beats.hpp](data_structures/segment_tree_beats.hpp) | 区间 chmin / chmax / 加，查询和与最值，均摊 O(log² n) | [说明](docs/usage/data_structures/segment_tree_beats.md) | [示例](examples/data_structures/segment_tree_beats.cpp) |
-| [persistent_segment_tree.hpp](data_structures/persistent_segment_tree.hpp) | 带版本的单点修改与区间和；静态区间第 k 小，O(log n) | [说明](docs/usage/data_structures/persistent_segment_tree.md) | [示例](examples/data_structures/persistent_segment_tree.cpp) |
+| [persistent_segment_tree.hpp](data_structures/persistent_segment_tree.hpp) | 带版本的单点修改与区间和；静态区间第 k 小；可持久化区间加 `PersistentRangeAddSum`，O(log n) | [说明](docs/usage/data_structures/persistent_segment_tree.md) | [示例](examples/data_structures/persistent_segment_tree.cpp) |
 | [persistent_binary_trie.hpp](data_structures/persistent_binary_trie.hpp) | 前缀版本相减，区间内与 x 的最大 / 最小异或，O(位数) | [说明](docs/usage/data_structures/persistent_binary_trie.md) | [示例](examples/data_structures/persistent_binary_trie.cpp) |
 | [segment_tree_merge.hpp](data_structures/segment_tree_merge.hpp) | 值域计数树的合并、按值分裂、第 k 小与众数 | [说明](docs/usage/data_structures/segment_tree_merge.md) | [示例](examples/data_structures/segment_tree_merge.cpp) |
 | [dynamic_segment_tree.hpp](data_structures/dynamic_segment_tree.hpp) | 下标到 1e18 的在线区间加、区间和 / 最大值，标记永久化 | [说明](docs/usage/data_structures/dynamic_segment_tree.md) | [示例](examples/data_structures/dynamic_segment_tree.cpp) |
@@ -79,6 +81,9 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | [rollback_dsu.hpp](data_structures/rollback_dsu.hpp) | 快照 / 回滚；离线处理只在时间段内存在的边 | [说明](docs/usage/data_structures/rollback_dsu.md) | [示例](examples/data_structures/rollback_dsu.cpp) |
 | [link_cut_tree.hpp](data_structures/link_cut_tree.hpp) | 动态连边删边、连通性、换根、LCA、路径聚合，均摊 O(log n) | [说明](docs/usage/data_structures/link_cut_tree.md) | [示例](examples/data_structures/link_cut_tree.cpp) |
 | [mos_algorithm.hpp](data_structures/mos_algorithm.hpp) | 莫队 `MosAlgorithm`：离线区间询问，端点总移动 O(n√q)；含回滚莫队、带修莫队 | [说明](docs/usage/data_structures/mos_algorithm.md) | [示例](examples/data_structures/mos_algorithm.cpp) |
+| [persistent_dsu.hpp](data_structures/persistent_dsu.hpp) | 可持久化并查集：在任意历史版本上合并与查询，O(log² n) | [说明](docs/usage/data_structures/persistent_dsu.md) | [示例](examples/data_structures/persistent_dsu.cpp) |
+| [sqrt_decomposition.hpp](data_structures/sqrt_decomposition.hpp) | 分块：`SqrtBlocks` 拆分零散部分与整块；区间加、区间内小于 x 的个数，O(√n log n) | [说明](docs/usage/data_structures/sqrt_decomposition.md) | [示例](examples/data_structures/sqrt_decomposition.cpp) |
+| [dynamic_range_kth.hpp](data_structures/dynamic_range_kth.hpp) | 树套树（树状数组套权值线段树）：单点修改、区间第 k 小与排名，O(log² n) | [说明](docs/usage/data_structures/dynamic_range_kth.md) | [示例](examples/data_structures/dynamic_range_kth.cpp) |
 
 ### 图与树
 
@@ -103,10 +108,11 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | [dsu_on_tree.hpp](graph/dsu_on_tree.hpp) | 子树统计，O(n log n) 次加入 / 删除 | [说明](docs/usage/graph/dsu_on_tree.md) | [示例](examples/graph/dsu_on_tree.cpp) |
 | [rerooting.hpp](graph/rerooting.hpp) | 以每个点为根的树形 DP，O(n) | [说明](docs/usage/graph/rerooting.md) | [示例](examples/graph/rerooting.cpp) |
 | [segment_tree_graph.hpp](graph/segment_tree_graph.hpp) | 点连区间、区间连点、区间连区间，每条 O(log n) 条边 | [说明](docs/usage/graph/segment_tree_graph.md) | [示例](examples/graph/segment_tree_graph.cpp) |
+| [residue_shortest_path.hpp](graph/residue_shortest_path.hpp) | 同余最短路：若干步长能凑出哪些数，转圈松弛 O(步长个数 · 最小步长) | [说明](docs/usage/graph/residue_shortest_path.md) | [示例](examples/graph/residue_shortest_path.cpp) |
 
 ### 字符串
 
-这些模板操作字节字符串，不把 UTF-8 汉字当成单个字符；Trie/AC 自动机只接受小写 `a-z`。
+这些模板操作字节字符串，不把 UTF-8 汉字当成单个字符；Trie/AC 自动机只接受小写 `a-z`，后缀自动机默认 `a-z`、可以换字符集，后缀数组接受任意字节或整数序列。
 
 | 模板 | 用途 / 复杂度 | 使用方法 | 完整例子 |
 | --- | --- | --- | --- |
@@ -116,6 +122,8 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | [trie.hpp](string/trie.hpp) | 字典树、前缀计数、重复插入/删除，O(字符串长度) | [说明](docs/usage/string/trie.md) | [示例](examples/string/trie.cpp) |
 | [aho_corasick.hpp](string/aho_corasick.hpp) | AC 自动机、多模式出现次数；先插入再 build | [说明](docs/usage/string/aho_corasick.md) | [示例](examples/string/aho_corasick.cpp) |
 | [rolling_hash.hpp](string/rolling_hash.hpp) | 双模子串哈希，O(1) 查询；概率算法，有碰撞可能 | [说明](docs/usage/string/rolling_hash.md) | [示例](examples/string/rolling_hash.cpp) |
+| [suffix_array.hpp](string/suffix_array.hpp) | 后缀数组：SA-IS O(n)，rank / height，任意两个后缀的 LCP O(1)，子串比较与查找 | [说明](docs/usage/string/suffix_array.md) | [示例](examples/string/suffix_array.cpp) |
+| [suffix_automaton.hpp](string/suffix_automaton.hpp) | 后缀自动机与广义 SAM：出现次数、不同子串数、匹配，插入均摊 O(1) | [说明](docs/usage/string/suffix_automaton.md) | [示例](examples/string/suffix_automaton.cpp) |
 
 ### 数学、DP、几何与工具
 
@@ -123,14 +131,17 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 | --- | --- | --- | --- |
 | [number_theory.hpp](math/number_theory.hpp) | 安全模乘快速幂、一般模数逆元、线性筛、筛内质因数分解 | [说明](docs/usage/math/number_theory.md) | [示例](examples/math/number_theory.cpp) |
 | [modint.hpp](math/modint.hpp) | 静态模整数；`Mint=998244353`，`Mint1000000007` | [说明](docs/usage/math/modint.md) | [示例](examples/math/modint.cpp) |
-| [combinatorics.hpp](math/combinatorics.hpp) | 阶乘/逆阶乘、C(n,k)、A(n,k)；质数模数且 n < mod | [说明](docs/usage/math/combinatorics.md) | [示例](examples/math/combinatorics.cpp) |
+| [combinatorics.hpp](math/combinatorics.hpp) | 阶乘/逆阶乘、C(n,k)、A(n,k)、卡特兰数；质数模数且 n < mod | [说明](docs/usage/math/combinatorics.md) | [示例](examples/math/combinatorics.cpp) |
 | [matrix.hpp](math/matrix.hpp) | 方阵乘法与快速幂，推荐配合 `ModInt` | [说明](docs/usage/math/matrix.md) | [示例](examples/math/matrix.cpp) |
 | [prime.hpp](math/prime.hpp) | 64 位确定性素性测试、Pollard-Rho 分解、因数、欧拉函数 | [说明](docs/usage/math/prime.md) | [示例](examples/math/prime.cpp) |
 | [crt.hpp](math/crt.hpp) | exgcd、ax≡b (mod m)、扩展 CRT、二元一次不定方程，中间乘法不溢出 | [说明](docs/usage/math/crt.md) | [示例](examples/math/crt.cpp) |
 | [gauss.hpp](math/gauss.hpp) | 区分无解 / 唯一解 / 无穷多解，异或版本按 64 位压缩 | [说明](docs/usage/math/gauss.md) | [示例](examples/math/gauss.cpp) |
-| [permutation.hpp](math/permutation.hpp) | 排列排名（取模 / 精确）、逆康托展开、约瑟夫 O(min(n, k log n)) | [说明](docs/usage/math/permutation.md) | [示例](examples/math/permutation.cpp) |
+| [permutation.hpp](math/permutation.hpp) | 排列排名（取模 / 精确）、逆康托展开、约瑟夫 O(min(n, k log n))、原地完美洗牌 | [说明](docs/usage/math/permutation.md) | [示例](examples/math/permutation.cpp) |
+| [fractional_programming.hpp](math/fractional_programming.hpp) | 01 分数规划：实数二分、Dinkelbach 迭代、选 k 个的最大比值 | [说明](docs/usage/math/fractional_programming.md) | [示例](examples/math/fractional_programming.cpp) |
 | [sequence.hpp](dp/sequence.hpp) | LIS/不下降子序列、严格逆序对、单调队列滑动最小值 | [说明](docs/usage/dp/sequence.md) | [示例](examples/dp/sequence.cpp) |
 | [knapsack.hpp](dp/knapsack.hpp) | 01 / 完全 / 多重背包；容量不超过 c 的最大价值 | [说明](docs/usage/dp/knapsack.md) | [示例](examples/dp/knapsack.cpp) |
+| [convex_hull_trick.hpp](dp/convex_hull_trick.hpp) | 斜率优化 `MonotoneCHT` 均摊 O(1)；李超线段树 `LiChaoTree`，支持线段，O(log n) | [说明](docs/usage/dp/convex_hull_trick.md) | [示例](examples/dp/convex_hull_trick.cpp) |
+| [monotone.hpp](dp/monotone.hpp) | 决策单调性分治 `monotone_minima`；四边形不等式优化的区间 DP，O(n²) | [说明](docs/usage/dp/monotone.md) | [示例](examples/dp/monotone.cpp) |
 | [convex_hull.hpp](geometry/convex_hull.hpp) | 整数叉积、Andrew 凸包，去除中间共线点 | [说明](docs/usage/geometry/convex_hull.md) | [示例](examples/geometry/convex_hull.cpp) |
 | [rectangle_union.hpp](geometry/rectangle_union.hpp) | 轴平行矩形并集的面积 / 周长，O(n log n) | [说明](docs/usage/geometry/rectangle_union.md) | [示例](examples/geometry/rectangle_union.cpp) |
 | [debug.hpp](util/debug.hpp) | `debug(a, b)`，容器/pair/tuple 输出到 stderr；仅 LOCAL 启用 | [说明](docs/usage/util/debug.md) | [示例](examples/util/debug.cpp) |
@@ -144,4 +155,4 @@ Visual Studio 和 tools/cp.py 已配置头文件搜索路径。**提交普通 OJ
 
 默认编译器是 g++；在 Visual Studio Developer PowerShell 中设置 `$env:CP_STL_CXX = "cl"` 后可运行同一组 MSVC 检查。
 
-`tests/algorithms.cpp` 保留固定种子的朴素算法对拍，包括 20 万节点长链；`tests/ext_*.cpp` 是新增模板的随机对拍（数据结构、图论、数学与几何、随机数据生成）。测试程序通过独立工具编译，不参与主项目生成。
+`tests/algorithms.cpp` 保留固定种子的朴素算法对拍，包括 20 万节点长链；`tests/ext_*.cpp` 是新增模板的随机对拍（数据结构、图论、数学与几何、随机数据生成、字符串，以及离线算法与 DP 优化）。测试程序通过独立工具编译，不参与主项目生成。

@@ -1,0 +1,8 @@
+states=8 distinct=12
+bc: count=2 first=1
+abc: count=1 first=0
+c: count=2 first=2
+cc: absent
+lcs=bcbc
+kth(7)=bcb
+multi: distinct=8 count(ab)=3

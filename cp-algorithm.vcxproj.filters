@@ -485,10 +485,16 @@
     <None Include="solutions\cf\2189\E\samples\1.in">
       <Filter>03 题解归档\cf\2189\E\samples</Filter>
     </None>
+    <ClInclude Include="cp-stl\basic\cdq.hpp">
+      <Filter>04 算法库 cp-stl\basic</Filter>
+    </ClInclude>
     <ClInclude Include="cp-stl\basic\compress.hpp">
       <Filter>04 算法库 cp-stl\basic</Filter>
     </ClInclude>
     <ClInclude Include="cp-stl\basic\monotonic_stack.hpp">
+      <Filter>04 算法库 cp-stl\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cp-stl\basic\parallel_binary_search.hpp">
       <Filter>04 算法库 cp-stl\basic</Filter>
     </ClInclude>
     <ClInclude Include="cp-stl\basic\prefix_sum.hpp">
@@ -504,6 +510,9 @@
       <Filter>04 算法库 cp-stl\data_structures</Filter>
     </ClInclude>
     <ClInclude Include="cp-stl\data_structures\dsu.hpp">
+      <Filter>04 算法库 cp-stl\data_structures</Filter>
+    </ClInclude>
+    <ClInclude Include="cp-stl\data_structures\dynamic_range_kth.hpp">
       <Filter>04 算法库 cp-stl\data_structures</Filter>
     </ClInclude>
     <ClInclude Include="cp-stl\data_structures\dynamic_segment_tree.hpp">
@@ -527,6 +536,9 @@
     <ClInclude Include="cp-stl\data_structures\persistent_binary_trie.hpp">
       <Filter>04 算法库 cp-stl\data_structures</Filter>
     </ClInclude>
+    <ClInclude Include="cp-stl\data_structures\persistent_dsu.hpp">
+      <Filter>04 算法库 cp-stl\data_structures</Filter>
+    </ClInclude>
     <ClInclude Include="cp-stl\data_structures\persistent_segment_tree.hpp">
       <Filter>04 算法库 cp-stl\data_structures</Filter>
     </ClInclude>
@@ -548,6 +560,9 @@
     <ClInclude Include="cp-stl\data_structures\sparse_table.hpp">
       <Filter>04 算法库 cp-stl\data_structures</Filter>
     </ClInclude>
+    <ClInclude Include="cp-stl\data_structures\sqrt_decomposition.hpp">
+      <Filter>04 算法库 cp-stl\data_structures</Filter>
+    </ClInclude>
     <ClInclude Include="cp-stl\data_structures\treap.hpp">
       <Filter>04 算法库 cp-stl\data_structures</Filter>
     </ClInclude>
@@ -563,10 +578,16 @@
     <None Include="cp-stl\docs\recipes.md">
       <Filter>04 算法库 cp-stl\docs</Filter>
     </None>
+    <None Include="cp-stl\docs\usage\basic\cdq.md">
+      <Filter>04 算法库 cp-stl\docs\usage\basic</Filter>
+    </None>
     <None Include="cp-stl\docs\usage\basic\compress.md">
       <Filter>04 算法库 cp-stl\docs\usage\basic</Filter>
     </None>
     <None Include="cp-stl\docs\usage\basic\monotonic_stack.md">
+      <Filter>04 算法库 cp-stl\docs\usage\basic</Filter>
+    </None>
+    <None Include="cp-stl\docs\usage\basic\parallel_binary_search.md">
       <Filter>04 算法库 cp-stl\docs\usage\basic</Filter>
     </None>
     <None Include="cp-stl\docs\usage\basic\prefix_sum.md">
@@ -582,6 +603,9 @@
       <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
     </None>
     <None Include="cp-stl\docs\usage\data_structures\dsu.md">
+      <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
+    </None>
+    <None Include="cp-stl\docs\usage\data_structures\dynamic_range_kth.md">
       <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
     </None>
     <None Include="cp-stl\docs\usage\data_structures\dynamic_segment_tree.md">
@@ -605,6 +629,9 @@
     <None Include="cp-stl\docs\usage\data_structures\persistent_binary_trie.md">
       <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
     </None>
+    <None Include="cp-stl\docs\usage\data_structures\persistent_dsu.md">
+      <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
+    </None>
     <None Include="cp-stl\docs\usage\data_structures\persistent_segment_tree.md">
       <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
     </None>
@@ -626,6 +653,9 @@
     <None Include="cp-stl\docs\usage\data_structures\sparse_table.md">
       <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
     </None>
+    <None Include="cp-stl\docs\usage\data_structures\sqrt_decomposition.md">
+      <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
+    </None>
     <None Include="cp-stl\docs\usage\data_structures\treap.md">
       <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
     </None>
@@ -635,7 +665,13 @@
     <None Include="cp-stl\docs\usage\data_structures\xor_basis.md">
       <Filter>04 算法库 cp-stl\docs\usage\data_structures</Filter>
     </None>
+    <None Include="cp-stl\docs\usage\dp\convex_hull_trick.md">
+      <Filter>04 算法库 cp-stl\docs\usage\dp</Filter>
+    </None>
     <None Include="cp-stl\docs\usage\dp\knapsack.md">
+      <Filter>04 算法库 cp-stl\docs\usage\dp</Filter>
+    </None>
+    <None Include="cp-stl\docs\usage\dp\monotone.md">
       <Filter>04 算法库 cp-stl\docs\usage\dp</Filter>
     </None>
     <None Include="cp-stl\docs\usage\dp\sequence.md">
@@ -680,6 +716,9 @@
     <None Include="cp-stl\docs\usage\graph\rerooting.md">
       <Filter>04 算法库 cp-stl\docs\usage\graph</Filter>
     </None>
+    <None Include="cp-stl\docs\usage\graph\residue_shortest_path.md">
+      <Filter>04 算法库 cp-stl\docs\usage\graph</Filter>
+    </None>
     <None Include="cp-stl\docs\usage\graph\scc.md">
       <Filter>04 算法库 cp-stl\docs\usage\graph</Filter>
     </None>
@@ -708,6 +747,9 @@
       <Filter>04 算法库 cp-stl\docs\usage\math</Filter>
     </None>
     <None Include="cp-stl\docs\usage\math\crt.md">
+      <Filter>04 算法库 cp-stl\docs\usage\math</Filter>
+    </None>
+    <None Include="cp-stl\docs\usage\math\fractional_programming.md">
       <Filter>04 算法库 cp-stl\docs\usage\math</Filter>
     </None>
     <None Include="cp-stl\docs\usage\math\gauss.md">
@@ -743,6 +785,12 @@
     <None Include="cp-stl\docs\usage\string\rolling_hash.md">
       <Filter>04 算法库 cp-stl\docs\usage\string</Filter>
     </None>
+    <None Include="cp-stl\docs\usage\string\suffix_array.md">
+      <Filter>04 算法库 cp-stl\docs\usage\string</Filter>
+    </None>
+    <None Include="cp-stl\docs\usage\string\suffix_automaton.md">
+      <Filter>04 算法库 cp-stl\docs\usage\string</Filter>
+    </None>
     <None Include="cp-stl\docs\usage\string\trie.md">
       <Filter>04 算法库 cp-stl\docs\usage\string</Filter>
     </None>
@@ -764,16 +812,28 @@
     <None Include="cp-stl\docs\usage\util\random.md">
       <Filter>04 算法库 cp-stl\docs\usage\util</Filter>
     </None>
+    <ClInclude Include="cp-stl\dp\convex_hull_trick.hpp">
+      <Filter>04 算法库 cp-stl\dp</Filter>
+    </ClInclude>
     <ClInclude Include="cp-stl\dp\knapsack.hpp">
+      <Filter>04 算法库 cp-stl\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="cp-stl\dp\monotone.hpp">
       <Filter>04 算法库 cp-stl\dp</Filter>
     </ClInclude>
     <ClInclude Include="cp-stl\dp\sequence.hpp">
       <Filter>04 算法库 cp-stl\dp</Filter>
     </ClInclude>
+    <None Include="cp-stl\examples\basic\cdq.cpp">
+      <Filter>04 算法库 cp-stl\examples\basic</Filter>
+    </None>
     <None Include="cp-stl\examples\basic\compress.cpp">
       <Filter>04 算法库 cp-stl\examples\basic</Filter>
     </None>
     <None Include="cp-stl\examples\basic\monotonic_stack.cpp">
+      <Filter>04 算法库 cp-stl\examples\basic</Filter>
+    </None>
+    <None Include="cp-stl\examples\basic\parallel_binary_search.cpp">
       <Filter>04 算法库 cp-stl\examples\basic</Filter>
     </None>
     <None Include="cp-stl\examples\basic\prefix_sum.cpp">
@@ -789,6 +849,9 @@
       <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
     </None>
     <None Include="cp-stl\examples\data_structures\dsu.cpp">
+      <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
+    </None>
+    <None Include="cp-stl\examples\data_structures\dynamic_range_kth.cpp">
       <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
     </None>
     <None Include="cp-stl\examples\data_structures\dynamic_segment_tree.cpp">
@@ -812,6 +875,9 @@
     <None Include="cp-stl\examples\data_structures\persistent_binary_trie.cpp">
       <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
     </None>
+    <None Include="cp-stl\examples\data_structures\persistent_dsu.cpp">
+      <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
+    </None>
     <None Include="cp-stl\examples\data_structures\persistent_segment_tree.cpp">
       <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
     </None>
@@ -833,6 +899,9 @@
     <None Include="cp-stl\examples\data_structures\sparse_table.cpp">
       <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
     </None>
+    <None Include="cp-stl\examples\data_structures\sqrt_decomposition.cpp">
+      <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
+    </None>
     <None Include="cp-stl\examples\data_structures\treap.cpp">
       <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
     </None>
@@ -842,16 +911,28 @@
     <None Include="cp-stl\examples\data_structures\xor_basis.cpp">
       <Filter>04 算法库 cp-stl\examples\data_structures</Filter>
     </None>
+    <None Include="cp-stl\examples\dp\convex_hull_trick.cpp">
+      <Filter>04 算法库 cp-stl\examples\dp</Filter>
+    </None>
     <None Include="cp-stl\examples\dp\knapsack.cpp">
+      <Filter>04 算法库 cp-stl\examples\dp</Filter>
+    </None>
+    <None Include="cp-stl\examples\dp\monotone.cpp">
       <Filter>04 算法库 cp-stl\examples\dp</Filter>
     </None>
     <None Include="cp-stl\examples\dp\sequence.cpp">
       <Filter>04 算法库 cp-stl\examples\dp</Filter>
     </None>
+    <None Include="cp-stl\examples\expected\basic\cdq.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\basic</Filter>
+    </None>
     <None Include="cp-stl\examples\expected\basic\compress.ans">
       <Filter>04 算法库 cp-stl\examples\expected\basic</Filter>
     </None>
     <None Include="cp-stl\examples\expected\basic\monotonic_stack.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\basic</Filter>
+    </None>
+    <None Include="cp-stl\examples\expected\basic\parallel_binary_search.ans">
       <Filter>04 算法库 cp-stl\examples\expected\basic</Filter>
     </None>
     <None Include="cp-stl\examples\expected\basic\prefix_sum.ans">
@@ -867,6 +948,9 @@
       <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
     </None>
     <None Include="cp-stl\examples\expected\data_structures\dsu.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
+    </None>
+    <None Include="cp-stl\examples\expected\data_structures\dynamic_range_kth.ans">
       <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
     </None>
     <None Include="cp-stl\examples\expected\data_structures\dynamic_segment_tree.ans">
@@ -890,6 +974,9 @@
     <None Include="cp-stl\examples\expected\data_structures\persistent_binary_trie.ans">
       <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
     </None>
+    <None Include="cp-stl\examples\expected\data_structures\persistent_dsu.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
+    </None>
     <None Include="cp-stl\examples\expected\data_structures\persistent_segment_tree.ans">
       <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
     </None>
@@ -911,6 +998,9 @@
     <None Include="cp-stl\examples\expected\data_structures\sparse_table.ans">
       <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
     </None>
+    <None Include="cp-stl\examples\expected\data_structures\sqrt_decomposition.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
+    </None>
     <None Include="cp-stl\examples\expected\data_structures\treap.ans">
       <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
     </None>
@@ -920,7 +1010,13 @@
     <None Include="cp-stl\examples\expected\data_structures\xor_basis.ans">
       <Filter>04 算法库 cp-stl\examples\expected\data_structures</Filter>
     </None>
+    <None Include="cp-stl\examples\expected\dp\convex_hull_trick.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\dp</Filter>
+    </None>
     <None Include="cp-stl\examples\expected\dp\knapsack.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\dp</Filter>
+    </None>
+    <None Include="cp-stl\examples\expected\dp\monotone.ans">
       <Filter>04 算法库 cp-stl\examples\expected\dp</Filter>
     </None>
     <None Include="cp-stl\examples\expected\dp\sequence.ans">
@@ -968,6 +1064,9 @@
     <None Include="cp-stl\examples\expected\graph\rerooting.ans">
       <Filter>04 算法库 cp-stl\examples\expected\graph</Filter>
     </None>
+    <None Include="cp-stl\examples\expected\graph\residue_shortest_path.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\graph</Filter>
+    </None>
     <None Include="cp-stl\examples\expected\graph\scc.ans">
       <Filter>04 算法库 cp-stl\examples\expected\graph</Filter>
     </None>
@@ -998,6 +1097,9 @@
     <None Include="cp-stl\examples\expected\math\crt.ans">
       <Filter>04 算法库 cp-stl\examples\expected\math</Filter>
     </None>
+    <None Include="cp-stl\examples\expected\math\fractional_programming.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\math</Filter>
+    </None>
     <None Include="cp-stl\examples\expected\math\gauss.ans">
       <Filter>04 算法库 cp-stl\examples\expected\math</Filter>
     </None>
@@ -1026,6 +1128,12 @@
       <Filter>04 算法库 cp-stl\examples\expected\string</Filter>
     </None>
     <None Include="cp-stl\examples\expected\string\rolling_hash.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\string</Filter>
+    </None>
+    <None Include="cp-stl\examples\expected\string\suffix_array.ans">
+      <Filter>04 算法库 cp-stl\examples\expected\string</Filter>
+    </None>
+    <None Include="cp-stl\examples\expected\string\suffix_automaton.ans">
       <Filter>04 算法库 cp-stl\examples\expected\string</Filter>
     </None>
     <None Include="cp-stl\examples\expected\string\trie.ans">
@@ -1100,6 +1208,9 @@
     <None Include="cp-stl\examples\graph\rerooting.cpp">
       <Filter>04 算法库 cp-stl\examples\graph</Filter>
     </None>
+    <None Include="cp-stl\examples\graph\residue_shortest_path.cpp">
+      <Filter>04 算法库 cp-stl\examples\graph</Filter>
+    </None>
     <None Include="cp-stl\examples\graph\scc.cpp">
       <Filter>04 算法库 cp-stl\examples\graph</Filter>
     </None>
@@ -1128,6 +1239,9 @@
       <Filter>04 算法库 cp-stl\examples\math</Filter>
     </None>
     <None Include="cp-stl\examples\math\crt.cpp">
+      <Filter>04 算法库 cp-stl\examples\math</Filter>
+    </None>
+    <None Include="cp-stl\examples\math\fractional_programming.cpp">
       <Filter>04 算法库 cp-stl\examples\math</Filter>
     </None>
     <None Include="cp-stl\examples\math\gauss.cpp">
@@ -1161,6 +1275,12 @@
       <Filter>04 算法库 cp-stl\examples\string</Filter>
     </None>
     <None Include="cp-stl\examples\string\rolling_hash.cpp">
+      <Filter>04 算法库 cp-stl\examples\string</Filter>
+    </None>
+    <None Include="cp-stl\examples\string\suffix_array.cpp">
+      <Filter>04 算法库 cp-stl\examples\string</Filter>
+    </None>
+    <None Include="cp-stl\examples\string\suffix_automaton.cpp">
       <Filter>04 算法库 cp-stl\examples\string</Filter>
     </None>
     <None Include="cp-stl\examples\string\trie.cpp">
@@ -1232,6 +1352,9 @@
     <ClInclude Include="cp-stl\graph\rerooting.hpp">
       <Filter>04 算法库 cp-stl\graph</Filter>
     </ClInclude>
+    <ClInclude Include="cp-stl\graph\residue_shortest_path.hpp">
+      <Filter>04 算法库 cp-stl\graph</Filter>
+    </ClInclude>
     <ClInclude Include="cp-stl\graph\scc.hpp">
       <Filter>04 算法库 cp-stl\graph</Filter>
     </ClInclude>
@@ -1260,6 +1383,9 @@
       <Filter>04 算法库 cp-stl\math</Filter>
     </ClInclude>
     <ClInclude Include="cp-stl\math\crt.hpp">
+      <Filter>04 算法库 cp-stl\math</Filter>
+    </ClInclude>
+    <ClInclude Include="cp-stl\math\fractional_programming.hpp">
       <Filter>04 算法库 cp-stl\math</Filter>
     </ClInclude>
     <ClInclude Include="cp-stl\math\gauss.hpp">
@@ -1295,6 +1421,12 @@
     <ClInclude Include="cp-stl\string\rolling_hash.hpp">
       <Filter>04 算法库 cp-stl\string</Filter>
     </ClInclude>
+    <ClInclude Include="cp-stl\string\suffix_array.hpp">
+      <Filter>04 算法库 cp-stl\string</Filter>
+    </ClInclude>
+    <ClInclude Include="cp-stl\string\suffix_automaton.hpp">
+      <Filter>04 算法库 cp-stl\string</Filter>
+    </ClInclude>
     <ClInclude Include="cp-stl\string\trie.hpp">
       <Filter>04 算法库 cp-stl\string</Filter>
     </ClInclude>
@@ -1307,6 +1439,9 @@
     <None Include="cp-stl\tests\algorithms.cpp">
       <Filter>04 算法库 cp-stl\tests</Filter>
     </None>
+    <None Include="cp-stl\tests\ext_advanced.cpp">
+      <Filter>04 算法库 cp-stl\tests</Filter>
+    </None>
     <None Include="cp-stl\tests\ext_data_structures.cpp">
       <Filter>04 算法库 cp-stl\tests</Filter>
     </None>
@@ -1314,6 +1449,9 @@
       <Filter>04 算法库 cp-stl\tests</Filter>
     </None>
     <None Include="cp-stl\tests\ext_math.cpp">
+      <Filter>04 算法库 cp-stl\tests</Filter>
+    </None>
+    <None Include="cp-stl\tests\ext_string.cpp">
       <Filter>04 算法库 cp-stl\tests</Filter>
     </None>
     <None Include="cp-stl\tests\ext_util.cpp">

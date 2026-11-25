@@ -9,4 +9,5 @@ int main() {
     std::cout << "C(5,7)=" << comb.choose(5, 7) << '\n';
     std::cout << "factorial(5)=" << comb.fact[5] << '\n';
     std::cout << "inverse_check=" << comb.fact[5] * comb.inv_fact[5] << '\n';
+    std::cout << "catalan(5)=" << comb.catalan(5) << '\n';
 }

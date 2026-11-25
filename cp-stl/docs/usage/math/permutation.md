@@ -1,9 +1,9 @@
-# 康托展开与约瑟夫问题
+# 康托展开、约瑟夫问题与完美洗牌
 
 [模板源码](../../../math/permutation.hpp) · [完整示例](../../../examples/math/permutation.cpp) · [使用手册索引](../README.md)
 
 康托展开把 0..n-1 的一个排列映射为它在全部 n! 个排列中的字典序排名，逆康托展开反过来由排名得到排列；
-它们常用于把排列压成整数（状态压缩、BFS 判重）以及“求排列的排名”类题目。约瑟夫问题求报数出列游戏最后剩下的人。
+它们常用于把排列压成整数（状态压缩、BFS 判重）以及“求排列的排名”类题目。约瑟夫问题求报数出列游戏最后剩下的人。完美洗牌把数组的前后两半原地交错排列，只用 O(1) 的额外空间。
 
 ## 接口和使用顺序
 
@@ -13,6 +13,7 @@
 | `permutation_rank_exact(p)` | 精确排名，unsigned long long，n ≤ 20，O(n²)。 |
 | `kth_permutation(n, k)` | 排名为 k（从 0 开始）的排列，n ≤ 20 且 k < n!。 |
 | `josephus(n, k)` | 编号 0..n-1 围成一圈，从 0 开始每数到第 k 个就出列，返回最后剩下的编号。 |
+| `perfect_shuffle(a)` / `perfect_shuffle(a, l, r)` | 把偶数长度的 [L1..Lk, R1..Rk] 原地重排成 [R1, L1, R2, L2, …, Rk, Lk]，O(长度) 时间、O(1) 额外空间；带 l、r 时只处理 a[l..r)。 |
 
 ## 完整例子
 
@@ -34,6 +35,13 @@ int main() {
 
     // 7 个人报数到 3 出列（编号 0..6），出列顺序 2,5,1,6,4,0，最后剩 3。
     std::cout << "josephus(7,3)=" << cp::josephus(7, 3) << " josephus(1e18,2)=" << cp::josephus(1000000000000000000LL, 2) << '\n';
+
+    // 完美洗牌：[L1..Lk, R1..Rk] 原地变成 [R1, L1, R2, L2, ...]。
+    std::vector<int> cards{1, 2, 3, 4, 5, 6, 7, 8};
+    cp::perfect_shuffle(cards);
+    std::cout << "perfect_shuffle:";
+    for (int x : cards) std::cout << ' ' << x;
+    std::cout << '\n';
 }
 ```
 
@@ -43,6 +51,7 @@ int main() {
 rank=4 rank_mod=4
 kth_permutation(3,4): 2 0 1
 josephus(7,3)=3 josephus(1e18,2)=847078495393153024
+perfect_shuffle: 5 1 6 2 7 3 8 4
 ```
 
 ## 注意事项
@@ -51,6 +60,7 @@ josephus(7,3)=3 josephus(1e18,2)=847078495393153024
 - permutation_rank 需要模数为质数（内部用 ModInt 计算阶乘），配合 `cp::Mint` 等类型使用。
 - josephus 使用递推 J(i+1) = (J(i)+k) mod (i+1)，并在不需要取模时成批跳过，复杂度 O(min(n, k log n))：n 很大、k 很小也能秒出。
 - 编号从 1 开始、或者从第 s 个人开始报数时，把结果加 1 或做一次 (结果 + s) mod n 的平移。
+- perfect_shuffle 的结果以右半的第一个元素开头；想要 [L1, R1, L2, R2, …]，对去掉首尾的 a[1..n-1) 调用即可。允许使用额外数组时直接新开一个数组交错填写更简单，这个函数的意义在于原地完成。
 
 ## 对应课程与练习
 
@@ -59,6 +69,7 @@ josephus(7,3)=3 josephus(1e18,2)=847078495393153024
   - [P5367 康托展开](https://www.luogu.com.cn/problem/P5367)：`permutation_rank<Mint>`，输出时加 1
   - [P8671 约瑟夫环](https://www.luogu.com.cn/problem/P8671)：`josephus(n, k) + 1`
   - [P1088 火星人](https://www.luogu.com.cn/problem/P1088)：`kth_permutation` 或 std::next_permutation
+  - [LeetCode 324 摆动排序 II](https://leetcode.cn/problems/wiggle-sort-ii/)：排序后做一次完美洗牌，可以做到 O(1) 额外空间
 
 也可以在仓库根目录执行：
 

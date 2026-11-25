@@ -1,0 +1,4 @@
+v2: same(0,3)=false size(2)=2
+v3: same(0,4)=true same(2,3)=false
+v4: same(0,3)=true size(1)=4
+v0: same(0,1)=false

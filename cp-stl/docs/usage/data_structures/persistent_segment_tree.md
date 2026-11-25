@@ -1,10 +1,11 @@
-# 可持久化线段树（主席树）与区间第 k 小
+# 可持久化线段树（主席树）、区间第 k 小与可持久化区间加
 
 [模板源码](../../../data_structures/persistent_segment_tree.hpp) · [完整示例](../../../examples/data_structures/persistent_segment_tree.cpp) · [使用手册索引](../README.md)
 
 每次单点修改只复制根到叶子路径上的 O(log n) 个节点，得到一个新版本，旧版本保持不变。
 `PersistentSegmentTree` 维护带版本的数组和区间和；`RangeKth` 在它的基础上，为每个前缀建立值域计数树，
 用两个前缀版本相减，在线回答“区间第 k 小”和“区间内小于 x 的个数”。
+`PersistentRangeAddSum` 是带版本的区间加、区间和，用标记永久化实现。
 
 ## 接口和使用顺序
 
@@ -16,6 +17,9 @@
 | `get(root, pos) / sum(root, l, r)` | 查询某个版本的单点值 / 区间和，O(log n)。 |
 | `kth(lo_root, hi_root, k)` | 计数数组 hi−lo 中第 k 小（从 0 开始）所在的下标。 |
 | `RangeKth<T>(a)` | 静态数组的区间第 k 小：`kth(l, r, k)` 返回值，`count_less(l, r, x)` 返回个数。 |
+| `PersistentRangeAddSum<T>(n, reserve=0)` | 带版本的区间加、区间和；根 0 表示全零数组，`build(a)` 建初始版本。 |
+| `add(root, l, r, delta)` | 在版本 root 上给 [l,r) 每个位置加 delta，返回新版本的根，O(log n)。 |
+| `sum(root, l, r) / get(root, pos)` | 查询某个版本的区间和 / 单点值，O(log n)。 |
 
 ## 完整例子
 
@@ -40,6 +44,14 @@ int main() {
     cp::RangeKth<int> kth(std::vector<int>{5, 2, 6, 3, 7, 4});
     std::cout << "kth(1,5,0)=" << kth.kth(1, 5, 0) << " kth(1,5,2)=" << kth.kth(1, 5, 2)
               << " count_less(0,6,5)=" << kth.count_less(0, 6, 5) << '\n';
+
+    // 可持久化的区间加、区间和（标记永久化）。
+    cp::PersistentRangeAddSum<long long> range(5);
+    int r0 = range.build(std::vector<long long>{1, 2, 3, 4, 5});
+    int r1 = range.add(r0, 1, 4, 10); // 1,12,13,14,5
+    int r2 = range.add(r1, 0, 2, -1); // 0,11,13,14,5
+    std::cout << "range: r0=" << range.sum(r0, 0, 5) << " r1=" << range.sum(r1, 0, 5)
+              << " r2=" << range.sum(r2, 0, 5) << " r1[1,3)=" << range.sum(r1, 1, 3) << '\n';
 }
 ```
 
@@ -49,6 +61,7 @@ int main() {
 sum: v0=14 v1=20 v2=17
 v0[2]=4 v2[0]=0
 kth(1,5,0)=2 kth(1,5,2)=6 count_less(0,6,5)=3
+range: r0=15 r1=45 r2=43 r1[1,3)=25
 ```
 
 ## 注意事项
@@ -57,7 +70,7 @@ kth(1,5,0)=2 kth(1,5,2)=6 count_less(0,6,5)=3
 - `RangeKth` 的 k 从 0 开始，要求 `0 <= k < r-l`；预处理 O(n log n) 时间和空间。
 - 空间约为 (修改次数) × (⌈log₂n⌉+1) 个节点，每个节点 8 字节加一个 T；10⁶ 次修改约需 10⁶×21 个节点，提前用 reserve 预留可以避免扩容时的双倍内存峰值。
 - `kth` 要求两个版本相减后的计数都非负，常见用法是“前缀 r 的版本减去前缀 l 的版本”。
-- 区间修改的可持久化（标记永久化）不在本模板中；需要时在节点上增加永久标记，查询时累加经过的标记。
+- `PersistentRangeAddSum` 的加法标记留在节点上不下传（标记永久化），查询时把沿路的标记乘上重叠长度累加；一次区间加最多新建约 4·⌈log₂n⌉ 个节点，每个节点 8 字节加两个 T。
 
 ## 对应课程与练习
 
@@ -67,6 +80,7 @@ kth(1,5,0)=2 kth(1,5,2)=6 count_less(0,6,5)=3
   - [P3834 可持久化线段树 2（区间第 k 小）](https://www.luogu.com.cn/problem/P3834)：`RangeKth`，注意题目的 k 从 1 开始
   - [P2633 Count on a tree](https://www.luogu.com.cn/problem/P2633)：树上路径第 k 小：父亲版本 + LCA 容斥
   - [P4137 Rmq Problem / mex](https://www.luogu.com.cn/problem/P4137)：按值建树记录最后出现位置
+  - [SP11470 TTM - To the moon](https://www.luogu.com.cn/problem/SP11470)：`PersistentRangeAddSum`，回到历史版本就是换一个根
 
 也可以在仓库根目录执行：
 

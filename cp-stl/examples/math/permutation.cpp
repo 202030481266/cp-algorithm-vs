@@ -13,4 +13,11 @@ int main() {
 
     // 7 个人报数到 3 出列（编号 0..6），出列顺序 2,5,1,6,4,0，最后剩 3。
     std::cout << "josephus(7,3)=" << cp::josephus(7, 3) << " josephus(1e18,2)=" << cp::josephus(1000000000000000000LL, 2) << '\n';
+
+    // 完美洗牌：[L1..Lk, R1..Rk] 原地变成 [R1, L1, R2, L2, ...]。
+    std::vector<int> cards{1, 2, 3, 4, 5, 6, 7, 8};
+    cp::perfect_shuffle(cards);
+    std::cout << "perfect_shuffle:";
+    for (int x : cards) std::cout << ' ' << x;
+    std::cout << '\n';
 }

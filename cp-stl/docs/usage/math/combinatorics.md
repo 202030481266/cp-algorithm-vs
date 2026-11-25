@@ -1,4 +1,4 @@
-# 阶乘、组合数与排列数
+# 阶乘、组合数、排列数与卡特兰数
 
 [模板源码](../../../math/combinatorics.hpp) · [完整示例](../../../examples/math/combinatorics.cpp) · [使用手册索引](../README.md)
 
@@ -11,6 +11,7 @@
 | `Combinations<M>(limit)` | M 为模整数类型；预处理阶乘与逆阶乘，O(limit+log mod)，空间 O(limit)。 |
 | `choose(n,k)` | 返回 C(n,k)；n<0、k<0 或 k>n 返回 0。 |
 | `permute(n,k)` | 返回 A(n,k)=n!/(n-k)!；无效 n、k 返回 0。 |
+| `catalan(n)` | 卡特兰数 C(2n,n) − C(2n,n+1)，要求 limit ≥ 2n。 |
 | `fact[i] / inv_fact[i]` | i! / i! 的乘法逆元。 |
 
 ## 完整例子
@@ -29,6 +30,7 @@ int main() {
     std::cout << "C(5,7)=" << comb.choose(5, 7) << '\n';
     std::cout << "factorial(5)=" << comb.fact[5] << '\n';
     std::cout << "inverse_check=" << comb.fact[5] * comb.inv_fact[5] << '\n';
+    std::cout << "catalan(5)=" << comb.catalan(5) << '\n';
 }
 ```
 
@@ -41,6 +43,7 @@ C(5,0)=1
 C(5,7)=0
 factorial(5)=120
 inverse_check=1
+catalan(5)=42
 ```
 
 ## 注意事项
@@ -48,6 +51,7 @@ inverse_check=1
 - 要求模数为素数，且 0≤limit<mod；不要预处理到模数或更大。
 - 合法 n 必须不超过预处理上限；choose 的越界 n 不会自动扩容。
 - C(0,0)=1；超过模数的组合数问题需要 Lucas 等其他方法。
+- 卡特兰数 1, 1, 2, 5, 14, 42, … 计数合法括号序列、出栈序列、不越过对角线的格路等；“不越过某条线的路径数”一类的变形用同样的反射法，写成两个组合数之差。
 - 默认模板参数为 cp::Mint；想用 1e9+7 可写 Combinations<cp::Mint1000000007>。
 
 也可以在仓库根目录执行：

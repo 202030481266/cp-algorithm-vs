@@ -1,6 +1,6 @@
 # 在 Visual Studio 中使用 CP-STL
 
-`cp-stl/` 是从 D:/CP-Templates-and-Solutions/cp-stl 导入的项目内副本，现有 **65 个头文件、68 个示例**，以及使用手册和算法回归程序。克隆本 workspace 后可直接使用，不依赖原始目录。
+`cp-stl/` 是从 D:/CP-Templates-and-Solutions/cp-stl 导入的项目内副本，现有 **76 个头文件、79 个示例**，以及使用手册和算法回归程序。克隆本 workspace 后可直接使用，不依赖原始目录。
 
 导入时为 35 个头文件、38 个示例，各文件的 SHA-256 见 [cp-stl-import.json](cp-stl-import.json)。之后本地新增了 [计数排序与基数排序](../cp-stl/docs/usage/basic/sort.md)，并在 MST 模板中补充了 [稠密图与完全图 Prim](../cp-stl/docs/usage/graph/mst.md)，支持整数邻接矩阵、按需计算边权及最大生成树。
 
@@ -8,6 +8,8 @@
 可持久化结构、平衡树、LCT、莫队、割点与双连通、点分治、虚树、Kruskal 重构树、换根 DP、Pollard-Rho、扩展 CRT、高斯消元等。
 每个模板的使用手册末尾列出对应讲次和练习题；按课程查找见 [左程云课程对照表](../cp-stl/docs/course-map.md)。
 实现参考 ACL 等常见竞赛写法，只借用课程的题目清单，没有复制课程代码。这些模板的随机对拍在 `cp-stl/tests/ext_*.cpp`。
+
+之后又补充了 11 个模板：[后缀数组](../cp-stl/docs/usage/string/suffix_array.md)（SA-IS）、[后缀自动机](../cp-stl/docs/usage/string/suffix_automaton.md)（含广义 SAM）、[可持久化并查集](../cp-stl/docs/usage/data_structures/persistent_dsu.md)、[分块](../cp-stl/docs/usage/data_structures/sqrt_decomposition.md)、[树套树](../cp-stl/docs/usage/data_structures/dynamic_range_kth.md)、[整体二分](../cp-stl/docs/usage/basic/parallel_binary_search.md)、[CDQ 分治](../cp-stl/docs/usage/basic/cdq.md)、[01 分数规划](../cp-stl/docs/usage/math/fractional_programming.md)、[斜率优化与李超线段树](../cp-stl/docs/usage/dp/convex_hull_trick.md)、[决策单调性与四边形不等式](../cp-stl/docs/usage/dp/monotone.md)、[同余最短路](../cp-stl/docs/usage/graph/residue_shortest_path.md)；并在已有模板中加入了可持久化区间加 `PersistentRangeAddSum`、卡特兰数 `catalan` 和原地完美洗牌 `perfect_shuffle`。对拍在 `tests/ext_string.cpp` 和 `tests/ext_advanced.cpp`。
 
 [util/random.hpp](../cp-stl/docs/usage/util/random.md) 扩充成了对拍数据生成器，可生成互异数组、排列、拆分、字符串、树和简单图；同一种子在 MSVC 与 GCC 上生成相同的数据。
 
@@ -102,7 +104,7 @@ python tools/cp.py export --source solutions/cf/1500/C/main.cpp --output build/c
 ## 检查与后续维护
 
 ```powershell
-# GCC：全部头文件、68 个例子、原随机对拍、新增模板的随机对拍、数学边界和导出检查
+# GCC：全部头文件、79 个例子、原随机对拍、新增模板的随机对拍、数学边界和导出检查
 python tools/test_cp_stl.py
 
 # MSVC：在 VS Developer PowerShell 中执行同一套检查

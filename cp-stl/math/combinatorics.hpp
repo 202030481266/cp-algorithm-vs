@@ -26,5 +26,7 @@ struct Combinations {
         assert(n < int(fact.size()));
         return fact[n] * inv_fact[n - k];
     }
+    // 卡特兰数 C(2n,n) - C(2n,n+1)，要求预处理上限至少为 2n。
+    M catalan(int n) const { return choose(2 * n, n) - choose(2 * n, n + 1); }
 };
 } // namespace cp

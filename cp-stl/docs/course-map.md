@@ -31,7 +31,11 @@
 | [156](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class156) | 带权并查集 | [带权并查集](usage/data_structures/weighted_dsu.md) |
 | [157](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class157)–[158](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class158) | 可持久化线段树 | [主席树与区间第 k 小](usage/data_structures/persistent_segment_tree.md) |
 | [159](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class159) | 可持久化前缀树 | [可持久化 01 Trie](usage/data_structures/persistent_binary_trie.md) |
-| [165](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class165)–[167](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class167) | 可撤销并查集、线段树分治 | [可撤销并查集与线段树分治](usage/data_structures/rollback_dsu.md) |
+| [160](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class160) | 树套树 | [树套树：带修改的区间第 k 小](usage/data_structures/dynamic_range_kth.md) |
+| [165](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class165)–[167](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class167) | 可持久化并查集、可撤销并查集、线段树分治 | [可持久化并查集](usage/data_structures/persistent_dsu.md)、[可撤销并查集与线段树分治](usage/data_structures/rollback_dsu.md) |
+| [168](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class168)–[169](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class169) | 整体二分 | [整体二分](usage/basic/parallel_binary_search.md) |
+| [170](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class170)–[171](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class171) | CDQ 分治 | [CDQ 分治与三维偏序](usage/basic/cdq.md) |
+| [172](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class172)–[175](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class175) | 分块 | [分块](usage/data_structures/sqrt_decomposition.md) |
 | [176](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class176)–[179](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class179) | 普通莫队、带修莫队、回滚莫队 | [莫队 MosAlgorithm](usage/data_structures/mos_algorithm.md) |
 | [181](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class181)–[182](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class182) | 线段树的合并与分裂 | [线段树合并与分裂](usage/data_structures/segment_tree_merge.md) |
 | [201](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class201)–[204](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class204) | LCT | [Link-Cut Tree](usage/data_structures/link_cut_tree.md) |
@@ -50,7 +54,7 @@
 | [122](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class122) | 树上差分 | [O(1) LCA](usage/graph/fast_lca.md)（手册中有点差分写法） |
 | [123](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class123) | 换根 DP | [换根 DP](usage/graph/rerooting.md) |
 | [142](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class142) | 负环、差分约束 | [SPFA、负环、差分约束](usage/graph/spfa.md) |
-| [143](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class143) | 同余最短路 | [Dijkstra](usage/graph/shortest_path.md)（按余数建点） |
+| [143](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class143) | 同余最短路 | [同余最短路](usage/graph/residue_shortest_path.md) |
 | [161](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class161)–[162](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class162) | 树链剖分 | [HLD](usage/graph/hld.md) |
 | [163](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class163) | 树上启发式合并 | [DSU on tree](usage/graph/dsu_on_tree.md) |
 | [164](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class164) | Kruskal 重构树 | [Kruskal 重构树](usage/graph/kruskal_tree.md) |
@@ -73,6 +77,8 @@
 | [103](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class103)–[104](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class104) | Manacher、扩展 KMP（Z 函数） | [Manacher](usage/string/manacher.md)、[Z 函数](usage/string/z_function.md) |
 | [105](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class105) | 字符串哈希 | [双模哈希](usage/string/rolling_hash.md) |
 
+课程之外另有[后缀数组](usage/string/suffix_array.md)和[后缀自动机](usage/string/suffix_automaton.md)。
+
 ## 数学
 
 | 讲次 | 主题 | 模板 |
@@ -82,9 +88,10 @@
 | [098](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class098) | 快速幂、矩阵快速幂 | [快速幂](usage/math/number_theory.md)、[矩阵](usage/math/matrix.md) |
 | [099](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class099) | 逆元、容斥原理 | [ModInt](usage/math/modint.md)、[组合数](usage/math/combinatorics.md) |
 | [133](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class133)–[135](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class135) | 高斯消元：加法、异或、同余方程组 | [高斯消元](usage/math/gauss.md) |
+| [138](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class138) | 01 分数规划 | [01 分数规划：二分与 Dinkelbach](usage/math/fractional_programming.md) |
 | [139](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class139)–[141](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class141) | 裴蜀定理、扩展欧几里得、中国剩余定理 | [exgcd 与 CRT](usage/math/crt.md) |
-| [144](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class144)、[147](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class147) | 二项式定理、卡特兰数 | [组合数](usage/math/combinatorics.md) |
-| [146](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class146) | 康托展开、约瑟夫环 | [康托展开与约瑟夫问题](usage/math/permutation.md) |
+| [144](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class144)、[147](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class147) | 二项式定理、卡特兰数 | [组合数与卡特兰数](usage/math/combinatorics.md) |
+| [146](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class146) | 康托展开、约瑟夫环、完美洗牌 | [康托展开、约瑟夫问题与完美洗牌](usage/math/permutation.md) |
 
 ## 动态规划
 
@@ -93,12 +100,13 @@
 | [072](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class072) | 最长递增子序列 | [LIS 与逆序对](usage/dp/sequence.md) |
 | [073](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class073)–[075](https://github.com/algorithmzuo/algorithm-journey/tree/main/src/class075) | 01 / 完全 / 多重背包 | [背包](usage/dp/knapsack.md) |
 
+DP 优化中可以直接套用的部分：[斜率优化与李超线段树](usage/dp/convex_hull_trick.md)、[决策单调性分治与四边形不等式](usage/dp/monotone.md)；单调队列优化用[滑动窗口最小值](usage/dp/sequence.md)。
+
 ## 没有做成模板的内容
 
 这些讲次讲的是解题方法，每道题的状态和转移都不同，抄一份“通用代码”反而难用，建议直接看课程和例题：
 
-- 递归与各类 DP（066–071、076–088、125–132）：区间 DP、树形 DP、状压 DP、数位 DP、轮廓线 DP、DP 优化；
-- 贪心（089–094）、博弈（095–096）、01 分数规划（138，用二分答案）；
-- 整体二分（168–169）、CDQ 分治（170–171）、分块与根号分治（172–175）：都是离线框架，按题目写；
-- 边分治（187）、基环树（199）、仙人掌（200）、K-D 树（205–206）、树套树（160）：出现频率较低，暂未收录；
+- 递归与各类 DP（066–071、076–088、125–132）：区间 DP、树形 DP、状压 DP、数位 DP、轮廓线 DP；DP 优化中只有上面列出的几种做成了模板；
+- 贪心（089–094）、博弈（095–096）；
+- 边分治（187）、基环树（199）、仙人掌（200）、K-D 树（205–206）：出现频率较低，暂未收录；
 - 链表、二叉树遍历、Morris 遍历等入门内容（009–018、036–037、124）：用 STL 或直接手写即可。

@@ -2,7 +2,7 @@
 
 每个模板都有一个按相同路径命名的 `.cpp`。例如 `data_structures/fenwick.hpp` 对应本目录的 `data_structures/fenwick.cpp`，详细解释见 [使用手册](../docs/usage/README.md)。
 
-下面 65 个模板示例都内置数据：在 workspace 根目录执行 `python tools/cp.py example 类别/名称`，自动编译运行并核对答案，不需要手工输入。期望的标准输出统一放在 [expected/](expected/) 中，按相同的相对路径命名（如 `expected/data_structures/fenwick.ans`），平时浏览例子时不用理会；`util/debug.cpp` 还会向标准错误输出内容，对照 [expected/util/debug.err](expected/util/debug.err)。
+下面 76 个模板示例都内置数据：在 workspace 根目录执行 `python tools/cp.py example 类别/名称`，自动编译运行并核对答案，不需要手工输入。期望的标准输出统一放在 [expected/](expected/) 中，按相同的相对路径命名（如 `expected/data_structures/fenwick.ans`），平时浏览例子时不用理会；`util/debug.cpp` 还会向标准错误输出内容，对照 [expected/util/debug.err](expected/util/debug.err)。
 
 ## 需要输入的入门示例
 
@@ -29,6 +29,8 @@ python tools/cp.py example "template"
 | [计数排序与基数排序](../docs/usage/basic/sort.md) | [basic/sort.cpp](basic/sort.cpp) | [.ans](expected/basic/sort.ans) |
 | [二维前缀和、二维差分与等差数列差分](../docs/usage/basic/prefix_sum.md) | [basic/prefix_sum.cpp](basic/prefix_sum.cpp) | [.ans](expected/basic/prefix_sum.ans) |
 | [单调栈与笛卡尔树](../docs/usage/basic/monotonic_stack.md) | [basic/monotonic_stack.cpp](basic/monotonic_stack.cpp) | [.ans](expected/basic/monotonic_stack.ans) |
+| [整体二分](../docs/usage/basic/parallel_binary_search.md) | [basic/parallel_binary_search.cpp](basic/parallel_binary_search.cpp) | [.ans](expected/basic/parallel_binary_search.ans) |
+| [CDQ 分治与三维偏序](../docs/usage/basic/cdq.md) | [basic/cdq.cpp](basic/cdq.cpp) | [.ans](expected/basic/cdq.ans) |
 
 ### 数据结构
 
@@ -43,7 +45,7 @@ python tools/cp.py example "template"
 | [01 Trie：单个元素的最大异或](../docs/usage/data_structures/binary_trie.md) | [data_structures/binary_trie.cpp](data_structures/binary_trie.cpp) | [.ans](expected/data_structures/binary_trie.ans) |
 | [树状数组扩展：区间加区间和、二维树状数组](../docs/usage/data_structures/range_fenwick.md) | [data_structures/range_fenwick.cpp](data_structures/range_fenwick.cpp) | [.ans](expected/data_structures/range_fenwick.ans) |
 | [吉司机线段树：区间取最值与区间加](../docs/usage/data_structures/segment_tree_beats.md) | [data_structures/segment_tree_beats.cpp](data_structures/segment_tree_beats.cpp) | [.ans](expected/data_structures/segment_tree_beats.ans) |
-| [可持久化线段树（主席树）与区间第 k 小](../docs/usage/data_structures/persistent_segment_tree.md) | [data_structures/persistent_segment_tree.cpp](data_structures/persistent_segment_tree.cpp) | [.ans](expected/data_structures/persistent_segment_tree.ans) |
+| [可持久化线段树（主席树）、区间第 k 小与可持久化区间加](../docs/usage/data_structures/persistent_segment_tree.md) | [data_structures/persistent_segment_tree.cpp](data_structures/persistent_segment_tree.cpp) | [.ans](expected/data_structures/persistent_segment_tree.ans) |
 | [可持久化 01 Trie：区间内的最大 / 最小异或](../docs/usage/data_structures/persistent_binary_trie.md) | [data_structures/persistent_binary_trie.cpp](data_structures/persistent_binary_trie.cpp) | [.ans](expected/data_structures/persistent_binary_trie.ans) |
 | [线段树合并与分裂](../docs/usage/data_structures/segment_tree_merge.md) | [data_structures/segment_tree_merge.cpp](data_structures/segment_tree_merge.cpp) | [.ans](expected/data_structures/segment_tree_merge.ans) |
 | [动态开点线段树：超大下标的区间加、区间和、区间最大值](../docs/usage/data_structures/dynamic_segment_tree.md) | [data_structures/dynamic_segment_tree.cpp](data_structures/dynamic_segment_tree.cpp) | [.ans](expected/data_structures/dynamic_segment_tree.ans) |
@@ -53,6 +55,9 @@ python tools/cp.py example "template"
 | [可撤销并查集与线段树分治](../docs/usage/data_structures/rollback_dsu.md) | [data_structures/rollback_dsu.cpp](data_structures/rollback_dsu.cpp) | [.ans](expected/data_structures/rollback_dsu.ans) |
 | [Link-Cut Tree：动态树](../docs/usage/data_structures/link_cut_tree.md) | [data_structures/link_cut_tree.cpp](data_structures/link_cut_tree.cpp) | [.ans](expected/data_structures/link_cut_tree.ans) |
 | [莫队算法 MosAlgorithm：普通莫队、回滚莫队、带修莫队](../docs/usage/data_structures/mos_algorithm.md) | [data_structures/mos_algorithm.cpp](data_structures/mos_algorithm.cpp) | [.ans](expected/data_structures/mos_algorithm.ans) |
+| [可持久化并查集](../docs/usage/data_structures/persistent_dsu.md) | [data_structures/persistent_dsu.cpp](data_structures/persistent_dsu.cpp) | [.ans](expected/data_structures/persistent_dsu.ans) |
+| [分块：SqrtBlocks 与区间加、区间小于 x 的个数](../docs/usage/data_structures/sqrt_decomposition.md) | [data_structures/sqrt_decomposition.cpp](data_structures/sqrt_decomposition.cpp) | [.ans](expected/data_structures/sqrt_decomposition.ans) |
+| [树套树：带修改的区间第 k 小](../docs/usage/data_structures/dynamic_range_kth.md) | [data_structures/dynamic_range_kth.cpp](data_structures/dynamic_range_kth.cpp) | [.ans](expected/data_structures/dynamic_range_kth.ans) |
 
 ### 图与树
 
@@ -77,6 +82,7 @@ python tools/cp.py example "template"
 | [树上启发式合并（DSU on tree）](../docs/usage/graph/dsu_on_tree.md) | [graph/dsu_on_tree.cpp](graph/dsu_on_tree.cpp) | [.ans](expected/graph/dsu_on_tree.ans) |
 | [换根 DP（全方位树 DP）](../docs/usage/graph/rerooting.md) | [graph/rerooting.cpp](graph/rerooting.cpp) | [.ans](expected/graph/rerooting.ans) |
 | [线段树优化建图](../docs/usage/graph/segment_tree_graph.md) | [graph/segment_tree_graph.cpp](graph/segment_tree_graph.cpp) | [.ans](expected/graph/segment_tree_graph.ans) |
+| [同余最短路](../docs/usage/graph/residue_shortest_path.md) | [graph/residue_shortest_path.cpp](graph/residue_shortest_path.cpp) | [.ans](expected/graph/residue_shortest_path.ans) |
 
 ### 字符串
 
@@ -88,6 +94,8 @@ python tools/cp.py example "template"
 | [字典树：单词与前缀计数](../docs/usage/string/trie.md) | [string/trie.cpp](string/trie.cpp) | [.ans](expected/string/trie.ans) |
 | [AC 自动机：多个模式的出现次数](../docs/usage/string/aho_corasick.md) | [string/aho_corasick.cpp](string/aho_corasick.cpp) | [.ans](expected/string/aho_corasick.ans) |
 | [双模子串哈希 RollingHash](../docs/usage/string/rolling_hash.md) | [string/rolling_hash.cpp](string/rolling_hash.cpp) | [.ans](expected/string/rolling_hash.ans) |
+| [后缀数组 SuffixArray：SA-IS、height 与 LCP](../docs/usage/string/suffix_array.md) | [string/suffix_array.cpp](string/suffix_array.cpp) | [.ans](expected/string/suffix_array.ans) |
+| [后缀自动机 SuffixAutomaton 与广义 SAM](../docs/usage/string/suffix_automaton.md) | [string/suffix_automaton.cpp](string/suffix_automaton.cpp) | [.ans](expected/string/suffix_automaton.ans) |
 
 ### 数学
 
@@ -95,12 +103,13 @@ python tools/cp.py example "template"
 | --- | --- | --- |
 | [快速幂、逆元、素数筛与分解](../docs/usage/math/number_theory.md) | [math/number_theory.cpp](math/number_theory.cpp) | [.ans](expected/math/number_theory.ans) |
 | [模整数 ModInt](../docs/usage/math/modint.md) | [math/modint.cpp](math/modint.cpp) | [.ans](expected/math/modint.ans) |
-| [阶乘、组合数与排列数](../docs/usage/math/combinatorics.md) | [math/combinatorics.cpp](math/combinatorics.cpp) | [.ans](expected/math/combinatorics.ans) |
+| [阶乘、组合数、排列数与卡特兰数](../docs/usage/math/combinatorics.md) | [math/combinatorics.cpp](math/combinatorics.cpp) | [.ans](expected/math/combinatorics.ans) |
 | [矩阵乘法与快速幂](../docs/usage/math/matrix.md) | [math/matrix.cpp](math/matrix.cpp) | [.ans](expected/math/matrix.ans) |
 | [Miller-Rabin 与 Pollard-Rho：64 位素性测试和质因数分解](../docs/usage/math/prime.md) | [math/prime.cpp](math/prime.cpp) | [.ans](expected/math/prime.ans) |
 | [扩展欧几里得、线性同余与中国剩余定理](../docs/usage/math/crt.md) | [math/crt.cpp](math/crt.cpp) | [.ans](expected/math/crt.ans) |
 | [高斯消元：实数、模质数与异或方程组](../docs/usage/math/gauss.md) | [math/gauss.cpp](math/gauss.cpp) | [.ans](expected/math/gauss.ans) |
-| [康托展开与约瑟夫问题](../docs/usage/math/permutation.md) | [math/permutation.cpp](math/permutation.cpp) | [.ans](expected/math/permutation.ans) |
+| [康托展开、约瑟夫问题与完美洗牌](../docs/usage/math/permutation.md) | [math/permutation.cpp](math/permutation.cpp) | [.ans](expected/math/permutation.ans) |
+| [01 分数规划：二分与 Dinkelbach](../docs/usage/math/fractional_programming.md) | [math/fractional_programming.cpp](math/fractional_programming.cpp) | [.ans](expected/math/fractional_programming.ans) |
 
 ### 动态规划与序列
 
@@ -108,6 +117,8 @@ python tools/cp.py example "template"
 | --- | --- | --- |
 | [LIS、逆序对与滑动窗口最小值](../docs/usage/dp/sequence.md) | [dp/sequence.cpp](dp/sequence.cpp) | [.ans](expected/dp/sequence.ans) |
 | [01、完全与多重背包](../docs/usage/dp/knapsack.md) | [dp/knapsack.cpp](dp/knapsack.cpp) | [.ans](expected/dp/knapsack.ans) |
+| [斜率优化与李超线段树](../docs/usage/dp/convex_hull_trick.md) | [dp/convex_hull_trick.cpp](dp/convex_hull_trick.cpp) | [.ans](expected/dp/convex_hull_trick.ans) |
+| [决策单调性分治与四边形不等式](../docs/usage/dp/monotone.md) | [dp/monotone.cpp](dp/monotone.cpp) | [.ans](expected/dp/monotone.ans) |
 
 ### 几何
 
@@ -131,4 +142,4 @@ python tools/cp.py example "template"
 python tools/test_cp_stl.py
 ```
 
-在仓库根目录执行，将编译运行全部 68 个示例、核对输出，并检查所有模板都有使用文档且文档里的代码与示例一致。依赖 Python 3.10+，默认编译器为 PATH 中的 g++；在 VS Developer PowerShell 设置 `$env:CP_STL_CXX = "cl"` 可使用 MSVC。
+在仓库根目录执行，将编译运行全部 79 个示例、核对输出，并检查所有模板都有使用文档且文档里的代码与示例一致。依赖 Python 3.10+，默认编译器为 PATH 中的 g++；在 VS Developer PowerShell 设置 `$env:CP_STL_CXX = "cl"` 可使用 MSVC。

@@ -16,4 +16,12 @@ int main() {
     cp::RangeKth<int> kth(std::vector<int>{5, 2, 6, 3, 7, 4});
     std::cout << "kth(1,5,0)=" << kth.kth(1, 5, 0) << " kth(1,5,2)=" << kth.kth(1, 5, 2)
               << " count_less(0,6,5)=" << kth.count_less(0, 6, 5) << '\n';
+
+    // 可持久化的区间加、区间和（标记永久化）。
+    cp::PersistentRangeAddSum<long long> range(5);
+    int r0 = range.build(std::vector<long long>{1, 2, 3, 4, 5});
+    int r1 = range.add(r0, 1, 4, 10); // 1,12,13,14,5
+    int r2 = range.add(r1, 0, 2, -1); // 0,11,13,14,5
+    std::cout << "range: r0=" << range.sum(r0, 0, 5) << " r1=" << range.sum(r1, 0, 5)
+              << " r2=" << range.sum(r2, 0, 5) << " r1[1,3)=" << range.sum(r1, 1, 3) << '\n';
 }
