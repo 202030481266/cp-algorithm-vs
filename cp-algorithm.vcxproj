@@ -213,6 +213,17 @@
     <None Include="solutions\cf\2189\E\README.md" />
     <None Include="solutions\cf\2189\E\samples\1.ans" />
     <None Include="solutions\cf\2189\E\samples\1.in" />
+    <None Include="solutions\lc\3934\expected.txt" />
+    <None Include="solutions\lc\3934\input.txt" />
+    <None Include="solutions\lc\3934\main.cpp" />
+    <None Include="solutions\lc\3934\problem.json" />
+    <None Include="solutions\lc\3934\README.md" />
+    <None Include="solutions\lc\3934\samples\1.ans" />
+    <None Include="solutions\lc\3934\samples\1.in" />
+    <None Include="solutions\lc\3934\samples\2.ans" />
+    <None Include="solutions\lc\3934\samples\2.in" />
+    <None Include="solutions\lc\3934\samples\3.ans" />
+    <None Include="solutions\lc\3934\samples\3.in" />
     <ClInclude Include="cp-stl\basic\cdq.hpp" />
     <ClInclude Include="cp-stl\basic\compress.hpp" />
     <ClInclude Include="cp-stl\basic\monotonic_stack.hpp" />
