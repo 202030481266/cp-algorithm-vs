@@ -12,14 +12,14 @@
 
 ## 快速开始
 
-**只用配色**：在 VS 中打开 **工具 → 导入和导出设置 → 导入选定的环境设置**，选择任一 `.vssettings` 文件，类别勾选 **环境 → 字体和颜色**。
+先在 Windows 中安装 Maple Mono NF CN，再在 VS 中打开 **工具 → 导入和导出设置 → 导入选定的环境设置**，选择任一 `.vssettings` 文件，类别勾选 **环境 → 字体和颜色**。四份预设的编辑器字号均为 14 磅。
 
 **配合扩展**：安装 [EditorFontStyles.vsix](editor-font-styles/EditorFontStyles.vsix)，在项目根目录放一个 `.editor-font-styles.json`，指定配色和字体：
 
 ```jsonc
 {
   "colors": "themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings",
-  "font": { "family": "Consolas", "size": 14 }
+  "font": { "family": "Maple Mono NF CN", "size": 14 }
 }
 ```
 

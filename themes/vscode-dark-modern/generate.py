@@ -370,7 +370,7 @@ def render(palette, convert=lambda h: h):
         '      <PropertyValue name="Version">2</PropertyValue>',
         '      <FontsAndColors Version="2.0">',
         "        <Categories>",
-        '          <Category GUID="{A27B4E24-A735-4D1D-B8E7-9716E1E3D8E0}">',
+        '          <Category GUID="{A27B4E24-A735-4D1D-B8E7-9716E1E3D8E0}" FontName="Maple Mono NF CN" FontSize="14" CharSet="1" FontIsDefault="No">',
         "            <Items>",
     ]
     for name, fg, bg in rows:

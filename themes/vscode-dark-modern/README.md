@@ -38,12 +38,12 @@
 
 ```jsonc
 "colors": "themes/vscode-dark-modern/VSCode-Dark-Modern-Vivid.vssettings",
-"font": { "family": "Consolas", "size": 14 }
+"font": { "family": "Maple Mono NF CN", "size": 14 }
 ```
 
 即可直接使用本配色和字体，重新生成主题文件后立即生效。
 
-> VS 2026 导入只含颜色的设置文件时，会把编辑器字体重置为默认值，导入后需要重新选择字体。使用扩展时没有这个问题。
+> 手动导入这两份预设时，VS 会把文本编辑器字体设为 Maple Mono NF CN 14 磅。请先在 Windows 中安装该字体。
 
 ### 字体与行距
 

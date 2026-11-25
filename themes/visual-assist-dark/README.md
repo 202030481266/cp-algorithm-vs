@@ -11,7 +11,7 @@
 - **局部变量和形参加粗**：用原生分类近似 VA 的 Local symbols in bold，让局部值在代码中更醒目。
 - **运算符保持中性**：`cin >>`、`cout <<`、`v[i]` 等重载运算符与内置运算符同为灰色，不会染成函数色。
 - **完整的编辑器配套色**：选区、当前行、行号、括号匹配、引用高亮统一调整；选区按 VS 的半透明绘制方式换算，多行选中时显示为完整的一块。
-- **纯配色文件**：只包含“字体和颜色”，不改动字体、字号、快捷键和窗口布局。
+- 两份预设都为文本编辑器指定 **Maple Mono NF CN，14 磅**。
 
 ## 选择版本
 
@@ -34,7 +34,8 @@
 **使用 [Editor Font Styles](../editor-font-styles/README.md) 扩展时无需导入**：在仓库根目录的 `.editor-font-styles.json` 中写入
 
 ```jsonc
-"colors": "themes/visual-assist-dark/Visual-Assist-Dark.vssettings"
+"colors": "themes/visual-assist-dark/Visual-Assist-Dark.vssettings",
+"font": { "family": "Maple Mono NF CN", "size": 14 }
 ```
 
 即可直接使用本配色，修改主题文件后立即生效。
